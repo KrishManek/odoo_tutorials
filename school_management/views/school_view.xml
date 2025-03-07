@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_school_list" model="ir.ui.view">
+        <field name="name">school.details.list</field>
+        <field name="model">school.details</field>
+        <field name="arch" type="xml">
+        <list>
+            <field name="name"/>
+        </list>
+        </field>
+    </record>
+    <record id="school_menu_action" model="ir.actions.act_window">
+        <field name="name">School</field>
+        <field name="res_model">school.details</field>
+        <field name="view_mode">list</field>
+    </record>
+    <menuitem id="school_details_main_menu" name="School"/> 
+        <menuitem id="school_details_sub_menu" name="School_details" parent="school_details_main_menu" action="school_menu_action"/> 
+
+</odoo>

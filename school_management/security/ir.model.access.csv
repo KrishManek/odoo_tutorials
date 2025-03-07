@@ -1,0 +1,2 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"school_management.access_school_details","access_school_details","school_management.model_school_details","base.group_user",1,1,1,1
