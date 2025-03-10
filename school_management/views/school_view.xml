@@ -7,15 +7,31 @@
         <field name="arch" type="xml">
         <list>
             <field name="name"/>
+            <field name="desc"/>
         </list>
         </field>
     </record>
-    <record id="school_menu_action" model="ir.actions.act_window">
+    <record id="view_school_form" model="ir.ui.view">
+        <field name="name">school.details.list</field>
+        <field name="model">school.details</field>
+        <field name="arch" type="xml">
+        <form>
+            <field name="name"/>
+            <field name="desc"/>
+        </form>
+        </field>
+    </record>
+    <record id="school_menu_form_action" model="ir.actions.act_window">
+        <field name="name">School</field>
+        <field name="res_model">school.details</field>
+        <field name="view_mode">form</field>
+    </record>
+    <record id="school_menu_list_action" model="ir.actions.act_window">
         <field name="name">School</field>
         <field name="res_model">school.details</field>
         <field name="view_mode">list</field>
     </record>
     <menuitem id="school_details_main_menu" name="School"/> 
-        <menuitem id="school_details_sub_menu" name="School_details" parent="school_details_main_menu" action="school_menu_action"/> 
-
+        <menuitem id="school_details_sub_menu_list" name="School_details List" parent="school_details_main_menu" action="school_menu_list_action"/> 
+        <menuitem id="school_details_sub_menu_form" name="School_details form" parent="school_details_main_menu" action="school_menu_form_action"/> 
 </odoo>

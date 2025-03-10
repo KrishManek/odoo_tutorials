@@ -4,3 +4,4 @@ class SchoolDetails(models.Model):
     _description = "School_Details"
 
     name = fields.Char(String="name")
+    desc = fields.Text(String="Description")
