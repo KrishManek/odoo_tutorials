@@ -8,6 +8,7 @@
     'version':'1.0',
     'data':[
         'security/ir.model.access.csv',
-        'views/school_view.xml'
+        'views/school_view.xml',
+        'wizard/schoolOpeningWizard.xml'
     ],
 }

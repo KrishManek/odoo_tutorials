@@ -11,27 +11,173 @@
         </list>
         </field>
     </record>
-    <record id="view_school_form" model="ir.ui.view">
-        <field name="name">school.details.list</field>
-        <field name="model">school.details</field>
-        <field name="arch" type="xml">
+    
+    <record id = "view_school_form" model = "ir.ui.view">
+        <field name = "name">view.school.form</field>
+        <field name = "model">school.details</field>
+        <field name = "arch" type = "xml">
         <form>
-            <field name="name"/>
-            <field name="desc"/>
+        <header>
+            <button name="action_open_wizard" string="Open School wizard" type="object" class="btn-primary"/>
+        </header>
+            <sheet>
+                <group>
+                    <field name = "name"/>
+                    <field name = "desc"/>
+                </group>
+                <notebook>
+                <page string = "Students" >
+                <field name = "student_ids">
+                    <list>
+                        <field name = "name"></field>
+                        <field name = "roll_no"></field>
+                    </list>
+                </field>
+                </page>
+
+                <page string = "Teachers" >
+                <field name = "teacher_ids">
+                    <list>
+                        <field name = "name"></field>
+                        <field name = "id"></field>
+                    </list>
+                </field>
+                </page>
+                <page name = "Users">
+                    <field name="school_user_ids"></field> 
+                </page>
+                <page name = "Student Users">
+                    <field name="school_student_ids"></field> 
+                </page>
+                </notebook>
+            </sheet>
         </form>
         </field>
     </record>
+    <record id = "view_student_form" model = "ir.ui.view">
+        <field name = "name">view.student.form</field>
+        <field name = "model">student.details</field>
+        <field name = "arch" type = "xml">
+        <form>
+            <sheet>
+                <group>
+                    <field name = "name"/>
+                </group>
+                <group>
+                    <field name = "roll_no"/>
+                </group>
+                <group>
+                    <field name = "school_id">
+                    
+                    </field>
+                </group>
+                <group>
+                <field name = "teacher_id"></field>
+                </group>
+            </sheet>
+        </form>
+        </field>
+    </record>
+
+    <record id = "view_teacher_form" model = "ir.ui.view">
+        <field name = "name">view.teacher.form</field>
+        <field name = "model">teacher.details</field>
+        <field name = "arch" type = "xml">
+        <form>
+            <sheet>
+            <notebook>
+            <page string = "Teacher">
+                <group>
+                    <field name = "name"/>
+                </group>
+                <group>
+                    <field name = "id"/>
+                </group>
+                <group>
+                    <field name = "school_id">
+                    
+                    </field>
+                </group>
+            </page>
+
+            <page string = "standard">
+                <field name = "teaches_in">
+                <list>
+                    <field name = "standard"></field>
+                    <field name = "division"></field>    
+                </list>
+                </field>
+            </page>
+            <page string = "Student">
+                <field name = "student_ids">
+                <list editable="bottom" edit="1">
+                    <field name = "name"></field>
+                    <field name = "roll_no"></field>    
+                    <field name = "school_id"></field>
+                </list>
+                </field>
+            </page>
+            </notebook>    
+            </sheet>
+        </form>
+        </field>
+    </record>
+
+<record id = "view_standard_form" model = "ir.ui.view">
+        <field name = "name">view.standard.form</field>
+        <field name = "model">standard.details</field>
+        <field name = "arch" type = "xml">
+        <form>
+            <sheet>
+                <group>
+                    <field name = "division"/>
+                </group>
+                <group>
+                    <field name = "standard"/>
+                </group>
+                <group>
+                    <field name = "std_id">
+                    
+                    </field>
+                </group>
+            </sheet>
+        </form>
+        </field>
+    </record>
+
     <record id="school_menu_form_action" model="ir.actions.act_window">
         <field name="name">School</field>
         <field name="res_model">school.details</field>
         <field name="view_mode">form</field>
     </record>
+
+    <record id="student_menu_form_action" model="ir.actions.act_window">
+        <field name="name">Student</field>
+        <field name="res_model">student.details</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="school_menu_list_action" model="ir.actions.act_window">
         <field name="name">School</field>
         <field name="res_model">school.details</field>
-        <field name="view_mode">list</field>
+        <field name="view_mode">list,form</field>
     </record>
+
+    <record id="teachers_menu_form_action" model="ir.actions.act_window">
+        <field name="name">Teachers</field>
+        <field name="res_model">teacher.details</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="standard_menu_form_action" model="ir.actions.act_window">
+        <field name="name">standard</field>
+        <field name="res_model">standard.details</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <menuitem id="school_details_main_menu" name="School"/> 
-        <menuitem id="school_details_sub_menu_list" name="School_details List" parent="school_details_main_menu" action="school_menu_list_action"/> 
-        <menuitem id="school_details_sub_menu_form" name="School_details form" parent="school_details_main_menu" action="school_menu_form_action"/> 
+        <menuitem id="school_details_sub_menu_list" name="School details" parent="school_details_main_menu" action="school_menu_list_action"/>  
+        <menuitem id="student_details_sub_menu_form" name="Student details" parent="school_details_main_menu" action="student_menu_form_action"/> 
+        <menuitem id="teacher_details_sub_menu_form" name="Teacher details" parent="school_details_main_menu" action="teachers_menu_form_action"/>
+        <menuitem id="standard_details_sub_menu_form" name="Standard details" parent="school_details_main_menu" action="standard_menu_form_action"/> 
 </odoo>

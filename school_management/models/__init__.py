@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from . import school
+from . import school, student, teachers, std
