@@ -1,2 +1,6 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 "school_management.access_school_details","access_school_details","school_management.model_school_details","base.group_user",1,1,1,1
+"school_management.access_student_details","access_student_details","school_management.model_student_details","base.group_user",1,1,1,1
+"school_management.access_teacher_details","access_teacher_details","school_management.model_teacher_details","base.group_user",1,1,1,1
+"school_management.access_standard_details","access_standard_details","school_management.model_standard_details","base.group_user",1,1,1,1
+"acess_school_opening_wizard","school.opening.wizard","model_school_opening_wizard","",1,1,1,1
