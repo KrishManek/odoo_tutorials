@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_patient_form" model="ir.ui.view">
+        <field name="name">patient.details.form</field>
+        <field name="model">patient.details</field>
+        <field name="arch" type="xml">
+            <form string="Patient">
+            <header>
+                <button name="action_open_appointments" string="Appointments" type="object" class="btn-primary" />
+                <button name="action_calculate_age" type="object" string="Calculate Age" class="btn-primary" />
+            </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="patient_code" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                        </group>
+                        <group>
+                            <field name="blood_group"/>
+                            <field name="date_of_birth"/>
+                            <field name="age" readonly = "1" />
+                            <field name="previous_diseases"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_res_patient_list" model="ir.ui.view">
+        <field name="name">patient.details.list</field>
+        <field name="model">patient.details</field>
+        <field name="arch" type="xml">
+            <list string="Patients">
+                <field name="patient_code"></field>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="blood_group"/>
+                <field name="date_of_birth"/>
+                <field name="age"/>
+                <field name="previous_diseases"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_res_patient" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">patient.details</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hms" name="HMS"/>
+    <menuitem id="menu_res_patient_sub" name="Patients" parent="menu_hms" action="action_res_patient"/>
+
+</odoo>
