@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="total_patients_above_40" model="ir.cron">
+            <field name="name">Total Patients above 40</field>
+            <field name="model_id" ref="hms.model_patient_details"/>
+            <field name="state">code</field>
+            <field name="code">model.total_patients_above_40()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="active">True</field>
+        </record>
+        <record id="weekly_appointment_report" model="ir.cron">
+            <field name="name">Weekly Appointment Report</field>
+            <field name="model_id" ref="hms.model_appointment_details"/>
+            <field name="state">code</field>
+            <field name="code">model.weekly_appointment_report()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">weeks</field>
+            <field name="nextcall">2025-03-23 00:00:01</field>
+            <field name="active">True</field>
+        </record>
+        <record id="_auto_cancel_appointment" model="ir.cron">
+            <field name="name">Auto Cancel Appointments</field>
+            <field name="model_id" ref="hms.model_appointment_details"/>
+            <field name="state">code</field>
+            <field name="code">model._auto_cancel_appointment()</field>
+            <field name="interval_number">6</field>
+            <field name="interval_type">hours</field>
+            <field name="active">True</field>
+        </record>
+        <record id="weekly_cancelation_report" model="ir.cron">
+            <field name="name">Weekly Cancelation Report</field>
+            <field name="model_id" ref="hms.model_appointment_details"/>
+            <field name="state">code</field>
+            <field name="code">model.weekly_cancelation_report()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">weeks</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>
