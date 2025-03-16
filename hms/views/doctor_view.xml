@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_doctor_form" model="ir.ui.view">
+        <field name="name">res.doctor.form</field>
+        <field name="model">res.doctor</field>
+        <field name="arch" type="xml">
+            <form string="Doctor">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_id" />
+                            <field name="specialization"/>
+                            <field name="license_no"/>
+                            <field name="experience_years" />
+                            <field name="hospital_id" />
+                            <field name="is_emergency_available"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_res_doctor_list" model="ir.ui.view">
+        <field name="name">res.doctor.list</field>
+        <field name="model">res.doctor</field>
+        <field name="arch" type="xml">
+            <list string="Doctor">
+                <field name="name"/>
+                <field name="partner_id" />
+                <field name="specialization"/>
+                <field name="license_no"/>
+                <field name="experience_years" />
+                <field name="hospital_id" />
+                <field name="is_emergency_available"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_res_doctor" model="ir.actions.act_window">
+        <field name="name">Doctor</field>
+        <field name="res_model">res.doctor</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hms" name="HMS"/>
+    <menuitem id="menu_res_doctor_sub" name="Doctor" parent="menu_hms" action="action_res_doctor"/>
+
+</odoo>

@@ -24,8 +24,16 @@
                         <group>
                             <field name="blood_group"/>
                             <field name="date_of_birth"/>
+                            <field name="age_category" readonly = "1" />
                             <field name="age" readonly = "1" />
                             <field name="previous_diseases"/>
+                        </group>
+                        <group string="Guardian Details">
+                            <field name="gaurdian_category" required = "age_category in ['child','minor']" />
+                            <field name="gaurdian_id" required = "age_category in ['child','minor']" />
+                        </group>
+                        <group name="appointment_details" string="Appointment History">
+                            <field name="appointment_ids"></field>
                         </group>
                     </group>
                 </sheet>

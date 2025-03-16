@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <odoo>
+    <record id="hms_appointment_list_view" model="ir.ui.view">
+        <field name="name">appointment.details.list</field>
+        <field name="model">appointment.details</field>
+        <field name="arch" type="xml">
+            <list string="Appointment">
+                <field name="appointment_code" readonly="1"/>
+                <field name="patient_id"/>
+                <field name="appointment_date"/>
+                <field name="appointment_reason"/>
+                <field name="consultation_start_time" readonly="1" />
+                <field name="consultation_end_time" readonly="1" />
+                <field name="consultation_time" readonly="1" />  
+            </list>
+        </field>
+    </record>
+
     <record id="hms_appointment_form_view" model="ir.ui.view">
         <field name="name">appointment.details.form</field>
         <field name="model">appointment.details</field>
         <field name="arch" type="xml">
             <form string="Appointment">
                 <header>
+                    <button name="action_wait_appointment" string="Book Appointment" invisible = "state != 'draft'" type="object" class="btn-primary" />
+                    <button name="action_confirm_appointment" string="Confirm Appointment" invisible = "state != 'wait'" type="object" class="btn-primary" />
+                    <button name="action_in_consultation" string="In-Consultation Appointment" invisible = "state != 'confirm'" type="object" class="btn-primary" />
+                    <button name="action_done_appointment" string="Completed Appointment" invisible = "state != 'in_consultation'" type="object" class="btn-primary" />
+                    <button name="action_cancel_appointment" string="Cancel Appointment" type="object" invisible ="state in ['done','in_consultation']" class="btn-primary" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
                 </header>
                 <sheet>
@@ -19,12 +40,24 @@
                         <group>
                             <field name="patient_id"/>
                             <field name="appointment_date"/>
+                            <field name="booking_time"/>
                             <field name="appointment_reason"/>
+                        </group>
+                        <group string="Guardian Details">
+                            <field name="gaurdian_category" />
+                            <field name="gaurdian_id" />
+                        </group>
+                        <group string="Consultation Details" invisible = "state not in ['in_consultation','done','cancel'] ">
+                            <field name="consultation_start_time" readonly="1" />
+                            <field name="consultation_end_time" readonly="1" />
+                            <field name="consultation_time" />  
+                        </group>
+                        <group name="Product" string="Produts">
+                            <field name="product_id" domain = "[('type', '=', 'service')]" /> 
                         </group>
                     </group>
                 </sheet>
             </form>
-
         </field>
     </record>
     <record id="action_res_appointment" model="ir.actions.act_window">
