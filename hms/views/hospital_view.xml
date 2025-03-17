@@ -13,9 +13,13 @@
                             <field name="phone"/>
                             <field name="email" />
                             <field name="is_public" />
-                            <field name="doctor_ids"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page name="Doctor" string="Associated Doctors">
+                            <field name="doctor_ids"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -31,7 +35,6 @@
                 <field name="phone"/>
                 <field name="email" />
                 <field name="is_public" />
-                <field name="doctor_ids"/>
             </list>
         </field>
     </record>

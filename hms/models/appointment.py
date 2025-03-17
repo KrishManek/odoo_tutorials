@@ -80,9 +80,10 @@ class HmsAppointment(models.Model):
         if self.appointment_date < fields.datetime.now():
             self.consultation_end_time = fields.datetime.now()
             total_time = relativedelta(self.consultation_end_time, self.consultation_start_time)
-            total_time_mins = total_time.hours * 60 + total_time.minutes + total_time.seconds / 60
+            print(total_time.seconds)
+            total_time_mins = total_time.hours * 60 + total_time.minutes + total_time.seconds/100
             self.state = 'done'
-            self.consultation_time = round(total_time_mins,2)
+            self.consultation_time = total_time_mins
         else:
             raise ValidationError("Please wait for your consultation time")
         
@@ -122,5 +123,5 @@ class HmsAppointment(models.Model):
     def weekly_cancelation_report(self):
         appointments = self.env['appointment.details'].search([('state', '=', 'cancel')])
         for details in appointments:
-            self.weekly_cancelation_reports[details.appointment_code] ={'patient_id':details.patient_id,'appointment_date': details.appointment_date}
+            self.weekly_cancelation_reports[details.appointment_code] = {'patient_id':details.patient_id,'appointment_date': details.appointment_date}
         print(self.weekly_cancelation_reports)
