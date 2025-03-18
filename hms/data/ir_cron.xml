@@ -38,5 +38,14 @@
             <field name="interval_type">weeks</field>
             <field name="active">True</field>
         </record>
+        <record id="weekly_appointment_creation_report" model="ir.cron">
+            <field name="name">Weekly Appointment Creation Report</field>
+            <field name="model_id" ref="hms.model_patient_details"/>
+            <field name="state">code</field>
+            <field name="code">model.weekly_appointment_creation()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">weeks</field>
+            <field name="active">True</field>
+        </record>
     </data>
 </odoo>
