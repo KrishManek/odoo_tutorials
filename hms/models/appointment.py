@@ -10,7 +10,7 @@ class HmsAppointment(models.Model):
 
     appointment_code = fields.Char(string="Appointment ID", copy=False, readonly=True, index=True, default="New")
     patient_id = fields.Many2one("patient.details", string="Patient", required=True)
-    appointment_date = fields.Datetime(string="Date", required=True)
+    appointment_date = fields.Datetime(string="Date", required=True, default=(fields.Datetime.now()+ relativedelta(hour=1)))
     appointment_reason = fields.Text(string="Reason")
     state = fields.Selection([('draft', 'Draft'),
                               ('wait','waiting'),
@@ -80,7 +80,6 @@ class HmsAppointment(models.Model):
         if self.appointment_date < fields.datetime.now():
             self.consultation_end_time = fields.datetime.now()
             total_time = relativedelta(self.consultation_end_time, self.consultation_start_time)
-            print(total_time.seconds)
             total_time_mins = total_time.hours * 60 + total_time.minutes + total_time.seconds/100
             self.state = 'done'
             self.consultation_time = total_time_mins
@@ -123,5 +122,5 @@ class HmsAppointment(models.Model):
     def weekly_cancelation_report(self):
         appointments = self.env['appointment.details'].search([('state', '=', 'cancel')])
         for details in appointments:
-            self.weekly_cancelation_reports[details.appointment_code] = {'patient_id':details.patient_id,'appointment_date': details.appointment_date}
+            self.weekly_cancelation_reports[details.appointment_code] = {'patient_id':details.patient_id.name,'appointment_date': details.appointment_date}
         print(self.weekly_cancelation_reports)

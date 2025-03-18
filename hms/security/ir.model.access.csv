@@ -4,3 +4,5 @@
 "access_res_doctor","res.doctor","model_res_doctor","base.group_user",1,1,1,1
 "access_hospital_details","hospital.details","model_hospital_details","base.group_user",1,1,1,1
 "access_hospital_specialization","hospital.specialization","model_hospital_specialization","base.group_user",1,1,1,1
+"access_hms_prescription","hms.prescription","model_hms_prescription","base.group_user",1,1,1,1
+"access_hms_prescription_line","hms.prescription.line","model_hms_prescription_line","base.group_user",1,1,1,1

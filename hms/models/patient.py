@@ -35,6 +35,13 @@ class PatientDetails(models.Model):
     phone = fields.Char(string="Phone")
     email = fields.Char(string="Email")
     appointment_ids = fields.One2many('appointment.details','patient_id',string="Appointment History")
+    appointment_count = fields.Integer(compute="_compute_appointment_count", string="Appointment Count", store=True)
+    weekly_visit = fields.Boolean(string="Weekly visit", default = False)
+
+    @api.depends('appointment_ids')
+    def _compute_appointment_count(self):
+        for patient in self:
+            patient.appointment_count = self.env['appointment.details'].search_count([('patient_id','=', patient.id)])
 
     @api.model_create_multi
     def create(self,vals_list):
@@ -43,6 +50,7 @@ class PatientDetails(models.Model):
             result.patient_code = self.env['ir.sequence'].next_by_code('patient.details')
         return res
     
+    """ #open form in new page 
     def action_open_appointments(self):
         view_id = self.env.ref('hms.hms_appointment_form_view').id
 
@@ -54,7 +62,7 @@ class PatientDetails(models.Model):
             'view_id': view_id,
             'target': 'current',
             'context': {'default_patient_id': self.id},
-        }
+        } """
     
     def action_calculate_age(self):
         for record in self:
@@ -103,4 +111,33 @@ class PatientDetails(models.Model):
         forty_years_ago = today - relativedelta(years=40)
         patients_above_40 = self.env['patient.details'].search_count([('date_of_birth', '<=', forty_years_ago)])
         print(f"\n \n Total Patients above age 40 are : {patients_above_40}\n \n")
+
+    def action_open_appointments(self):
+        form_view_id = self.env.ref('hms.hms_appointment_form_view').id
+        list_view_id = self.env.ref('hms.hms_appointment_list_view').id
+        
+        res = {
+            'name' : 'Appointments',
+            'type' : 'ir.actions.act_window',
+            'view_mode' : 'form',
+            'res_model' : 'appointment.details',
+            'view_id' : form_view_id,
+            'target' : 'current',
+            'context' : {'default_patient_id' : self.id }
+        }
+        if self.appointment_count >= 1:
+            res['view_mode'] = 'list,form'
+            res['views'] = [(list_view_id,'list'),(form_view_id,'form')]
+            res['domain'] = [('patient_id', '=', self.id)]
+            res['view_id'] = False
+        return res
     
+    @api.model
+    def weekly_appointment_creation(self):
+        records = self.env['patient.details'].search([('weekly_visit', '=', True)])
+        print("ABC")
+        for appointment in records:
+            self.env['appointment.details'].create([{
+                'patient_id': appointment.id
+            }])
+        

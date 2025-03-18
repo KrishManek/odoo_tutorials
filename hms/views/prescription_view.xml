@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hms_prescription_form" model="ir.ui.view">
+        <field name="name">hms.prescription.form</field>
+        <field name="model">hms.prescription</field>
+        <field name="arch" type="xml">
+            <form string="Prescription">
+                <header>
+                    <button name="action_confirm_prescription" string="Confirm prescription" invisible = "state != 'draft'" type="object" class="btn-primary" />
+                    <button name="action_cancel_prescription" string="Cancel prescription" type="object" invisible ="state != 'draft'" class="btn-primary" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_prescriptions" type="object" icon="fa-file-prescription" >
+                            <field name="prescription_count" string="Prescription" widget="statinfo" />
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Prescription Lines">
+                            <field name="prescription_lines">
+                                <list>
+                                    <field name="product_id"/>
+                                    <field name="qty"/>
+                                    <field name="price_unit" force_save="1"/>
+                                    <field name="sub_total" force_save="1"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer" colspan="2">
+                                <field name="total" string= "Total" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_hms_prescription_list" model="ir.ui.view">
+        <field name="name">hms.prescription.list</field>
+        <field name="model">hms.prescription</field>
+        <field name="arch" type="xml">
+            <list string="Prescription">
+                <field name="patient_id"/>
+                <field name="date"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+        <record id="action_hms_prescription" model="ir.actions.act_window">
+        <field name="name">Prescription</field>
+        <field name="res_model">hms.prescription</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_hms_prescription_sub" name="Prescription" parent="menu_hms" action="action_hms_prescription"/>
+</odoo>
