@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo noupdate="1">
+    <!-- Define the sequence for patient details -->
     <record id="sequence_res_patient" model="ir.sequence">
-        <field name="name">patient.details</field>
-        <field name="code">patient.details</field>
-        <field name="prefix">P-</field>
-        <field name="padding">4</field>
+        <field name="name">patient.details</field> <!-- Sequence name -->
+        <field name="code">patient.details</field> <!-- Sequence code -->
+        <field name="prefix">P-</field> <!-- Prefix for the sequence -->
+        <field name="padding">4</field> <!-- Padding for the sequence -->
     </record>
 
+    <!-- Define the sequence for appointment details -->
     <record id="sequence_res_apoointment" model="ir.sequence">
-        <field name="name">appointment.details</field>
-        <field name="code">appointment.details</field>
-        <field name="prefix">AP-</field>
-        <field name="padding">4</field>
+        <field name="name">appointment.details</field> <!-- Sequence name -->
+        <field name="code">appointment.details</field> <!-- Sequence code -->
+        <field name="prefix">AP-</field> <!-- Prefix for the sequence -->
+        <field name="padding">4</field> <!-- Padding for the sequence -->
+    </record>
+
+    <!-- Define the sequence for prescription details -->
+    <record id="sequenece_res_prescription" model="ir.sequence">
+        <field name="name">hms.prescription</field> <!-- Sequence name -->
+        <field name="code">hms.prescription</field> <!-- Sequence code -->
+        <field name="prefix">PS</field> <!-- Prefix for the sequence -->
+        <field name="padding">4</field> <!-- Padding for the sequence -->
     </record>
 </odoo>

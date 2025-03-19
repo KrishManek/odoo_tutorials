@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <!-- Define the form view for hospital details -->
     <record id="view_hospital_form" model="ir.ui.view">
-        <field name="name">hospital.details.form</field>
-        <field name="model">hospital.details</field>
+        <field name="name">hospital.details.form</field> <!-- View name -->
+        <field name="model">hospital.details</field> <!-- Model name -->
         <field name="arch" type="xml">
-            <form string="Hospital">
+            <form string="Hospital"> <!-- Form view definition -->
                 <sheet>
                     <group>
                         <group>
-                            <field name="name"/>
-                            <field name="address"/>
-                            <field name="phone"/>
-                            <field name="email" />
-                            <field name="is_public" />
+                            <field name="name"/> <!-- Hospital name -->
+                            <field name="address"/> <!-- Hospital address -->
+                            <field name="phone"/> <!-- Hospital phone number -->
+                            <field name="email" /> <!-- Hospital email -->
+                            <field name="is_public" /> <!-- Public hospital flag -->
                         </group>
                     </group>
                     <notebook>
                         <page name="Doctor" string="Associated Doctors">
-                            <field name="doctor_ids"/>
+                            <field name="doctor_ids"/> <!-- Associated doctors -->
                         </page>
                     </notebook>
                 </sheet>
@@ -25,27 +26,29 @@
         </field>
     </record>
 
+    <!-- Define the list view for hospital details -->
     <record id="view_hospital_list" model="ir.ui.view">
-        <field name="name">hospital.details.list</field>
-        <field name="model">hospital.details</field>
+        <field name="name">hospital.details.list</field> <!-- View name -->
+        <field name="model">hospital.details</field> <!-- Model name -->
         <field name="arch" type="xml">
-            <list string="Hospital">
-                <field name="name"/>
-                <field name="address"/>
-                <field name="phone"/>
-                <field name="email" />
-                <field name="is_public" />
+            <list string="Hospital"> <!-- List view definition -->
+                <field name="name"/> <!-- Hospital name -->
+                <field name="address"/> <!-- Hospital address -->
+                <field name="phone"/> <!-- Hospital phone number -->
+                <field name="email" /> <!-- Hospital email -->
+                <field name="is_public" /> <!-- Public hospital flag -->
             </list>
         </field>
     </record>
 
+    <!-- Define the action for hospital details -->
     <record id="action_hospital" model="ir.actions.act_window">
-        <field name="name">Hospital</field>
-        <field name="res_model">hospital.details</field>
-        <field name="view_mode">list,form</field>
+        <field name="name">Hospital</field> <!-- Action name -->
+        <field name="res_model">hospital.details</field> <!-- Model name -->
+        <field name="view_mode">list,form</field> <!-- View modes (list and form) -->
     </record>
 
-    <menuitem id="menu_hms" name="HMS"/>
-    <menuitem id="menu_res_hospital_sub" name="Hospital" parent="menu_hms" action="action_hospital"/>
-
+    <!-- Define the menu items for hospital details -->
+    <menuitem id="menu_hms" name="HMS"/> <!-- Main menu item -->
+    <menuitem id="menu_res_hospital_sub" name="Hospital" parent="menu_hms" action="action_hospital"/> <!-- Submenu item for hospital details -->
 </odoo>

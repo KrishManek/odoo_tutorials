@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <!-- Define the form view for doctor details -->
     <record id="view_doctor_form" model="ir.ui.view">
-        <field name="name">res.doctor.form</field>
-        <field name="model">res.doctor</field>
+        <field name="name">res.doctor.form</field> <!-- View name -->
+        <field name="model">res.doctor</field> <!-- Model name -->
         <field name="arch" type="xml">
-            <form string="Doctor">
+            <form string="Doctor"> <!-- Form view definition -->
                 <sheet>
                     <group>
                         <group>
-                            <field name="name"/>
-                            <field name="partner_id" />
-                            <field name="specialization"/>
-                            <field name="license_no"/>
-                            <field name="experience_years" />
-                            <field name="hospital_id" />
-                            <field name="is_emergency_available"/>
+                            <field name="name"/> <!-- Doctor's name -->
+                            <field name="partner_id" /> <!-- Related partner -->
+                            <field name="specialization"/> <!-- Specialization -->
+                            <field name="license_no"/> <!-- License number -->
+                            <field name="experience_years" /> <!-- Years of experience -->
+                            <field name="hospital_id" /> <!-- Associated hospital/clinic -->
+                            <field name="is_emergency_available"/> <!-- Emergency availability -->
                         </group>
                     </group>
                 </sheet>
@@ -22,29 +23,31 @@
         </field>
     </record>
 
+    <!-- Define the list view for doctor details -->
     <record id="view_res_doctor_list" model="ir.ui.view">
-        <field name="name">res.doctor.list</field>
-        <field name="model">res.doctor</field>
+        <field name="name">res.doctor.list</field> <!-- View name -->
+        <field name="model">res.doctor</field> <!-- Model name -->
         <field name="arch" type="xml">
-            <list string="Doctor">
-                <field name="name"/>
-                <field name="partner_id" />
-                <field name="specialization"/>
-                <field name="license_no"/>
-                <field name="experience_years" />
-                <field name="hospital_id" />
-                <field name="is_emergency_available"/>
+            <list string="Doctor"> <!-- List view definition -->
+                <field name="name"/> <!-- Doctor's name -->
+                <field name="partner_id" /> <!-- Related partner -->
+                <field name="specialization"/> <!-- Specialization -->
+                <field name="license_no"/> <!-- License number -->
+                <field name="experience_years" /> <!-- Years of experience -->
+                <field name="hospital_id" /> <!-- Associated hospital/clinic -->
+                <field name="is_emergency_available"/> <!-- Emergency availability -->
             </list>
         </field>
     </record>
 
+    <!-- Define the action for doctor details -->
     <record id="action_res_doctor" model="ir.actions.act_window">
-        <field name="name">Doctor</field>
-        <field name="res_model">res.doctor</field>
-        <field name="view_mode">list,form</field>
+        <field name="name">Doctor</field> <!-- Action name -->
+        <field name="res_model">res.doctor</field> <!-- Model name -->
+        <field name="view_mode">list,form</field> <!-- View modes (list and form) -->
     </record>
 
-    <menuitem id="menu_hms" name="HMS"/>
-    <menuitem id="menu_res_doctor_sub" name="Doctor" parent="menu_hms" action="action_res_doctor"/>
-
+    <!-- Define the menu items for doctor details -->
+    <menuitem id="menu_hms" name="HMS"/> <!-- Main menu item -->
+    <menuitem id="menu_res_doctor_sub" name="Doctor" parent="menu_hms" action="action_res_doctor"/> <!-- Submenu item for doctor details -->
 </odoo>
