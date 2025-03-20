@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <data>
+        <record id="sequence_student_id" model="ir.sequence">
+            <field name="name">student.details</field>
+            <field name="code">student.details</field>
+            <field name="prefix">SID-</field>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="sequence_teacher_id" model="ir.sequence">
+            <field name="name">teacher.details</field>
+            <field name="code">teacher.details</field>
+            <field name="prefix">T-</field>
+            <field name="padding">4</field>
+        </record>
+    </data>
+</odoo>

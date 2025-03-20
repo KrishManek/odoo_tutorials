@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Form View -->
+    <record id="fees_form_view" model="ir.ui.view">
+        <field name="name">fees.form</field>
+        <field name="model">fees.details</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="student_id"/>
+                        <field name="due_date"/>
+                        <field name="amount_due"/>
+                        <field name="paid"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="fees_list_view" model="ir.ui.view">
+        <field name="name">fees.list</field>
+        <field name="model">fees.details</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="student_id"/>
+                <field name="due_date"/>
+                <field name="amount_due"/>
+                <field name="paid"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="fees_action" model="ir.actions.act_window">
+        <field name="name">Fees</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fees.details</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="fees_menu" name="Fees" parent="menu_school_root" action="fees_action"/>
+</odoo>

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+school_management.access_school_details,access_school_details,school_management.model_school_details,base.group_user,1,1,1,1
+school_management.access_student_details,access_student_details,school_management.model_student_details,base.group_user,1,1,1,1
+school_management.access_teacher_details,access_teacher_details,school_management.model_teacher_details,base.group_user,1,1,1,1
+school_management.access_attendance_details,access_attendance_details,school_management.model_attendance_details,base.group_user,1,1,1,1
+school_management.access_books_details,access_books_details,school_management.model_books_details,base.group_user,1,1,1,1
+school_management.access_wizard_details,access_wizard_details,school_management.model_wizard_details,base.group_user,1,1,1,1
+school_management.access_fees_details,access_fees_details,school_management.model_fees_details,base.group_user,1,1,1,1

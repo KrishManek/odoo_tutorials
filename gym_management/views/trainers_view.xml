@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="form_view_trainers" model="ir.ui.view">
+        <field name="name">form.view.trainers</field>
+        <field name="model">gym.trainers</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_members" type="object" icon="fa-user">
+                            <field name="member_count" string="Members" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="trainer_id"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="name"/>
+                        <field name="phone"/>
+                        <field name="email"/>
+                        <field name="experience"/>
+                        <field name="specialization"/>
+                        <field name="salary"/>
+                        <field name="member_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="tree_view_trainers" model="ir.ui.view">
+        <field name="name">list.view.trainers</field>
+        <field name="model">gym.trainers</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="experience"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_trainers" model="ir.actions.act_window">
+        <field name="name">Trainers</field>
+        <field name="res_model">gym.trainers</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_trainers" name="Trainers" parent="gym_parent" action="action_trainers"/>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="school_opening_wizard_wizard" model="ir.ui.view">
+        <field name="name">school.opening.wizard.wizard</field>
+        <field name="model">wizard.details</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="english_medium"/>
+                    <field name="gujarati_medium"/>
+                </group>
+            </form>
+        </field>
+    </record>
+</odoo>
