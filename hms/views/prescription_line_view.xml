@@ -1,41 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <!-- Define the list view for prescription line details -->
     <record id="view_hms_prescription_line_list" model="ir.ui.view">
-        <field name="name">hms.prescription.line.list</field>
-        <field name="model">hms.prescription.line</field>
+        <field name="name">hms.prescription.line.list</field> <!-- View name -->
+        <field name="model">hms.prescription.line</field> <!-- Model name -->
         <field name="arch" type="xml">
-            <list>
-                <field name="prescription_id" />
-                <field name="product_id"/>
-                <field name="qty" />
-                <field name="price_unit" force_save="1"/>
-                <field name="sub_total" force_save="1" />
+            <list> <!-- List view definition -->
+                <field name="prescription_id" /> <!-- Prescription reference -->
+                <field name="product_id"/> <!-- Product reference -->
+                <field name="qty" /> <!-- Quantity -->
+                <field name="price_unit" force_save="1"/> <!-- Unit price (force save) -->
+                <field name="sub_total" force_save="1" /> <!-- Sub total (force save) -->
             </list>
         </field>
     </record>
+
+    <!-- Define the form view for prescription line details -->
     <record id="view_hms_prescription_line_form" model="ir.ui.view">
-        <field name="name">hms.prescription.line.form</field>
-        <field name="model">hms.prescription.line</field>
+        <field name="name">hms.prescription.line.form</field> <!-- View name -->
+        <field name="model">hms.prescription.line</field> <!-- Model name -->
         <field name="arch" type="xml">
-            <form>
+            <form> <!-- Form view definition -->
                 <sheet>
                     <group>
                         <group name="prescription" string="Prescription Details">
-                            <field name="prescription_id" />
-                            <field name="product_id"/>
-                            <field name="qty"/>
-                            <field name="price_unit"/>
-                            <field name="sub_total" />
+                            <field name="prescription_id" /> <!-- Prescription reference -->
+                            <field name="product_id"/> <!-- Product reference -->
+                            <field name="qty"/> <!-- Quantity -->
+                            <field name="price_unit"/> <!-- Unit price -->
+                            <field name="sub_total" /> <!-- Sub total -->
                         </group>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
+
+    <!-- Define the action for prescription line details -->
     <record id="action_hms_prescription_line" model="ir.actions.act_window">
-        <field name="name">Prescription Details</field>
-        <field name="res_model">hms.prescription.line</field>
-        <field name="view_mode">list,form</field>
+        <field name="name">Prescription Details</field> <!-- Action name -->
+        <field name="res_model">hms.prescription.line</field> <!-- Model name -->
+        <field name="view_mode">list,form</field> <!-- View modes (list and form) -->
     </record>
-    <menuitem id="menu_hms_prescription_line_sub" name="Prescription line" parent="menu_hms" action="action_hms_prescription_line"/>
+
+    <!-- Define the menu item for prescription line details -->
+    <menuitem id="menu_hms_prescription_line_sub" name="Prescription line" parent="menu_hms" action="action_hms_prescription_line"/> <!-- Menu item definition -->
 </odoo>
