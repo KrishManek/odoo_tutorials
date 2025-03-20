@@ -1,0 +1,91 @@
+<odoo>
+    <record id="view_members_form" model="ir.ui.view">
+        <field name="name">Gym Members Form</field>
+        <field name="model">gym.members</field>
+        <field name="arch" type="xml">
+            <form string="Members Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_check_ins" type="object" icon="fa-check">
+                            <field name="check_in_count" string="Check Ins" widget="statinfo"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="member_id" />
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Member Details">
+                            <field name="name"/>
+                            <field name="dob"/>
+                            <field name="age"/>
+                            <field name="phone" required="1"/>
+                            <field name="email"/>
+                        </group>
+                        <group string="Plan Details">
+                            <field name="plan_id" />
+                            <field name="price"  readonly="1" force_save="1"/>
+                            <field name="plan_type"  readonly="1" force_save="1"/>
+                            <field name="duration" readonly="1" force_save="1"/>
+                            <field name="membership_expiry"/>
+                        </group>
+                        <group string="Trainer Details">
+                            <field name="trainer_id"/>
+                            <field name="trainer_phone" readonly="1" force_save="1"/>
+                            <field name="trainer_experience" readonly="1" force_save="1"/>
+                            <field name="trainer_specialization" readonly="1" force_save="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string='Check In Details'>
+                            <field name="check_in_ids">
+                                <list>
+                                    <field name="check_in_time"/>
+                                    <field name="check_out_time"/>
+                                    <field name="total_time"/>
+                                    <field name="state" />
+                                </list>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="check_in_time"/>
+                                            <field name="check_out_time"/>
+                                            <field name="total_time"/>
+                                            <field name="state" />
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_members_list" model="ir.ui.view">
+        <field name="name">Gym Members List</field>
+        <field name="model">gym.members</field>
+        <field name="arch" type="xml">
+            <list string="Gym Members">
+                <field name="name"/>
+                <field name="age"/>
+                <field name="phone"/>
+                <field name="email"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="members_actions" model="ir.actions.act_window">
+        <field name="name">Gym Members</field>
+        <field name="res_model">gym.members</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="gym_parent" name="Gym Management"/>
+
+    <menuitem id="members_menu" name="Members" parent="gym_parent" action="members_actions"/>
+</odoo>

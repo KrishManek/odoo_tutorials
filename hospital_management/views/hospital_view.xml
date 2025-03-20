@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="hospital_form_view" model="ir.ui.view">
+        <field name="name">hospital.form</field>
+        <field name="model">hospital.hospital</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="address"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="is_public"/>
+                            <field name="doctor_ids"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hospital_tree_view" model="ir.ui.view">
+        <field name="name">hospital.list</field>
+        <field name="model">hospital.hospital</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="address"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="is_public"/>
+                <field name="doctor_ids"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="hospital_action" model="ir.actions.act_window">
+        <field name="name">Hospital Details</field>
+        <field name="res_model">hospital.hospital</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="hospital_menu" name="Hospital" parent="hms_root" action="hospital_action"/>
+</odoo>

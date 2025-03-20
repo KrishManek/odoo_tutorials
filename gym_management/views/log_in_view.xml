@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <record id="log_in_form" model="ir.ui.view">
+            <field name="name">log_in.form</field>
+            <field name="model">gym.login.details</field>
+            <field name="arch" type="xml">
+                <form string="Log In">
+                    <header>
+                        <button name="action_log_in" string="Check In" type="object" class="btn-primary" invisible="state != 'new'"/>
+                        <button name="action_log_out" string="Check Out" type="object" class="btn-primary" invisible="state != 'check_in'" />
+                        <field name="state" widget="statusbar" statusbar_visible="new,check_in" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="member_id" required="1"/>
+                            <field name="check_in_time" readonly="1"/>
+                            <field name="check_out_time" readonly="1"/>
+                            <field name="total_time" force_save="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="log_in_list" model="ir.ui.view">
+            <field name="name">log_in.list</field>
+            <field name="model">gym.login.details</field>
+            <field name="arch" type="xml">
+                <list string="Log In">
+                    <field name="member_id"/>
+                    <field name="check_in_time"/>
+                    <field name="check_out_time"/>
+                    <field name="total_time"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="log_in_action" model="ir.actions.act_window">
+            <field name="name">Log In</field>
+            <field name="res_model">gym.login.details</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="log_in_list"/>
+        </record>
+
+        <menuitem id="log_in_menu" name="Log In" parent="gym_parent" action="log_in_action"/>
+    </data>
+</odoo>

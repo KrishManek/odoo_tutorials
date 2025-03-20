@@ -1,0 +1,65 @@
+<odoo>
+    <record id="view_plans_form" model="ir.ui.view">
+        <field name="name">Gym Plans Form</field>
+        <field name="model">gym.plans</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="plan_type"/>
+                            <field name="price" force_save="1"/>
+                            <field name="duration"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Member">
+                            <field name="member_ids">
+                                <list readonly="1">
+                                    <field name="name"/>
+                                    <field name="age"/>
+                                    <field name="phone"/>
+                                    <field name="email"/>
+                                </list>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="age"/>
+                                            <field name="phone"/>
+                                            <field name="email"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_plans_list" model="ir.ui.view">
+        <field name="name">Gym Plans List</field>
+        <field name="model">gym.plans</field>
+        <field name="arch" type="xml">
+            <list string="Gym Plans">
+                <field name="name"/>
+                <field name="plan_type"/>
+                <field name="price"/>
+                <field name="duration"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="plans_actions" model="ir.actions.act_window">
+        <field name="name">Gym Plans</field>
+        <field name="res_model">gym.plans</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="plans_menu" name="Plans" parent="gym_parent" action="plans_actions"/>
+
+</odoo>

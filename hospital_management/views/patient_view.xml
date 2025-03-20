@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="patient_form_view" model="ir.ui.view">
+            <field name="name">patient.form</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <form string="Patient Form">
+                    <header>
+                        <button name="action_open_appointments" string="Appointments" type="object" class="btn-primary"/>
+                        <button name="action_calculate_age" string="Calculate Age" type="object" class="btn-primary"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_open_appointments"
+                                    type="object"
+                                    icon="fa-calendar-check-o">
+                                <field name="appointment_count" widget="statinfo" string="Appointments"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="patient_code" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="age"/>
+                                <field name="phone"/>
+                                <field name="email"/>
+                            </group>
+                            <group>
+                                <field name="blood_group"/>
+                                <field name="dob"/>
+                                <field name="age_category" readonly="1"/>
+                                <field name="previous_illness"/>
+                            </group>
+
+                            <group string="Guardian Details">
+                                <field name="guardian_type" required="age_category in ['child','minor']"/>
+                                <field name="guardian_id" required="age_category in ['child','minor']"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <sheet>
+                        <group string="Appointment Details">
+                            <field name="appointment_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="patient_list_view" model="ir.ui.view">
+            <field name="name">patient.list</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <list string="Patient List">
+                    <field name="patient_code"/>
+                    <field name="name"/>
+                    <field name="age"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="patient_action" model="ir.actions.act_window">
+            <field name="name">Patient Details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+
+        <menuitem id="hms_root" name="Hospital Management"/>
+        <menuitem id="patient_menu" name="Patients" parent="hms_root" action="patient_action"/>
+
+    </data>
+</odoo>
