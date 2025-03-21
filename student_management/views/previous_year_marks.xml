@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_marks_form" model="ir.ui.view">
+        <field name="name">previous.years.marks.form</field>
+        <field name="model">previous.years.marks</field>
+        <field name="arch" type="xml">
+            <form string="Marks">
+                <sheet>
+                    <group>
+                        <group string="Marks Details">
+                            <field name="student_id" />
+                            <field name="subject_id"/> 
+                            <field name="total_marks"/>
+                            <field name="obtained_marks_exam"/>
+                            <field name="obtained_marks_viva" /> 
+                            <field name="total_obtained" force_save="1" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_res_marks_list" model="ir.ui.view">
+        <field name="name">previous.years.marks.list</field>
+        <field name="model">previous.years.marks</field>
+        <field name="arch" type="xml">
+            <list string="Students"> 
+                <field name="student_id" />
+                <field name="subject_id"/> 
+                <field name="total_marks"/>
+                <field name="obtained_marks_exam"/>
+                <field name="obtained_marks_viva" /> 
+                <field name="total_obtained" force_save="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_res_marks" model="ir.actions.act_window">
+        <field name="name">Marks</field>
+        <field name="res_model">previous.years.marks</field>
+        <field name="view_mode">list,form</field> 
+    </record>
+
+    <menuitem id="menu_res_previous_marks_sub" name="Marks" parent="menu_student_management" action="action_res_marks"/>
+</odoo>
