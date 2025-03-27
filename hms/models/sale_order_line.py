@@ -13,7 +13,7 @@ class SaleOrderLine(models.Model):
             order.discount += order.order_partner_id.extra_discount
         return res
 
-    @api.depends('product_template_id')
+    @api.depends('product_template_id','product_id.lst_price')
     def _compute_previous_price(self):
         for rec in self:
-            rec.orignal_price = rec.price_unit
+            rec.orignal_price = rec.product_id.lst_price
