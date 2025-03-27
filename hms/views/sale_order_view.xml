@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sale_order_form_inherit_ref" model="ir.ui.view">
+        <field name="name">sale.order.form.inh</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref ="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//list/field[@name='price_unit']" position="after">
+                <field name="orignal_price"/>
+            </xpath>
+        </field>
+     </record>
+</odoo>

@@ -24,6 +24,7 @@
                             <field name="phone"/>
                             <field name="email"/> 
                             <field name="standard" />
+                            <field name="tution_fee_structure" />
                             <field name="gaurdian_name" required="is_child == True" invisible="is_child != True" />
                             <field name="gaurdian_phone" required="is_child == True" invisible="is_child != True" />
                             <field name="is_blocked" />

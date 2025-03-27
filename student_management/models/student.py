@@ -25,13 +25,12 @@ class StudentDetails(models.Model):
                                           ('nine','9'),
                                           ('ten','10'),
                                           ('eleven','11'),
-                                          ('twele','12')], string="Standard")
+                                          ('twelve','12')], string="Standard")
     tution_fee_structure = fields.Many2one("tution.fee.structure", string="Tution Fee")
     gaurdian_name = fields.Char(string="Guardian Name")
     gaurdian_phone = fields.Char(string="Guardian Phone No.")
     is_blocked = fields.Boolean(string="IS Blocked", default = False)
     is_expired = fields.Boolean(string="IS Expired", default = False)
-    age_years = fields.Integer() 
     is_child = fields.Boolean(default=False)
     previous_year_marks = fields.One2many('previous.years.marks','student_id', string="Previous Year Marks" )
 
@@ -79,7 +78,7 @@ class StudentDetails(models.Model):
         return res
 
     def student_registration_expied(self):
-        expiry_month = self.registration_date + relativedelta(months=30)
-        expired_students = self.env['res.student'].search([('registration_date', '<=', expiry_month),('is_blocked','!=','True')])
+        expiry_month = self.registration_date - relativedelta(days=30)
+        expired_students = self.env['res.student'].search([('registration_date', '<=', expiry_month),('is_blocked','!=',True)])
         for students in expired_students:
             students.is_expired = True             
