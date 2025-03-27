@@ -3,7 +3,7 @@
     'name': 'Hospital Management System',  # Module name
     'desc': 'Hospital Management',  # Module description
     'author': 'Krish Manek',  # Author name
-    'depends': ['base', 'product'],  # Dependencies
+    'depends': ['base', 'product', 'sale'],  # Dependencies
     'sequence': 1,  # Sequence in which the module should be loaded
     'application': 'true',  # Whether the module is an application
     'version': '1.0',  # Module version
@@ -18,5 +18,8 @@
         'views/specialization.xml',  # Specialization view
         'views/prescription_view.xml',  # Prescription view
         'views/prescription_line_view.xml',  # Prescription line view
+        'views/res_partner_view.xml',
+        'views/sale_order_view.xml',
     ],
 }
+#'views/sale_order_view.xml',

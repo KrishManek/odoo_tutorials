@@ -10,7 +10,8 @@
                         <group>
                             <field name="product_id" domain="[('type', '=', 'service')]"/> 
                             <field name="standard" />
-                            <field name="fee_amount" force_save="1" />
+                            <field name="fee_amount"
+                             force_save="1" />
                             <field name="quantity"/>
                             <field name="discount" /> 
                             <field name="sub_total" force_save="1" />

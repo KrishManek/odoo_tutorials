@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="hms_appointment_form_view" model="ir.ui.view">
+        <field name="name">hms.appointment</field>
+        <field name="model">hms.appointment</field>
+        <field name="arch" type="xml">
+            <form string="Appointment">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object"
+                            invisible="state != 'draft'" class="btn-primary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+                </header>
+                <sheet>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="phone"/>
+                            <field name="appointment_date"/>
+                            <field name="appointment_reason"/>
+
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hms_appointment_tree_view" model="ir.ui.view">
+        <field name="name">hms.appointment.tree</field>
+        <field name="model">hms.appointment</field>
+        <field name="arch" type="xml">
+            <list string="Appointments">
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="appointment_date" force_save="1"/>
+                <field name="appointment_reason"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="hms_appointment_form_action" model="ir.actions.act_window">
+        <field name="name">Appointments</field>
+        <field name="res_model">hms.appointment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="hms_appointment_menu" name="Appointments" parent="menu_bista_hms"
+              action="hms_appointment_form_action"/>
+
+</odoo>

@@ -7,7 +7,7 @@ class TutionFeeStructure(models.Model):
     _res_name = 'product_id'
     
 
-    product_id =  fields.Many2one('product.template',string="Product")
+    product_id = fields.Many2one('product.template',string="Product")
     fee_amount = fields.Float(string="Fee Amount", store=True)
     quantity = fields.Float(string="Quantity", required=True, default=1.00)
     discount = fields.Float(string="Discount", required=True)
@@ -24,7 +24,7 @@ class TutionFeeStructure(models.Model):
                                  ('nine','9'),
                                  ('ten','10'),
                                  ('eleven','11'),
-                                 ('twelve','12')], string="Standard")
+                                 ('twelve','12')], required=True, string="Standard")
     
     @api.onchange('product_id')
     def _on_change_product(self):
