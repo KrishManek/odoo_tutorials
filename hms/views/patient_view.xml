@@ -30,6 +30,7 @@
                             <field name="weekly_visit" /> <!-- Weekly visit flag -->
                         </group>
                         <group>
+                            <field name="partner_id" readonly="1" />
                             <field name="blood_group"/> <!-- Blood group -->
                             <field name="date_of_birth"/> <!-- Date of birth -->
                             <field name="age_category" readonly="1" /> <!-- Age category (read-only) -->
