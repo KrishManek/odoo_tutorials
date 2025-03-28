@@ -37,7 +37,7 @@ class PatientDetails(models.Model):
     appointment_ids = fields.One2many('appointment.details','patient_id',string="Appointment History")
     appointment_count = fields.Integer(compute="_compute_appointment_count", string="Appointment Count", store=True)
     weekly_visit = fields.Boolean(string="Weekly visit", default = False)
-
+    partner_id = fields.Many2one('res.partner', string="Reference ID")
     @api.depends('appointment_ids')
     def _compute_appointment_count(self):
         for patient in self:
@@ -45,11 +45,17 @@ class PatientDetails(models.Model):
 
     @api.model_create_multi
     def create(self,vals_list):
-        res = super(PatientDetails,self).create(vals_list)
-        for result in res:
-            result.patient_code = self.env['ir.sequence'].next_by_code('patient.details')
+        for result in vals_list:
+            result.update({'patient_code' :self.env['ir.sequence'].next_by_code('patient.details')})      
+            partner = self.env['res.partner'].create([{
+                'name':result.get('name'),
+                'phone':result.get('phone'),
+                'email':result.get('email')
+            }])
+            result.update({'partner_id':partner.id})
+        res = super(PatientDetails,self).create(vals_list)            
         return res
-    
+
     """ #open form in new page 
     def action_open_appointments(self):
         view_id = self.env.ref('hms.hms_appointment_form_view').id
@@ -141,3 +147,17 @@ class PatientDetails(models.Model):
                 'patient_id': appointment.id
             }])
         
+    @api.model
+    def write(self, vals):
+        if self.env.context.get('from_partner_write'):
+            return super().write(vals)
+        res = super().write(vals)
+        for patient in self:
+            if 'phone' in vals or 'email' in vals:
+                partner = patient.partner_id
+                if partner:
+                    partner.with_context(from_patient_write=True).write({
+                        'phone': patient.phone,
+                        'email': patient.email
+                    })
+        return res
