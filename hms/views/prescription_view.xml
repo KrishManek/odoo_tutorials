@@ -8,6 +8,7 @@
                 <header>
                     <button name="action_confirm_prescription" string="Confirm prescription" invisible = "state != 'draft'" type="object" class="btn-primary" />
                     <button name="action_cancel_prescription" string="Cancel prescription" type="object" invisible ="state != 'draft'" class="btn-primary" />
+                    <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
                 </header>
                 <sheet>
