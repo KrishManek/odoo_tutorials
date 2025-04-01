@@ -12,6 +12,7 @@ class HmsPrescriptionLine(models.Model):
     qty = fields.Integer(string="Quantity", required=True, store=True)  # Quantity of the product
     price_unit = fields.Float(string="Unit Price", readonly=True, required=True, store=True)  # Unit price of the product
     sub_total = fields.Float(string="Total", compute="_compute_total", readonly=True, store=True)  # Computed field for total amount
+    move_ids = fields.One2many("stock.move", 'prescription_line_id', string="Prescription")
 
     # On change event to update unit price based on selected product
     @api.onchange('product_id')
