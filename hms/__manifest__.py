@@ -3,7 +3,7 @@
     'name': 'Hospital Management System',  # Module name
     'desc': 'Hospital Management',  # Module description
     'author': 'Krish Manek',  # Author name
-    'depends': ['base', 'product', 'sale'],  # Dependencies
+    'depends': ['base', 'product', 'sale', 'sale_stock', 'account'],  # Dependencies
     'sequence': 1,  # Sequence in which the module should be loaded
     'application': 'true',  # Whether the module is an application
     'version': '1.0',  # Module version

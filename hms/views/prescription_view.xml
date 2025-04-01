@@ -9,12 +9,16 @@
                     <button name="action_confirm_prescription" string="Confirm prescription" invisible = "state != 'draft'" type="object" class="btn-primary" />
                     <button name="action_cancel_prescription" string="Cancel prescription" type="object" invisible ="state != 'draft'" class="btn-primary" />
                     <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary" />
+                    <button name="action_create_delivery" string="Create Delivery" type="object" class="btn-primary" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_open_prescriptions" type="object" icon="fa-file-prescription" >
                             <field name="prescription_count" string="Prescription" widget="statinfo" />
+                        </button>
+                        <button name="action_open_delivery" type="object" icon="fa-file-prescription" >
+                            <field name="delivery_count" string="Delivery" widget="statinfo" />
                         </button>
                     </div>
                     <div class="oe_title">
