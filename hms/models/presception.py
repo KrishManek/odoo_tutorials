@@ -22,8 +22,8 @@ class HmsPrescription(models.Model):
     #picking_ids = fields.Many2many("stock.picking", string="Invoices")
     picking_ids = fields.One2many("stock.picking", 'prescription_id', string="Prescription")
     delivery_count = fields.Integer(compute="_compute_delivery_count", string="Delivery Count", store=True)
-    delivered_qty = fields.Integer(string="Delivered Quantity", compute='_compute_delivered_qty', store=True)
-    remaining_qty = fields.Integer(string="Remaining  Quantity")
+    #delivered_qty = fields.Integer(string="Delivered Quantity", compute='_compute_delivered_qty', store=True)
+    #remaining_qty = fields.Integer(string="Remaining  Quantity")
     #move_ids = fields.One2many("stock.move", 'prescription_id', string="Prescription")
     
     # delivery_count = fields.Integer(compute="_compute_picking_ids", string="Delivery Count", store=True)
@@ -37,15 +37,16 @@ class HmsPrescription(models.Model):
             result.prescription_code = self.env['ir.sequence'].next_by_code('hms.prescription')
         return res
 
-    @api.depends('picking_ids','picking_ids.move_ids')
+    """ @api.depends('prescription_lines.move_ids.state', 'prescription_lines.move_ids.quantity', 'prescription_lines.move_ids.product_uom_qty')
     def _compute_delivered_qty(self):
         for rec in self:
             stock_moves = self.env['stock.move'].search([
                 ('prescription_line_id', '=', rec.id),
-                ('state', '=', 'done')
+                ('state', '=', '')
             ])
             rec.delivered_qty = sum(stock_moves.mapped('product_uom_qty'))
-    
+            print(f"Delivered Qty: {rec.delivered_qty}")
+     """
     """ @api.depends('prescription_lines.move_ids.state', 'prescription_lines.move_ids.quantity', 'prescription_lines.move_ids.product_uom_qty')
     def _compute_delivered_qty(self):
         for rec in self:
@@ -173,41 +174,20 @@ class HmsPrescription(models.Model):
     def prepare_move_vals(self, picking_id):
         move_vals=[]
         for line in self.prescription_lines:
-            if line.move_ids:
-                for rec in line.move_ids:
-                    quantity = 0
-                    print(rec)
-                    if rec.prescription_line_id.id == line.id:
-                        print(rec.prescription_line_id)
-                        if rec.product_uom_qty > line.qty:
-                            raise UserError(f"Please enter higher qty than previous one i.e more than {rec.product_uom_qty}")
-                        if rec.product_uom_qty < line.qty:
-                            quantity = line.qty - rec.product_uom_qty 
-                            print(quantity)
-                            vals = {
-                                'picking_type_id' : picking_id.picking_type_id.id,
-                                'location_id' : picking_id.location_id.id,
-                                'location_dest_id' : picking_id.location_dest_id.id,
-                                'picking_id' : picking_id.id,
-                                'product_id' : line.product_id.id,
-                                'product_uom_qty': quantity,
-                                'name' : line.product_id.display_name,
-                                'prescription_line_id':line.id
-                            }
-                            move_vals.append(vals)
-                        else:
-                            continue
-            if not line.move_ids:
-                vals = {
+            qty_in_move = sum(line.move_ids.mapped('product_uom_qty'))
+            to_deliver = line.qty - qty_in_move
+            if to_deliver == 0:
+                continue
+            vals = {
                     'picking_type_id' : picking_id.picking_type_id.id,
                     'location_id' : picking_id.location_id.id,
                     'location_dest_id' : picking_id.location_dest_id.id,
                     'picking_id' : picking_id.id,
                     'product_id' : line.product_id.id,
-                    'product_uom_qty': line.qty,
+                    'product_uom_qty': to_deliver,
                     'name' : line.product_id.display_name,
                     'prescription_line_id':line.id
                 }
-                move_vals.append(vals)
+            move_vals.append(vals)
         return move_vals
     

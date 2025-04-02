@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 # Define the HmsPrescriptionLine model
 class HmsPrescriptionLine(models.Model):
@@ -13,8 +14,8 @@ class HmsPrescriptionLine(models.Model):
     price_unit = fields.Float(string="Unit Price", readonly=True, required=True, store=True)  # Unit price of the product
     sub_total = fields.Float(string="Total", compute="_compute_total", readonly=True, store=True)  # Computed field for total amount
     move_ids = fields.One2many("stock.move", 'prescription_line_id', string="Prescription")
-    delivered_qty = fields.Integer(string="Delivered Quantity")
-    remaining_qty = fields.Integer(string="Remaining  Quantity")
+    delivered_qty = fields.Integer(string="Delivered Quantity", compute='_compute_delivered_qty', store=True)
+    remaining_qty = fields.Integer(string="Remaining  Quantity" ,compute="_compute_remaining_qty", store=True)
 
     # On change event to update unit price based on selected product
     @api.onchange('product_id')
@@ -27,9 +28,20 @@ class HmsPrescriptionLine(models.Model):
         for line in self:
             line.sub_total = line.qty * line.price_unit
     
-    """@api.depends('move_ids.state', 'move_ids.product_uom_qty')
+    @api.depends('move_ids.state','move_ids.product_uom_qty','move_ids.quantity')
     def _compute_delivered_qty(self):
-         for rec in self:
-            done_moves = rec.move_ids.filtered(lambda m: m.state == 'done')
-            rec.delivered_qty = sum(done_moves.mapped('product_uom_qty'))
-    """
+        for rec in self:
+           rec.delivered_qty = sum(rec.move_ids.filtered(lambda m: m.state == 'done').mapped('quantity'))
+    
+    @api.depends('move_ids.state','move_ids.product_uom_qty','move_ids.quantity')
+    def _compute_remaining_qty(self):
+        for rec in self:
+            qty_in_move = sum(rec.move_ids.mapped('product_uom_qty'))
+            rec.remaining_qty = qty_in_move - rec.delivered_qty
+
+    @api.constrains('qty')
+    def check_quantity(self):
+        for rec in self:
+           qty_in_move = sum(rec.move_ids.mapped('product_uom_qty'))
+           if rec.qty < qty_in_move:
+                raise ValidationError("Quantity in prescription cannot be less than quantity in stock move.")
