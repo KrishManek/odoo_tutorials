@@ -38,7 +38,17 @@
                                     <field name="qty"/>
                                     <field name="price_unit" force_save="1"/>
                                     <field name="sub_total" force_save="1"/>
+                                    <field name="delivered_qty" />
+                                    <field name="remaining_qty" />
                                 </list>
+                                <form>
+                                    <field name="product_id" string="Product" />
+                                    <field name="qty" string="Quantity" />
+                                    <field name="price_unit" string="Price" force_save="1"/>
+                                    <field name="sub_total" string="Sub- Total" force_save="1"/>
+                                    <field name="delivered_qty" string="Delivered Qty" />
+                                    <field name="remaining_qty" string="Remaining Qty" />
+                                </form>
                             </field>
                             <group class="oe_subtotal_footer" colspan="2">
                                 <field name="total" string= "Total" readonly="1"/>
