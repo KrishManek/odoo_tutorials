@@ -13,6 +13,8 @@ class HmsPrescriptionLine(models.Model):
     price_unit = fields.Float(string="Unit Price", readonly=True, required=True, store=True)  # Unit price of the product
     sub_total = fields.Float(string="Total", compute="_compute_total", readonly=True, store=True)  # Computed field for total amount
     move_ids = fields.One2many("stock.move", 'prescription_line_id', string="Prescription")
+    delivered_qty = fields.Integer(string="Delivered Quantity")
+    remaining_qty = fields.Integer(string="Remaining  Quantity")
 
     # On change event to update unit price based on selected product
     @api.onchange('product_id')
@@ -24,3 +26,10 @@ class HmsPrescriptionLine(models.Model):
     def _compute_total(self):
         for line in self:
             line.sub_total = line.qty * line.price_unit
+    
+    """@api.depends('move_ids.state', 'move_ids.product_uom_qty')
+    def _compute_delivered_qty(self):
+         for rec in self:
+            done_moves = rec.move_ids.filtered(lambda m: m.state == 'done')
+            rec.delivered_qty = sum(done_moves.mapped('product_uom_qty'))
+    """
