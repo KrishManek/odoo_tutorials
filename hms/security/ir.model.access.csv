@@ -4,5 +4,9 @@
 "access_res_doctor","res.doctor","model_res_doctor",,1,1,1,1
 "access_hospital_details","hospital.details","model_hospital_details",,1,1,1,1
 "access_hospital_specialization","hospital.specialization","model_hospital_specialization",,1,1,1,1
-"access_hms_prescription","hms.prescription","model_hms_prescription",,1,1,1,1
-"access_hms_prescription_line","hms.prescription.line","model_hms_prescription_line",,1,1,1,1
+"access_hms_prescription_readonly","hms.prescription.readonly","model_hms_prescription",hms.group_prescription_user_readonly,1,0,0,0
+"access_hms_prescription_line_readonly","hms.prescription.line.readonly","model_hms_prescription_line",hms.group_prescription_user_readonly,1,0,0,0
+"access_hms_prescription_user","hms.prescription.user","model_hms_prescription",hms.group_prescription_user,1,1,1,0
+"access_hms_prescription_line_user","hms.prescription.line.user","model_hms_prescription_line",hms.group_prescription_user,1,1,1,0
+"access_hms_prescription_admin","hms.prescription.admin","model_hms_prescription",hms.group_prescription_admin,1,1,1,1
+"access_hms_prescription_line_admin","hms.prescription.line.admin","model_hms_prescription_line",hms.group_prescription_admin,1,1,1,1
