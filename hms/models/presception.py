@@ -36,23 +36,14 @@ class HmsPrescription(models.Model):
         for result in res:
             result.prescription_code = self.env['ir.sequence'].next_by_code('hms.prescription')
         return res
-
-    """ @api.depends('prescription_lines.move_ids.state', 'prescription_lines.move_ids.quantity', 'prescription_lines.move_ids.product_uom_qty')
-    def _compute_delivered_qty(self):
-        for rec in self:
-            stock_moves = self.env['stock.move'].search([
-                ('prescription_line_id', '=', rec.id),
-                ('state', '=', '')
-            ])
-            rec.delivered_qty = sum(stock_moves.mapped('product_uom_qty'))
-            print(f"Delivered Qty: {rec.delivered_qty}")
-     """
-    """ @api.depends('prescription_lines.move_ids.state', 'prescription_lines.move_ids.quantity', 'prescription_lines.move_ids.product_uom_qty')
-    def _compute_delivered_qty(self):
-        for rec in self:
-            done_moves = rec.prescription_lines.mapped('move_ids').filtered(lambda m: m.state == 'done')
-            rec.delivered_qty = sum(done_moves.mapped('quantity'))
-    """
+    
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        res['date'] = fields.Date.context_today(self)
+        res['patient_id'] = self._context.get('patient_id')
+        return res
+    
     # Compute the total amount of the prescription
     @api.depends('prescription_lines.sub_total')
     def _compute_prescription_total(self):
