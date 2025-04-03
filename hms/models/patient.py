@@ -38,6 +38,21 @@ class PatientDetails(models.Model):
     appointment_count = fields.Integer(compute="_compute_appointment_count", string="Appointment Count", store=True)
     weekly_visit = fields.Boolean(string="Weekly visit", default = False)
     partner_id = fields.Many2one('res.partner', string="Reference ID")
+
+    @api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        if not args:
+            args = []
+        if name:
+            if self._context.get('search_mobile'):
+                args += ['|',('phone',operator,name),('name',operator,name)]
+            else:
+                return super().name_search(name, args, operator, limit)
+        patient_ids = self.search_fetch(args,['phone'],limit=limit)
+        return [(patient_id.id,patient_id.display_name) for patient_id in patient_ids.sudo()]
+
+
+
     @api.depends('appointment_ids')
     def _compute_appointment_count(self):
         for patient in self:

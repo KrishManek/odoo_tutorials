@@ -8,6 +8,7 @@
     'application': 'true',  # Whether the module is an application
     'version': '1.0',  # Module version
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',  # Access control list
         'data/ir_sequence.xml',  # Sequence data
         'data/ir_cron.xml',  # Cron job data
