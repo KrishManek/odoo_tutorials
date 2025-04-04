@@ -9,6 +9,7 @@ class DoctorDetails(models.Model):
 
     # Define fields for the model
     name = fields.Char(string="Name")  # Doctor's name
+    email = fields.Char(string="Email")
     partner_id = fields.Many2one('res.partner', string="Related Partner", required=True)  # Reference to related partner
     specialization = fields.Many2one('hospital.specialization', string="Specialization", required=True)  # Doctor's specialization
     license_no = fields.Char(string="License Number", required=True)  # Doctor's license number

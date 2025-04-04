@@ -37,6 +37,7 @@ class HmsAppointment(models.Model):
 
     weekly_appointment_report_list = []  # List to store weekly appointment reports
     weekly_cancelation_reports = {}  # Dictionary to store weekly cancellation reports
+    doctor_id = fields.Many2one('res.doctor' ,string="Doctor name")
 
     # Override the create method to generate a unique appointment code and set booking time
     @api.model_create_multi
@@ -138,3 +139,15 @@ class HmsAppointment(models.Model):
         for details in appointments:
             self.weekly_cancelation_reports[details.appointment_code] = {'patient_id': details.patient_id.name, 'appointment_date': details.appointment_date}
         print(self.weekly_cancelation_reports)
+
+    def daily_appointment_vals(self):
+        today = fields.Datetime.today()
+        tommorrow = today + relativedelta(1)
+        start_time = tommorrow.replace(hour=0,minute=0,second=0, microsecond=1)
+        end_time = tommorrow.replace(hour=23,minute=59,second=59, microsecond=9)
+        appointments = self.env['appointment.details'].search([('appointment_date', '>=', start_time),('appointment_date', '<=', end_time)])
+        return appointments
+    
+    def daily_appointment(self):
+        template_id = self.env.ref('hms.email_template_appointment_confirmation')
+        template_id.send_mail(self.id, force_send=True)
