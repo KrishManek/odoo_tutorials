@@ -1,0 +1,57 @@
+<odoo>
+    <record id="email_template_appointment_confirmation" model="mail.template">
+        <field name="name">Appointment Confirmation</field>
+        <field name="model_id" ref="model_appointment_details"/>
+        <field name="email_from">{{object.env.user.email}}</field>
+        <field name="email_to">{{object.env.user.company_id.email}}</field>
+        <field name="subject">Appointment Confirmation : {{object.name}}</field>
+<!--        <field name="auto_delete" eval="True"/>-->
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+                <p>Dear
+                    <strong>
+                        <t t-out="object.doctor_id.name"/>
+                    </strong>
+                    ,
+                </p>
+                <p>
+                    Here is all pending appointments :-
+                </p>
+                <table style="border: 1px solid #ddd; border-collapse: collapse; width: 100%; margin-top: 10px;">
+                    <thead>
+                        <tr style="background-color: #f2f2f2; text-align: left;">
+                            <th style="border: 1px solid #ddd; padding: 8px;">Id</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Name</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Appointment Reason</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="object.daily_appointment_vals()" t-as="line">
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;">
+                                    <t t-out="line.appointment_code"/>
+                                </td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">
+                                    <t t-out="line.patient_id.name"/>
+                                </td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">
+                                    <t t-out="line.appointment_reason"/>
+                                </td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">
+                                    <t t-out="line.appointment_date.strftime('%d-%m-%Y')"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <p>Best Regards,</p>
+                <p>
+                    <strong>
+                        <t t-out="object.env.user.company_id.name"/>
+                    </strong>
+                </p>
+            </div>
+        </field>
+    </record>
+</odoo>

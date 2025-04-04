@@ -42,6 +42,7 @@
                     <group>
                         <group>
                             <field name="patient_id"/> <!-- Patient reference -->
+                            <field name="doctor_id"/> <!-- Doctor reference -->
                             <field name="appointment_date"/> <!-- Appointment date -->
                             <field name="booking_time"/> <!-- Booking time -->
                             <field name="appointment_reason"/> <!-- Reason for appointment -->

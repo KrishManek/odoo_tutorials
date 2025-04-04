@@ -12,6 +12,7 @@
         'security/ir.model.access.csv',  # Access control list
         'data/ir_sequence.xml',  # Sequence data
         'data/ir_cron.xml',  # Cron job data
+        'data/mail_template.xml',
         'views/patient_view.xml',  # Patient view
         'views/appointment_view.xml',  # Appointment view
         'views/doctor_view.xml',  # Doctor view

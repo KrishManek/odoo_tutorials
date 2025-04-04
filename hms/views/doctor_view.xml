@@ -10,6 +10,7 @@
                     <group>
                         <group>
                             <field name="name"/> <!-- Doctor's name -->
+                            <field name="email"/> <!-- Doctor's name -->
                             <field name="partner_id" /> <!-- Related partner -->
                             <field name="specialization"/> <!-- Specialization -->
                             <field name="license_no"/> <!-- License number -->

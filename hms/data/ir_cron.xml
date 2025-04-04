@@ -56,5 +56,15 @@
             <field name="interval_type">weeks</field> <!-- Interval type (weeks) -->
             <field name="active">True</field> <!-- Active status -->
         </record>
+        <record id="daily_appointment" model="ir.cron">
+            <field name="name">Daily Appointment</field> <!-- Cron job name -->
+            <field name="model_id" ref="hms.model_appointment_details"/> <!-- Model reference -->
+            <field name="state">code</field> <!-- State (code) -->
+            <field name="code">model.daily_appointment()</field> <!-- Code to execute -->
+            <field name="interval_number">1</field> <!-- Interval number -->
+            <field name="interval_type">days</field> <!-- Interval type (weeks) -->
+            <field name="nextcall">2025-04-05 00:00:01</field>
+            <field name="active">True</field> <!-- Active status -->
+        </record>
     </data>
 </odoo>
