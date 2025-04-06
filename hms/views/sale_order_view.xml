@@ -11,6 +11,12 @@
             <xpath expr="//list/field[@name='price_unit']" position="after">
                 <field name="orignal_price"/>
             </xpath>
+            <xpath expr="//list/field[@name='product_uom_qty']" position="after">
+                <field name="qty_in_move"/>
+                <field name="location_ids" widget="many2many_tags"/>
+                <!-- <field name="qty_available_wh" readonly="1"/> -->
+                <field name="qty_at_locations" readonly="1"/>
+            </xpath>
         </field>
      </record>
 </odoo>

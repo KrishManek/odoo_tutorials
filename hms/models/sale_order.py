@@ -5,3 +5,4 @@ class SaleOrder(models.Model):
 
 
     lead_reference = fields.Char(string="Lead Reference")
+    
