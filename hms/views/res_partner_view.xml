@@ -8,6 +8,10 @@
             <xpath expr="//page[@name='sales_purchases']//field[@name='user_id']" position="before">
                 <field name="extra_discount"/>
             </xpath>
+            <xpath expr="//page[@name='sales_purchases']//field[@name='property_payment_term_id']" position="after">
+                <field name="use_customers_tc"/>
+                <field name="terms_and_conditions" required="1" invisible="use_customers_tc != 1" />
+            </xpath>
         </field>
      </record>
 </odoo>
