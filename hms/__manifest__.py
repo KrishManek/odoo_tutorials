@@ -22,6 +22,8 @@
         'views/prescription_line_view.xml',  # Prescription line view
         'views/res_partner_view.xml',
         'views/sale_order_view.xml',
+        'views/report.xml',
+        'views/prescription_report_view.xml',
     ],
 }
 #'views/sale_order_view.xml',
