@@ -20,3 +20,6 @@
         </field>
      </record>
 </odoo>
+
+
+<!-- domain parent. is used to access parent class fields in odoo -->
