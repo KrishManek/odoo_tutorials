@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="update_onhand_quantity_wizard" model="ir.ui.view">
+        <field name="name">update.qty.available.wizard</field>
+        <field name="model">update.qty.available</field>
+        <field name="arch" type="xml">
+            
+            <form String="Update Quantity Avsilable">
+                <sheet>
+                    <group>
+                        <field name="location_id" />
+                        <field name="quantity" />
+                    </group>
+                </sheet>
+                
+                <footer>
+                    <button name="upd_qty" string="Update" type="object" class="btn-primary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+</odoo>
