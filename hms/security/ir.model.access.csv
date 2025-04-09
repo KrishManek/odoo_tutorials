@@ -10,3 +10,4 @@
 "access_hms_prescription_line_user","hms.prescription.line.user","model_hms_prescription_line",hms.group_prescription_user,1,1,1,0
 "access_hms_prescription_admin","hms.prescription.admin","model_hms_prescription",hms.group_prescription_admin,1,1,1,1
 "access_hms_prescription_line_admin","hms.prescription.line.admin","model_hms_prescription_line",hms.group_prescription_admin,1,1,1,1
+"access_hms_update_qty_available","hms.update.qty.available","model_update_qty_available",,1,1,1,1

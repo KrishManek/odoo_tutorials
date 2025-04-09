@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="view_product_product_inherit_ref" model="ir.ui.view">
+		<field name="name">product.product_template_only_form_view.inh</field>
+		<field name="model">product.template</field>
+		<field name="inherit_id" ref="product.product_template_only_form_view" />
+		<field name="arch" type="xml">
+            <xpath expr="//button[@name='action_open_label_layout']" position="after">
+                <button name="action_open_upd_wizard" string="Update" type="object" class="btn-primary" />
+            </xpath>
+		</field>
+	</record>
+</odoo>
