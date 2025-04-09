@@ -21,3 +21,4 @@ class SaleOrder(models.Model):
     def _compute_amount_in_words(self):
         for rec in self:
             rec.amount_in_words = num2words(rec.amount_total, lang="en_IN",to="currency", currency="INR").title().replace(',',' ')
+            #rec.amount_in_words = rec.currency_id.amount_to_text(rec.amount_total)
