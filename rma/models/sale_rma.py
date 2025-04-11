@@ -32,7 +32,7 @@ class SaleRMA(models.Model):
     @api.onchange('sale_order_id')
     def _onchange_sale_order_id(self):
         if self.sale_order_id:
-            self.line_ids = [(5, 0, 0)]  # Clear existing lines
+            self.line_ids = [(5, 0, 0)] 
             lines = []
             for line in self.sale_order_id.order_line:
                 lines.append((0, 0, {
@@ -91,11 +91,12 @@ class SaleRMA(models.Model):
 
         }
         return vals
+    
     def prepare_move_vals(self, picking_id):
         move_vals=[]
         for line in self.line_ids:
-            qty_in_move = sum(line.move_ids.mapped('product_uom_qty'))
-            to_deliver = line.received_qty - qty_in_move
+            #qty_in_move = sum(line.move_ids.mapped('product_uom_qty'))
+            to_deliver = line.received_qty 
             if to_deliver == 0:
                 continue
             vals = {

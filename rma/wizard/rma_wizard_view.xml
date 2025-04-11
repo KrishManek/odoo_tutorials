@@ -8,8 +8,8 @@
           <field name="act_id" readonly="1" />
           <field name="line_ids">
             <list editable="bottom">
-              <field name="product_id"/>
-              <field name="so_qty" />
+              <field name="product_id" readonly="1" force_save="1" />
+              <field name="so_qty" readonly="1" force_save="1" />
               <field name="return_qty" />
             </list>          
           </field>

@@ -27,7 +27,7 @@ class RMAWizard(models.TransientModel):
             remaining_qty = rma_line.to_receive - wizard_line.return_qty
         
             rma_line.returned_qty += wizard_line.return_qty
-            rma_line.to_receive = remaining_qty
+            rma_line.to_receive -= wizard_line.return_qty
             rma_line.received_qty = remaining_qty
         rma_record.action_create_delivery()
             
