@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_rma,sale.rma,model_sale_rma,,1,1,1,1
+access_sale_rma_line,sale.rma.line,model_sale_rma_line,,1,1,1,1
+access_rma_team,rma.team,model_rma_team,,1,1,1,1
+access_rma_wizard,rma.wizard,model_rma_wizard,,1,0,1,0
+access_rma_wizard_line,access.rma.wizard.line,model_rma_wizard_line,,1,1,1,1

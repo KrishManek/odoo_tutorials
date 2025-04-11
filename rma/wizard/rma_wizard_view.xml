@@ -1,0 +1,23 @@
+<odoo>
+  <record id="view_rma_wizard" model="ir.ui.view">
+    <field name="name">rma.wizard.form</field>
+    <field name="model">rma.wizard</field>
+    <field name="arch" type="xml">
+      <form string="RMA Wizard">
+        <group>
+          <field name="act_id" readonly="1" />
+          <field name="line_ids">
+            <list editable="bottom">
+              <field name="product_id"/>
+              <field name="so_qty" />
+              <field name="return_qty" />
+            </list>          
+          </field>
+        </group>
+        <footer>
+          <button name="process" type="object" string="Process" class="btn-primary" />
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>

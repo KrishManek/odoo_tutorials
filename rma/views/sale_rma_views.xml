@@ -1,0 +1,58 @@
+<odoo>
+  <record id="view_sale_rma_form" model="ir.ui.view">
+    <field name="name">sale.rma.form</field>
+    <field name="model">sale.rma</field>
+    <field name="arch" type="xml">
+      <form string="RMA">
+        <header>
+          <button name="action_open_wizard" string="Return" type="object" class="btn-primary" />
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_open_delivery" type="object" icon="fa fa-truck">
+              <field name="delivery_count" string="Delivery" widget="statinfo" />
+            </button>
+          </div>
+          <group>
+            <field name="name" readonly="1" />
+            <field name="date" />
+            <field name="sale_order_id" />
+            <field name="team_id" />
+          </group>
+          <field name="line_ids">
+            <list editable="bottom">
+              <field name="product_id" />
+              <field name="so_qty" />
+              <field name="unit_price" />
+              <field name="to_receive" />
+              <field name="returned_qty" />
+              <field name="received_qty" />
+            </list>
+          </field>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_sale_rma_list" model="ir.ui.view">
+    <field name="name">sale.rma.list</field>
+    <field name="model">sale.rma</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name" />
+        <field name="date" />
+        <field name="sale_order_id" />
+        <field name="team_id" />
+      </list>
+    </field>
+  </record>
+
+  <record id="action_sale_rma" model="ir.actions.act_window">
+    <field name="name">RMA</field>
+    <field name="res_model">sale.rma</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <menuitem id="menu_rma_main" name="RMA" />
+  <menuitem id="menu_sale_rma_action" name="All RMAs" parent="menu_rma_main" action="action_sale_rma" />
+</odoo>
