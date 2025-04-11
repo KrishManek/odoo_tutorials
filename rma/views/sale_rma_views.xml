@@ -21,12 +21,12 @@
           </group>
           <field name="line_ids">
             <list editable="bottom">
-              <field name="product_id" />
-              <field name="so_qty" />
-              <field name="unit_price" />
-              <field name="to_receive" />
-              <field name="returned_qty" />
-              <field name="received_qty" />
+              <field name="product_id" readonly="1" force_save="1" />
+              <field name="so_qty" readonly="1" force_save="1" />
+              <field name="unit_price" readonly="1" force_save="1" />
+              <field name="to_receive" readonly="1" force_save="1" />
+              <field name="returned_qty" readonly="1" force_save="1" />
+              <field name="received_qty" invisible="1" readonly="1" force_save="1" />
             </list>
           </field>
         </sheet>
