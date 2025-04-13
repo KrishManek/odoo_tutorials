@@ -14,6 +14,8 @@ class SaleRMA(models.Model):
     line_ids = fields.One2many('sale.rma.line', 'rma_id', string="RMA Lines")
     picking_ids = fields.One2many("stock.picking", 'rma_id', string="Sale RMA IDs")
     delivery_count = fields.Integer(compute="_compute_delivery_count", string="Delivery Count", store=True)
+        
+    
 
     @api.depends('picking_ids')
     def _compute_delivery_count(self):
@@ -40,6 +42,7 @@ class SaleRMA(models.Model):
                     'so_qty': line.product_uom_qty,
                     'unit_price': line.price_unit,
                     'to_receive': line.product_uom_qty,
+                    
                 }))
             self.line_ids = lines
             
@@ -52,7 +55,9 @@ class SaleRMA(models.Model):
             'view_id' : veiw_id,
             'type' : "ir.actions.act_window",
             'target' : 'new',
+            'context': {'default_act_id': self.id}
         }
+        
     def action_open_delivery(self):
         form_view_id = self.env.ref('stock.view_picking_form').id  # Get form view ID
         list_view_id = self.env.ref('stock.vpicktree').id  # Get list view ID
@@ -67,47 +72,4 @@ class SaleRMA(models.Model):
             'views':[(list_view_id, 'list'), (form_view_id, 'form')],
             'view_mode': 'list,form'   
         }
-
         return res
-    
-    def action_create_delivery(self):
-        picking_vals = self.prepare_picking_vals()
-        picking_id = self.env['stock.picking'].create(picking_vals)
-        move_vals = self.prepare_move_vals(picking_id)
-        move_id = self.env['stock.move'].create(move_vals)
-        picking_id.action_confirm()
-        picking_id.action_assign()
-        #picking_id.button_validate()
-
-    def prepare_picking_vals(self):
-        picking_type_id = self.env['stock.picking.type'].search([('code', '=','incoming')], limit=1)
-        vals = {
-            'partner_id' : self.sale_order_id.partner_id.id,
-            'picking_type_id' : picking_type_id.id,
-            'location_id' : picking_type_id.default_location_src_id.id,
-            'location_dest_id' : picking_type_id.default_location_dest_id.id,
-            'origin': self.name,
-            'rma_id' : self.id
-
-        }
-        return vals
-    
-    def prepare_move_vals(self, picking_id):
-        move_vals=[]
-        for line in self.line_ids:
-            #qty_in_move = sum(line.move_ids.mapped('product_uom_qty'))
-            to_deliver = line.received_qty 
-            if to_deliver == 0:
-                continue
-            vals = {
-                    'picking_type_id' : picking_id.picking_type_id.id,
-                    'location_id' : picking_id.location_id.id,
-                    'location_dest_id' : picking_id.location_dest_id.id,
-                    'picking_id' : picking_id.id,
-                    'product_id' : line.product_id.id,
-                    'product_uom_qty': to_deliver,
-                    'name' : line.product_id.display_name,
-                    'rma_line_id':line.id
-                }
-            move_vals.append(vals)
-        return move_vals

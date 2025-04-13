@@ -5,7 +5,7 @@
     <field name="arch" type="xml">
       <form string="RMA Wizard">
         <group>
-          <field name="act_id" readonly="1" />
+          <field name="act_id" readonly="1" force_save="1" />
           <field name="line_ids">
             <list editable="bottom">
               <field name="product_id" readonly="1" force_save="1" />
