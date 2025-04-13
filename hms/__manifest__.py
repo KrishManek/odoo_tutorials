@@ -26,6 +26,7 @@
         'views/prescription_report_view.xml',
         'views/product.xml',
         'wizard/update_qty_wizard_view.xml',
+        'views/custom_sale_template.xml',
     ],
 }
 #'views/sale_order_view.xml',
