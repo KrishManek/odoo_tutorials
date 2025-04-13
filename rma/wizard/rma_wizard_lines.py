@@ -10,10 +10,4 @@ class RMAWizardLine(models.TransientModel):
     product_id = fields.Many2one('product.product', string="Product")
     so_qty = fields.Float(string="SO Qty")
     return_qty = fields.Float(string="Qty to Return ")
-
-
-    """  @api.constrains('return_qty')
-    def validate_qty(self):
-        for rec in self:
-            if rec.so_qty < rec.return_qty:
-                raise ValidationError(f"Return Quantity must be less than sale Qty i.e. {rec.so_qty}") """
+    rma_line_id = fields.Many2one('sale.rma.line', string="sale Rma Line Id.")

@@ -10,7 +10,7 @@
         <sheet>
           <div class="oe_button_box" name="button_box">
             <button name="action_open_delivery" type="object" icon="fa fa-truck">
-              <field name="delivery_count" string="Delivery" widget="statinfo" />
+              <field name="delivery_count" string="Reciepts" widget="statinfo" />
             </button>
           </div>
           <group>
@@ -25,8 +25,8 @@
               <field name="so_qty" readonly="1" force_save="1" />
               <field name="unit_price" readonly="1" force_save="1" />
               <field name="to_receive" readonly="1" force_save="1" />
-              <field name="returned_qty" readonly="1" force_save="1" />
-              <field name="received_qty" invisible="1" readonly="1" force_save="1" />
+              <field name="remaining_qty" readonly="1" force_save="1" />
+              <field name="received_qty" readonly="1" force_save="1" />
             </list>
           </field>
         </sheet>
