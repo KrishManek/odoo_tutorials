@@ -17,7 +17,7 @@ class RMAWizard(models.TransientModel):
                     rma_lines.append((0, 0, {
                         'product_id': line.product_id.id,
                         'so_qty': line.so_qty,
-                        'return_qty': 0,
+                        'return_qty': line.so_qty - line.to_receive,
                         'rma_line_id': line.id,
                     }))
             self.line_ids = rma_lines
