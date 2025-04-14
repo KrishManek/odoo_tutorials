@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sale_order_form_inh_ref" model="ir.ui.view">
+        <field name="name">sale.order.form.inh.ref</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_confirm']" position="before">
+                    <button name="button_approve" type="object" invisible="state != 'to_approve'" string="Approve Order" class="oe_highlight" groups="sales_team.group_sale_manager" data-hotkey="z"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
