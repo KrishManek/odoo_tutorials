@@ -11,6 +11,7 @@
               <field name="product_id" readonly="1" force_save="1" />
               <field name="so_qty" readonly="1" force_save="1" />
               <field name="return_qty" />
+              <field name="rma_line_id" invisible="1" force_save="1" />
             </list>          
           </field>
         </group>

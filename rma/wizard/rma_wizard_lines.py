@@ -10,4 +10,4 @@ class RMAWizardLine(models.TransientModel):
     product_id = fields.Many2one('product.product', string="Product")
     so_qty = fields.Float(string="SO Qty")
     return_qty = fields.Float(string="Qty to Return ")
-    rma_line_id = fields.Many2one('sale.rma.line', string="sale Rma Line Id.")
+    rma_line_id = fields.Many2one('sale.rma.line', string="sale Rma Line Id.", store=True, force_save=True)

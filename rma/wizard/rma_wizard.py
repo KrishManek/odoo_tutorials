@@ -78,7 +78,7 @@ class RMAWizard(models.TransientModel):
             move_vals.append({
                 'picking_id': picking.id,
                 'product_id': line.product_id.id,
-                'product_uom': line.product_id.uom_id.id,
+                #'product_uom': line.product_id.uom_id.id,
                 'product_uom_qty': line.return_qty,
                 'name': line.product_id.display_name,
                 'picking_type_id': picking.picking_type_id.id,
