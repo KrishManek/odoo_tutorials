@@ -1,5 +1,5 @@
 from odoo import fields, models, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
 
 
 class SaleRMA(models.Model):
@@ -14,9 +14,9 @@ class SaleRMA(models.Model):
     line_ids = fields.One2many('sale.rma.line', 'rma_id', string="RMA Lines")
     picking_ids = fields.One2many("stock.picking", 'rma_id', string="Sale RMA IDs")
     delivery_count = fields.Integer(compute="_compute_delivery_count", string="Delivery Count", store=True)
+    rma_created = fields.Boolean(string="Order created", default=False)
         
     
-
     @api.depends('picking_ids')
     def _compute_delivery_count(self):
         for delivery in self:
@@ -29,7 +29,9 @@ class SaleRMA(models.Model):
                 team = self.env['rma.team'].browse(vals['team_id'])
                 seq_code = f'rma.team.{team.id}'
                 vals['name'] = self.env['ir.sequence'].next_by_code(seq_code) or 'New'
+            vals['rma_created'] = True
         return super().create(vals_list)
+
 
     @api.onchange('sale_order_id')
     def _onchange_sale_order_id(self):
@@ -73,3 +75,18 @@ class SaleRMA(models.Model):
             'view_mode': 'list,form'   
         }
         return res
+    
+    def write(self, vals):
+        for record in self:
+            if record.sale_order_id and 'sale_order_id' in vals:
+                raise UserError("Once order is created you can't change the Sale Order.")
+        res = super().write(vals)
+        return res 
+    
+    def write(self, vals):
+        for record in self:
+            if record.rma_created and 'sale_order_id' in vals:
+                raise UserError("Once order is created you can't change the Sale Order.")
+        res = super().write(vals)
+        return res   
+    
