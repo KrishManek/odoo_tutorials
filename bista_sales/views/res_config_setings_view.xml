@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="res_config_settings_view_inherit_ref" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sale.ref</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='order_warnings']" position="after">
+                <setting id="so_order_approval" company_dependent="1" help="Request managers to approve orders above a minimum amount">
+                    <field name="so_order_approval" />
+                    <div class="content-group" invisible="not so_order_approval">
+                        <div class="row mt16">
+                            <label for="so_double_validation_amount" class="col-lg-4 o_light_label" />
+                            <field name="so_double_validation_amount" />
+                        </div>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
