@@ -12,5 +12,7 @@
         'views/sale_rma_views.xml',
         'views/rma_team_views.xml',
         'wizard/rma_wizard_view.xml',
+        'wizard/rma_invoice_view.xml',
+        
     ],
 }

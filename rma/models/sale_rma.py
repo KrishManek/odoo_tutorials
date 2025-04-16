@@ -15,12 +15,35 @@ class SaleRMA(models.Model):
     picking_ids = fields.One2many("stock.picking", 'rma_id', string="Sale RMA IDs")
     delivery_count = fields.Integer(compute="_compute_delivery_count", string="Delivery Count", store=True)
     rma_created = fields.Boolean(string="Order created", default=False)
-        
+    invoice_count = fields.Integer(compute="_compute_invoice_count", string="invoice Count", store=True)    
+    invoice_ids = fields.One2many("account.move", 'rma_id', string="Sale Invoice IDs")    
     
     @api.depends('picking_ids')
     def _compute_delivery_count(self):
         for delivery in self:
             delivery.delivery_count = self.env['stock.picking'].search_count([('rma_id', '=', delivery.id)])
+            
+    def action_open_invoice(self):
+        form_view_id = self.env.ref('account.view_move_form').id  # Get form view ID
+        list_view_id = self.env.ref('account.view_out_invoice_tree').id  # Get list view ID
+
+        res = {
+            'name': 'Account Move',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'account.move',
+            'target': 'current',
+            'domain': [('rma_id', '=', self.id)],
+            'views':[(list_view_id, 'list'), (form_view_id, 'form')],
+            'view_mode': 'list,form'   
+        }
+        return res
+    
+    @api.depends('invoice_ids')
+    def _compute_invoice_count(self):
+        for rma in self:
+            rma.invoice_count = self.env['account.move'].search_count([('rma_id', '=', rma.id)])
+            
             
     @api.model_create_multi
     def create(self, vals_list):
@@ -54,6 +77,21 @@ class SaleRMA(models.Model):
             'name' : "return Window",
             'view_mode' : "form",
             'res_model' : 'rma.wizard',
+            'view_id' : veiw_id,
+            'type' : "ir.actions.act_window",
+            'target' : 'new',
+            'context': {'default_act_id': self.id}
+        }
+    
+    def action_create_invoice(self):
+        for rec in self.line_ids:
+            if rec.qty_to_invoice <= 0:
+                raise UserError("There is nothing to invoice") 
+        veiw_id = self.env.ref("rma.view_invoice_wizard").id
+        return {
+            'name' : "return Window",
+            'view_mode' : "form",
+            'res_model' : 'rma.invoice.wizard',
             'view_id' : veiw_id,
             'type' : "ir.actions.act_window",
             'target' : 'new',

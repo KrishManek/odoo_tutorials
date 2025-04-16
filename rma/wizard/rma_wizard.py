@@ -7,6 +7,7 @@ class RMAWizard(models.TransientModel):
 
     act_id = fields.Many2one('sale.rma',string="Default_id")
     line_ids = fields.One2many("rma.wizard.line",'rma_wizard_id')
+    
    
     @api.onchange('act_id')
     def onchange_sale_order(self):
@@ -28,8 +29,8 @@ class RMAWizard(models.TransientModel):
         for wizard_line in self.line_ids:
             if wizard_line.return_qty <= 0:
                 continue
-            if wizard_line.return_qty > wizard_line.so_qty:
-                raise ValidationError(f"Return Quantity must be less than or equal to SO Qty for product {wizard_line.product_id.display_name}.")
+            if wizard_line.return_qty > wizard_line.rma_line_id.so_qty - wizard_line.rma_line_id.to_receive:
+                raise ValidationError(f"Return Quantity must be less than or equal torecive Qty for product {wizard_line.product_id.display_name}.")
 
             """ rma_line = self.env['sale.rma.line'].search([
                                                 ('rma_id', '=', self.act_id.id),
@@ -41,6 +42,10 @@ class RMAWizard(models.TransientModel):
             rma_line.received_qty += wizard_line.return_qty
             rma_line.returned_qty += wizard_line.return_qty """
         self.action_create_delivery()
+        """ self.act_id.line_ids._compute_qty()
+        self.act_id.line_ids._compute_invoice_qty()
+        self.line_ids._compute_inv_qty() """
+        #self.action_create_invoice()
 
 
     def action_create_delivery(self):
@@ -50,9 +55,16 @@ class RMAWizard(models.TransientModel):
         if not move_vals:
             picking.unlink()
             raise ValidationError("No valid return quantities to deliver.")
-        self.env['stock.move'].create(move_vals)
-        picking.action_confirm()
-        picking.action_assign()
+        moves = self.env['stock.move'].create(move_vals)
+        """ picking._action_confirm(merge=True)
+        picking._action_assign() """
+        
+        old_draft_moves = picking.move_ids.filtered(lambda m: m.state == 'draft' and m not in moves)
+        if old_draft_moves:
+            old_draft_moves._action_confirm(merge=False)
+
+        moves._action_confirm(merge=False)
+        #picking.action_assign()
         # Optional:
         # picking.button_validate()
 
@@ -87,4 +99,41 @@ class RMAWizard(models.TransientModel):
                 'rma_line_id': line.rma_line_id.id,
             })
         return move_vals
+    
+    """ def action_create_invoice(self):
+        if not self.line_ids:
+            raise ValidationError("Please add lines before creating an invoice.")
+        vals = self.prepare_invoice_vals()
+        invoice_id = self.env['account.move'].create(vals)
+        line_vals_list = self.prepare_invoice_line_vals(invoice_id)
+        line_ids = self.env['account.move.line'].create(line_vals_list)
+        self.act_id.invoice_ids = [(6,0,[invoice_id.id])]
 
+    def prepare_invoice_vals(self):
+        values = {
+            'move_type': 'out_invoice',
+            'partner_id': self.act_id.sale_order_id.partner_id.id,  
+            'partner_shipping_id': self.act_id.sale_order_id.partner_id.id,
+            'company_id': self.env.user.company_id.id,
+            'user_id': self.env.user.id,
+            'invoice_date': fields.date.today(),
+            'rma_id': self.act_id.id,
+        }
+        return values
+    
+    def prepare_invoice_line_vals(self, invoice_id):
+        line_vals_list = []
+        for line in self.line_ids:
+            
+            line_vals = {
+                'product_id': line.product_id.id,
+                'quantity': line.to_invoiced,
+                'price_unit': line.rma_line_id.unit_price,
+                'discount': 0.0,
+                'move_id': invoice_id.id,
+                'rma_line_id': line.rma_line_id.id,
+            }
+            line_vals_list.append(line_vals)
+            # line_vals_list.append((0, 0, line_vals))
+        return line_vals_list
+ """

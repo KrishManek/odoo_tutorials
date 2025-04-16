@@ -7,5 +7,5 @@ class StockPicking(models.Model):
 
     #lead_reference = fields.Char(string="Lead Reference", related='field_name')
     
-    def _merge_moves(self, merge_into=False):
-        return self
+    """ def _merge_moves(self, merge_into=False):
+        return self """

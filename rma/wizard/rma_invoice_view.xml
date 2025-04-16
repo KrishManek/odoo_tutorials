@@ -1,0 +1,32 @@
+<odoo>
+  <record id="view_invoice_wizard" model="ir.ui.view">
+    <field name="name">rma.invoice.form</field>
+    <field name="model">rma.invoice.wizard</field>
+    <field name="arch" type="xml">
+      <form string="RMA invoice Wizard">
+        <group>
+          <field name="act_id" readonly="1" force_save="1" />
+        </group>
+       
+        <notebook>
+          <page name="invoice" string="Invoice">
+            <field name="line_ids">
+              <list editable="bottom">
+                <field name="product_id" readonly="1" force_save="1" />
+                <field name="so_qty" readonly="1" force_save="1" />
+                <field name="rma_line_id" readonly="1" force_save="1" optional="hide" />
+                <!-- <field name="return_qty" /> -->
+                <field name="to_invoiced" />
+              </list>
+            </field>
+          </page>
+        </notebook>
+          
+        <footer>
+          <button string="Confirm" type="object" name="process_invoice" class="btn-primary" />
+          <button string="Cancel" class="btn-secondary" special="cancel" />
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>

@@ -6,11 +6,15 @@
       <form string="RMA">
         <header>
           <button name="action_open_wizard" string="Return" type="object" class="btn-primary" />
+          <button name="action_create_invoice" string="Invoice" type="object" class="btn-primary" />
         </header>
         <sheet>
           <div class="oe_button_box" name="button_box">
-            <button name="action_open_delivery" type="object" icon="fa fa-truck">
+            <button name="action_open_delivery" type="object" icon="fa-truck">
               <field name="delivery_count" string="Reciepts" widget="statinfo" />
+            </button>
+            <button name="action_open_invoice" type="object" icon="fa-file-invoice">
+              <field name="invoice_count" string="Invoice" widget="statinfo" />
             </button>
           </div>
           <group>
@@ -27,6 +31,8 @@
               <field name="to_receive" readonly="1" force_save="1" />
               <field name="remaining_qty" readonly="1" force_save="1" />
               <field name="received_qty" readonly="1" force_save="1" />
+              <field name="invoiced_qty" readonly="1" force_save="1" />
+              <field name="qty_to_invoice" readonly="1" force_save="1" />
             </list>
           </field>
         </sheet>
