@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_crm_lead_view_form_inh_ref" model="ir.ui.view">
+        <field name="name">crm.crm.lead.form.inh</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="product_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create': True}"  />
+            </xpath>
+
+            <field name="lost_reason_id" position="before">
+                <field name="probability_stage" />
+            </field>
+        </field>
+    </record>
+</odoo>
