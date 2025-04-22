@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sale_order_form_inherit_ref" model="ir.ui.view">
+        <field name="name">sale.order.form.inh</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <field name="payment_term_id" position="after">
+                <field name="doc_tag_ids" widget="many2many_tags" force_save="1" />
+                <field name="document_ids" widget="many2many_tags" force_save="1" />
+            </field>
+            <xpath expr="//header" position="inside">
+                <button name="button_get_docs" type="object" string="Get Documents" class="oe_highlight" />
+                <button name="button_update_docs" type="object" string="Update Documents" invisible = "state != 'sale'" class="oe_highlight" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+
+<!-- domain parent. is used to access parent class fields in odoo -->

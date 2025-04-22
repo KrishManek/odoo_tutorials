@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="documents_custom_list" model="ir.ui.view">
+        <field name="name">documents.custom.list</field>
+        <field name="model">documents.custom</field> 
+        <field name="arch" type="xml">
+            <list string="Custom Documents">
+                <field name="name" />
+                <field name="attachment_id" />
+                <field name="doc_tag_ids" />
+            </list>
+        </field>
+    </record>
+
+    <record id="documents_custom_form" model="ir.ui.view">
+        <field name="name">documents.custom.form</field>
+        <field name="model">documents.custom</field> 
+        <field name="arch" type="xml">
+            <form>
+                <group name="Details">
+                    <group>
+                        <field name="name" />
+                        <field name="attachment_id" />
+                        <field name="doc_tag_ids" widget="many2many_tags" />
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_documents_custom" model="ir.actions.act_window">
+        <field name="name">Custom Documents</field> 
+        <field name="res_model">documents.custom</field> 
+        <field name="view_mode">list,form</field> 
+    </record>
+
+    <menuitem id="menu_doc_master" name="DMS" />
+    <menuitem id="menu_documents_custom_sub"
+              name="Custom Documents"
+              parent="menu_doc_master"
+              action="action_documents_custom"
+              sequence="0" /> 
+</odoo>

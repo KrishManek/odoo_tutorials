@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_documents_custom","documents.custom","model_documents_custom",,1,1,1,1
+"access_doc_tag_master","doc.tag.master","model_doc_tag_master",,1,1,1,1
