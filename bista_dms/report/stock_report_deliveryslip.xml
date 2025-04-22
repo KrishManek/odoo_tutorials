@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_delivery_document_inherit_sale_stock_inh" inherit_id="stock.report_delivery_document">
+        <xpath expr="//t[@t-set='lines']" position="after">
+            <t t-if="o.document_ids">
+                <p>
+                    <strong>Attached Documents:</strong>
+                </p>
+                <ul>
+                    <t t-foreach="o.document_ids" t-as="d">
+                        <li>
+                            <t t-esc="d.name" /> 
+                            <t t-esc="', '.join(d.doc_tag_ids.mapped('name'))" />
+                        </li>
+                    </t>
+                </ul>
+            </t>
+        </xpath>
+    </template>
+</odoo>
