@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <list> <!-- List view definition -->
                 <field name="prescription_id" /> <!-- Prescription reference -->
-                <field name="product_id"/> <!-- Product reference -->
+                <field name="product_id" options="{'no_create': True}"/> <!-- Product reference -->
                 <field name="qty" /> <!-- Quantity -->
                 <field name="price_unit" force_save="1"/> <!-- Unit price (force save) -->
                 <field name="sub_total" force_save="1" /> <!-- Sub total (force save) -->

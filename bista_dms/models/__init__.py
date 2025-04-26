@@ -5,3 +5,5 @@ from . import res_partner
 from . import product_product
 from . import sale_order
 from . import stock_picking
+from . import doc_order_line
+from . import student_activity

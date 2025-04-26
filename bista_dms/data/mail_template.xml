@@ -1,0 +1,30 @@
+<odoo>
+    <record id="email_template_sale_order" model="mail.template">
+        <field name="name">Sale Order</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="email_from">{{object.env.user.email}}</field>
+        <field name="email_to">{{object.user_id.login}}</field>
+        <field name="subject">Sale Confirmation : {{object.name}}</field>
+<!--        <field name="auto_delete" eval="True"/>-->
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+                <p>Hello
+                    <strong>
+                        <t t-out="object.user_id.name"/>
+                    </strong>
+                    ,
+                </p>
+                <p>
+                    Hello this mail is to send you regarding the details of sale order ref {{object.name}}:-
+                </p>
+                
+                <p>Best Regards,</p>
+                <p>
+                    <strong>
+                        <t t-out="object.env.user.company_id.name"/>
+                    </strong>
+                </p>
+            </div>
+        </field>
+    </record>
+</odoo>

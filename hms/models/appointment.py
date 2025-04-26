@@ -15,7 +15,7 @@ class HmsAppointment(models.Model):
     appointment_date = fields.Datetime(string="Date", required=True, default=(fields.Datetime.now() + relativedelta(hour=1)))  # Appointment date
     appointment_reason = fields.Text(string="Reason")  # Reason for appointment
     state = fields.Selection([('draft', 'Draft'),
-                              ('wait', 'waiting'),
+                              ('wait', 'Wait'),
                               ('confirm', 'Confirm'),
                               ('in_consultation', 'In Consultation'),
                               ('done', 'Done'),

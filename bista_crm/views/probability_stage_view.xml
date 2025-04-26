@@ -19,5 +19,5 @@
         <field name="view_mode">list</field> 
     </record>
 
-    <menuitem id="menu_probability_stage_sub" name="Probability Stage" parent="crm.menu_crm_config_lead" action="action_crm_probability_stage" sequence="0" /> 
-</odoo>
+     <menuitem id="menu_probability_stage_sub" name="Probability Stage" parent="crm.crm_menu_root" action="action_crm_probability_stage" sequence="21" /> 
+</odoo> 

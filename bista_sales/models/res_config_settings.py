@@ -12,6 +12,16 @@ class ResConfigSettings(models.TransientModel):
     so_double_validation = fields.Selection(related='company_id.so_double_validation', string="Levels of Approvals *", readonly=False)
     so_double_validation_amount = fields.Monetary(related='company_id.so_double_validation_amount', string="Minimum Amount", currency_field='company_currency_id', readonly=False)
     
+    expiry_reminder = fields.Boolean(
+        string="Enable Quotation Expiry Reminders",
+        config_parameter='bista_sales.enable_quote_expiry_reminder'
+    )
+    quote_expiry_days = fields.Integer(
+        string="Days before Quotation Expiry Reminder",
+        default=5,
+        config_parameter='bista_sales.quote_expiry_days'
+    )
+    
     """ def set_values(self):
         super().set_values()
         so_double_validation = 'two_step' if self.so_order_approval else 'one_step'
