@@ -9,6 +9,7 @@
     'version': '1.0',
     'data': [
         'security/ir.model.access.csv',
+        'data/stage_data.xml',
         'views/crm_lead_view.xml',
         'views/probability_stage_view.xml',
         'views/sale_order_view.xml'

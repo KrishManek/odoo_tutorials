@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="sale_order_inherit_view" inherit_id="bista_dms.sale_order_inherit">
+            <xpath expr="//table[@id='doc_table']//th[@id='product_head']" position="replace">
+                <th id="product_head">Product List</th>
+            </xpath>
+        </template>
+    </data>
+</odoo>

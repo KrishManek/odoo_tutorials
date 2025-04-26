@@ -1,77 +1,162 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
     <!-- Define the list view for appointment details -->
     <record id="hms_appointment_list_view" model="ir.ui.view">
-        <field name="name">appointment.details.list</field> <!-- View name -->
-        <field name="model">appointment.details</field> <!-- Model name -->
+        <field name="name">appointment.details.list</field> 
+        <!-- View name -->
+        <field name="model">appointment.details</field> 
+        <!-- Model name -->
         <field name="arch" type="xml">
-            <list string="Appointment"> <!-- List view definition -->
-                <field name="appointment_code" readonly="1"/> <!-- Appointment code (read-only) -->
-                <field name="patient_id"/> <!-- Patient reference -->
-                <field name="appointment_date"/> <!-- Appointment date -->
-                <field name="appointment_reason"/> <!-- Reason for appointment -->
-                <field name="consultation_start_time" readonly="1" /> <!-- Consultation start time (read-only) -->
-                <field name="consultation_end_time" readonly="1" /> <!-- Consultation end time (read-only) -->
-                <field name="consultation_time" readonly="1" /> <!-- Total consultation time (read-only) -->
+            <list string="Appointment"> 
+                <!-- List view definition -->
+                <field name="appointment_code" readonly="1" /> 
+                <!-- Appointment code (read-only) -->
+                <field name="patient_id" options="{'no_create': True}" /> 
+                <!-- Patient reference -->
+                <field name="appointment_date" /> 
+                <!-- Appointment date -->
+                <field name="appointment_reason" /> 
+                <!-- Reason for appointment -->
+                <field name="consultation_start_time" readonly="1" /> 
+                <!-- Consultation start time (read-only) -->
+                <field name="consultation_end_time" readonly="1" /> 
+                <!-- Consultation end time (read-only) -->
+                <field name="consultation_time" readonly="1" /> 
+                <!-- Total consultation time (read-only) -->
             </list>
         </field>
     </record>
 
     <!-- Define the form view for appointment details -->
     <record id="hms_appointment_form_view" model="ir.ui.view">
-        <field name="name">appointment.details.form</field> <!-- View name -->
-        <field name="model">appointment.details</field> <!-- Model name -->
+        <field name="name">appointment.details.form</field> 
+        <!-- View name -->
+        <field name="model">appointment.details</field> 
+        <!-- Model name -->
         <field name="arch" type="xml">
-            <form string="Appointment"> <!-- Form view definition -->
+            <form string="Appointment"> 
+                <!-- Form view definition -->
                 <header>
                     <!-- Buttons for different actions based on state -->
-                    <button name="action_wait_appointment" string="Book Appointment" invisible="state != 'draft'" type="object" class="btn-primary" />
-                    <button name="action_confirm_appointment" string="Confirm Appointment" invisible="state != 'wait'" type="object" class="btn-primary" />
-                    <button name="action_in_consultation" string="In-Consultation Appointment" invisible="state != 'confirm'" type="object" class="btn-primary" />
-                    <button name="action_done_appointment" string="Completed Appointment" invisible="state != 'in_consultation'" type="object" class="btn-primary" />
-                    <button name="action_cancel_appointment" string="Cancel Appointment" type="object" invisible="state in ['done','in_consultation']" class="btn-primary" />
-                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/> <!-- Status bar for state -->
+                    <button name="action_wait_appointment"
+                            string="Book Appointment"
+                            invisible="state != 'draft'"
+                            type="object"
+                            class="btn-primary" />
+                    <button name="action_confirm_appointment"
+                            string="Confirm Appointment"
+                            invisible="state != 'wait'"
+                            type="object"
+                            class="btn-primary" />
+                    <button name="action_in_consultation"
+                            string="In-Consultation Appointment"
+                            invisible="state != 'confirm'"
+                            type="object"
+                            class="btn-primary" />
+                    <button name="action_done_appointment"
+                            string="Completed Appointment"
+                            invisible="state != 'in_consultation'"
+                            type="object"
+                            class="btn-primary" />
+                    <button name="action_cancel_appointment"
+                            string="Cancel Appointment"
+                            type="object"
+                            invisible="state in ['done','in_consultation']"
+                            class="btn-primary" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done" /> 
+                    <!-- Status bar for state -->
+               
                 </header>
+               
                 <sheet>
+                    <widget name="web_ribbon" title="Draft" invisible="state != 'Draft'" />
+                    <widget name="web_ribbon" title="Wait" invisible="state != 'wait'" />
+                    <widget name="web_ribbon" title="Done" invisible="state != 'done'" />
+                    <widget name="web_ribbon" title="Confirm" invisible="state != 'confirm'" />
+                    <widget name="web_ribbon" title="In onsultation" invisible="state != 'in_consultation'" />
+                
                     <div class="oe_title">
                         <h1>
-                            <field name="appointment_code" readonly="1"/> <!-- Appointment code (read-only) -->
+                            <field name="appointment_code" readonly="1" /> 
+                            <!-- Appointment code (read-only) -->
                         </h1>
                     </div>
                     <group>
                         <group>
-                            <field name="patient_id"/> <!-- Patient reference -->
-                            <field name="doctor_id"/> <!-- Doctor reference -->
-                            <field name="appointment_date"/> <!-- Appointment date -->
-                            <field name="booking_time"/> <!-- Booking time -->
-                            <field name="appointment_reason"/> <!-- Reason for appointment -->
+                            <field name="patient_id" options="{'no_create': True}" /> 
+                            <!-- Patient reference -->
+                            <field name="doctor_id" /> 
+                            <!-- Doctor reference -->
+                            <field name="appointment_date" /> 
+                            <!-- Appointment date -->
+                            <field name="booking_time" /> 
+                            <!-- Booking time -->
+                            <field name="appointment_reason" /> 
+                            <!-- Reason for appointment -->
                         </group>
                         <group string="Guardian Details">
-                            <field name="gaurdian_category" /> <!-- Guardian category -->
-                            <field name="gaurdian_id" /> <!-- Guardian reference -->
+                            <field name="gaurdian_category" /> 
+                            <!-- Guardian category -->
+                            <field name="gaurdian_id" /> 
+                            <!-- Guardian reference -->
                         </group>
                         <group string="Consultation Details" invisible="state not in ['in_consultation','done','cancel']">
-                            <field name="consultation_start_time" readonly="1" /> <!-- Consultation start time (read-only) -->
-                            <field name="consultation_end_time" readonly="1" /> <!-- Consultation end time (read-only) -->
-                            <field name="consultation_time" /> <!-- Total consultation time -->
+                            <field name="consultation_start_time" readonly="1" /> 
+                            <!-- Consultation start time (read-only) -->
+                            <field name="consultation_end_time" readonly="1" /> 
+                            <!-- Consultation end time (read-only) -->
+                            <field name="consultation_time" /> 
+                            <!-- Total consultation time -->
                         </group>
                         <group name="Product" string="Products">
-                            <field name="product_id" domain="[('type', '=', 'service')]" /> <!-- Product reference (service type) -->
+                            <field name="product_id" domain="[('type', '=', 'service')]" /> 
+                            <!-- Product reference (service type) -->
                         </group>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
+    <record id="view_appointment_order_filter" model="ir.ui.view">
+        <field name="name">appointment.details</field>
+        <field name="model">appointment.details</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <search string="Search Appointments">
+                <field name="patient_id" string="Patient Name"
+                    filter_domain="['|', '|', '|',('patient_id.email', 'ilike', self), ('patient_id', 'ilike', self), ('appointment_code', 'ilike', self), ('appointment_reason','ilike', self)]"/>
+                <field name="appointment_code"/>
+                <field name="appointment_reason" />
+                
+                <separator />
+                <filter name="draft_state" string="Draft" domain="[('state', '=', 'draft')]" />
+                <filter name="wait_state" string="Wait" domain="[('state', '=', 'wait')]" />
+                <filter name="confirm_state" string="confirm" domain="[('state', '=', 'confirm')]" />
+                <filter name="in_consult" string="In-Consultation" domain="[('state', '=', 'in_consultation')]" />
+                <filter name="done_state" string="Done" domain="[('state', '=', 'done')]" />
+
+                <group expand="0" string="Group By">
+                    <filter string="Date" name="Date" domain="[]" context="{'group_by': 'appointment_date'}"/>
+                    <filter name="State" string="State" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="Doctor" name="doctor_id" domain="[]" context="{'group_by': 'doctor_id'}"/>
+                    <filter string="Patient" name="patient_id" domain="[]" context="{'group_by': 'patient_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 
     <!-- Define the action for appointment details -->
     <record id="action_res_appointment" model="ir.actions.act_window">
-        <field name="name">Appointment</field> <!-- Action name -->
-        <field name="res_model">appointment.details</field> <!-- Model name -->
-        <field name="view_mode">list,form</field> <!-- View modes (list and form) -->
+        <field name="name">Appointment</field> 
+        <!-- Action name -->
+        <field name="res_model">appointment.details</field> 
+        <!-- Model name -->
+        <field name="view_mode">list,form</field> 
+        <!-- View modes (list and form) -->
     </record>
 
     <!-- Define the menu item for appointment details -->
-    <menuitem id="menu_res_appointment_sub" name="Appointment" parent="menu_hms" action="action_res_appointment"/> <!-- Menu item definition -->
+    <menuitem id="menu_res_appointment_sub" name="Appointment" parent="menu_hms" action="action_res_appointment" /> 
+    <!-- Menu item definition -->
 </odoo>

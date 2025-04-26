@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="stages1" model="probability.stage">
+        <field name="name">Stage 1</field> 
+        <field name="percentage">0</field> 
+    </record>
+    <record id="stage2" model="probability.stage">
+        <field name="name">Stage 2</field> 
+        <field name="percentage">20</field> 
+    </record>
+    <record id="stages3" model="probability.stage">
+        <field name="name">Stage 3</field> 
+        <field name="percentage">40</field> 
+    </record>
+    <record id="stages4" model="probability.stage">
+        <field name="name">Stage 4</field> 
+        <field name="percentage">60</field> 
+    </record>
+    
+    <record id="stages5" model="probability.stage">
+        <field name="name">Stage 5</field> 
+        <field name="percentage">80</field> 
+    </record>
+    <record id="stages6" model="probability.stage">
+        <field name="name">Stage 6</field> 
+        <field name="percentage">100</field> 
+    </record>
+    
+</odoo>

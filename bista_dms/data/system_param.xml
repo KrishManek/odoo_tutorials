@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="allow_update_sale_doc" model="ir.config_parameter">
+            <field name="key">allow_update_doc_after_confirm</field> 
+            <field name="value">True</field> 
+        </record>
+    </data>
+    
+</odoo>

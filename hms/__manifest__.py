@@ -27,6 +27,7 @@
         'views/product.xml',
         'wizard/update_qty_wizard_view.xml',
         'views/custom_sale_template.xml',
+        'views/purchase_order_view.xml',
     ],
 }
 #'views/sale_order_view.xml',

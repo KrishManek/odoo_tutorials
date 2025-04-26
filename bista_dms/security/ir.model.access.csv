@@ -1,3 +1,7 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 "access_documents_custom","documents.custom","model_documents_custom",,1,1,1,1
 "access_doc_tag_master","doc.tag.master","model_doc_tag_master",,1,1,1,1
+"access_documents_order_line","documents.order.line","model_documents_order_line",,1,1,1,1
+"access_add_document","add.document","model_add_document",,1,1,1,1
+"access_student_activity_admin","student.activity.admin","model_student_activity",bista_dms.group_activity_user,1,1,1,1
+"access_student_activity_user","student.activity.user","model_student_activity",bista_dms.group_activity_admin,1,1,1,1

@@ -11,10 +11,34 @@
             </field>
             <xpath expr="//header" position="inside">
                 <button name="button_get_docs" type="object" string="Get Documents" class="oe_highlight" />
-                <button name="button_update_docs" type="object" string="Update Documents" invisible = "state != 'sale'" class="oe_highlight" />
+                <button name="button_add_docs" type="object" string="Add Documents" class="oe_highlight" />
+                <button name="%(bista_dms.action_button_add_docs)d" type="action" string="Add Documents XML" class="oe_highlight" />
+                
+                <button name="button_update_docs"
+                        type="object"
+                        string="Update Documents"
+                        invisible="not allow_upd or not state in 'sale'"
+                        class="oe_highlight" />
+            </xpath>
+
+            <field name="partner_id" position="after">
+                <field name="compute_docs" />
+                <field name="allow_upd" />
+            </field>
+
+            <xpath expr="//page[@name='customer_signature']" position="after">
+                <page string="Documents">
+                    <field name="doc_line_ids">
+                        <list>
+                            <field name="document_id" />
+                            <field name="product_ids" widget="many2many_tags" />
+                        </list>
+                    </field>
+                </page>
             </xpath>
         </field>
     </record>
+
 </odoo>
 
 

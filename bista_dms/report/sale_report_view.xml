@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="sale_order_inherit" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//div[@name='signature']" position="replace">
+                <div>
+                    <table id="doc_table" width="100%">
+                        <thead>
+                            <tr>
+                                <th id="document_head">Document</th>
+                                <th id="product_head">Product</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="doc.doc_line_ids" t-as="docs">
+                                <td style="padding-left:20px;">
+                                    <span t-esc="docs.document_id.name" />
+                                </td>
+                                <td>
+                                    <table style="border-bottom: 1px solid black; width:100%">
+                                        <t t-foreach="docs.product_ids" t-as="o">
+                                            <tr>
+                                                <td>
+                                                    <span style="padding-left:20px;">
+                                                        <t t-esc="o.display_name" />
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </table>  
+                                    <!-- <t t-foreach="docs.product_ids" t-as="o">
+                                        <span style="padding-left:20px;">
+                                            <t t-esc="o.name" />
+                                        </span>
+                                        <hr style="padding:0px;height:2px;border-width:1px;border-color:black;background-color:black;" />
+                                    </t> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

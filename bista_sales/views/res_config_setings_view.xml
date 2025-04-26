@@ -16,6 +16,18 @@
                     </div>
                 </setting>
             </xpath>
+
+            <xpath expr="//setting[@id='stock_packaging']" position="after">
+                <setting id="so_expiry reminder" help="Sends email regarding the quotations about to expire">
+                    <field name="expiry_reminder" />
+                    <div class="content-group" invisible="not expiry_reminder">
+                        <div class="row mt16">
+                            <label for="quote_expiry_days" class="col-lg-4 o_light_label" />
+                            <field name="quote_expiry_days" />
+                        </div>
+                    </div>
+                </setting>
+            </xpath>
         </field>
     </record>
 </odoo>
