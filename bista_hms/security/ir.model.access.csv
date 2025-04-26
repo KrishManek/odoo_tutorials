@@ -1,5 +1,10 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_res_patient,res.patient,model_res_patient,,1,1,1,1
 access_hms_appointment,hms.appointment,model_hms_appointment,,1,1,1,1
-access_hms_prescription,hms.prescription,model_hms_prescription,,1,1,1,1
-access_prescription_line,prescription.line,model_prescription_line,,1,1,1,1
+access_hms_prescription_readonly_user,hms.prescription.readonly.user,model_hms_prescription,bista_hms.group_prescription_user_readonly,1,0,0,0
+access_hms_prescription_user,hms.prescription.user,model_hms_prescription,bista_hms.group_prescription_user,1,1,1,0
+access_hms_prescription_admin,hms.prescription.admin,model_hms_prescription,bista_hms.group_admin_prescription,1,1,1,1
+access_prescription_line_user,prescription.line.user,model_prescription_line,bista_hms.group_prescription_user,1,1,1,0
+access_prescription_line_readonly_user,prescription.line.user.readonly,model_prescription_line,bista_hms.group_prescription_user_readonly,1,0,0,0
+access_prescription_line_admin,prescription.line.admin,model_prescription_line,bista_hms.group_admin_prescription,1,1,1,1
+

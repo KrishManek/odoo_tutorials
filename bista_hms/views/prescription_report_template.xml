@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="prescription_template" name="Prescription Report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <center>
+                    <strong>
+                        <h1>Prescription</h1>
+                    </strong>
+                </center>
+                <t t-foreach="docs" t-as="o">
+                    <strong>Patient Name:</strong>
+                    <span t-field="o.patient_id.name"/>
+                    <br/>
+                    <strong>Patient Age:</strong>
+                    <span t-esc="o.patient_id.age or 0"/>
+                    <br/>
+                    <strong>My Data</strong>
+                    <span t-esc="my_data.get('age')"/>
+                    <br/>
+                    <strong>Date:</strong>
+                    <span t-field="o.date"/>
+                    <span t-esc="o.get_test_date()"/>
+                    <br/>
+
+                    <t t-call="bista_hms.prescription_lines"/>
+
+                </t>
+            </t>
+
+        </t>
+    </template>
+
+    <template id="prescription_lines" name="Prescription Lines">
+        <t t-foreach="docs" t-as="o">
+            <table width="100%" class="table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Product</th>
+                        <th style="text-align:right;">Price</th>
+                        <th style="text-align:right;">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="o.prescription_lines" t-as="line">
+                        <td>
+                            <span t-esc="line_index + 1"/>
+                        </td>
+                        <td>
+                            <span t-field="line.product_id.display_name"/>
+                        </td>
+                        <td style="text-align:right;">
+                            <span t-field="line.price_unit"/>
+                        </td>
+                        <td style="text-align:right;">
+                            <span t-field="line.quantity"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Total:</td>
+                        <td style="text-align:right;">50</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+    </template>
+</odoo>
