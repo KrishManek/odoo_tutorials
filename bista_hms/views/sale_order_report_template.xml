@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[@t-if='doc.user_id.name']" position="after">
+            <t t-if="doc.state in ['sale', 'done']">
+                <div t-if="doc.lead_reference" class="col">
+                    <strong>Lead Reference</strong>
+                    <div t-field="doc.lead_reference"></div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

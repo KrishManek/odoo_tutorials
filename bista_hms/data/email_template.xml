@@ -1,0 +1,26 @@
+<odoo>
+    <record id="email_template_appointment_confirmation" model="mail.template">
+        <field name="name">Appointment Confirmation</field>
+        <field name="model_id" ref="model_hms_appointment"/>
+        <field name="email_from">{{object.env.user.email}}</field>
+        <field name="subject">Appointment Confirmation : {{object.name}}</field>
+        <field name="auto_delete" eval="True"/>
+        <field name="email_to">{{object.patient_id.email}}</field>
+        <field name="body_html" type="html">
+           <strong> <p >Hello <t t-out="object.patient_id.name"/> </p></strong>
+
+            <p>Your time of appointment is on <t t-out="object.appointment_date"/>.</p>
+            <p>We are pleased to confirm your appointment with Darshan</p>
+            <p>If you have any questions or need to reschedule, please contact us.</p>
+            <t t-set="total_amount" t-value="0"/>
+            <t t-foreach="[10,20,30]" t-as="item">
+                <p>Item: <t t-out="item_index+1"/></p>
+                <t t-set="total_amount" t-value="total_amount+item" />
+            </t>
+            <p>Total Amount: <t t-out="total_amount"/></p>
+            <p>Thank you!</p>
+            <p>Best regards,</p>
+
+        </field>
+    </record>
+</odoo>
