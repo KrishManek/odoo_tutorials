@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sale_order_form_inh_ref" model="ir.ui.view">
+        <field name="name">sale.order.form.inh.ref</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <!-- <field name="warwehouse_id" position="move" /> -->
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field[@name='order_line']" position="before">
+                <button name="action_open_add_product_wizard" string="Add Products" type="object" class="btn-primary" />
+            </xpath>
+            <xpath expr="//page[@name='other_information']//field[@name='user_id']" position="after">
+            <field name="total_service_products" />
+            </xpath>
+            <xpath expr="//header/button[@name='action_confirm']" position="before">
+                    <button name="button_approve" type="object" invisible="state != 'to_approve'" string="Approve Order" class="oe_highlight" groups="bista_exam2.group_sale_approver" data-hotkey="z"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- <record id="view_sale_order_form_ref" model="ir.ui.view">
+        <field name="name">sale.order.form.ref</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                  <field name="warwehouse_id" position="move" />
+            </xpath>
+        </field> -->
+    </record>
+</odoo>

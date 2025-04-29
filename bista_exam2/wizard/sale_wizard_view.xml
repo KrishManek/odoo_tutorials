@@ -1,0 +1,22 @@
+<odoo>
+  <record id="view_sale_wizard_form" model="ir.ui.view">
+    <field name="name">sale.wizard.form</field>
+    <field name="model">sale.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Sale Wizard">
+        <group>
+          <group>
+            <field name="product_ids" widget="many2many_tags" />
+          </group>
+          <group>
+            <field name="sale_id" readonly="1" force_save="1" invisible="1" />
+          </group>
+        </group>
+        
+        <footer>
+          <button string="Add" type="object" name="add_products" class="btn-primary" />
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>
