@@ -1,0 +1,23 @@
+<odoo>
+  <record id="view_assign_sequnece_wizard_form" model="ir.ui.view">
+    <field name="name">assign.serial.form</field>
+    <field name="model">assign.serial</field>
+    <field name="arch" type="xml">
+      <form string="Sale Wizard">
+        <group>
+          <group>
+            <field name="no_seq" />
+          </group>
+          <group>
+            <field name="mrp_id" readonly="1" force_save="1" invisible="1" />
+            <field name="gen_seq" readonly="1" invisible="1" />
+          </group>
+        </group>
+        
+        <footer>
+          <button string="Generate" type="object" name="generate_seq" class="btn-primary" />
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>
