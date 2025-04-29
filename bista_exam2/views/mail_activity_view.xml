@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_mail_activity_schedule_form_inh_ref" model="ir.ui.view">
+        <field name="name">mail.activity.schedule.view.form.inh.ref</field>
+        <field name="model">mail.activity.schedule</field>
+        <field name="inherit_id" ref="mail.mail_activity_schedule_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='activity_type_id']" position="attributes">
+                <attribute name="string">Connection</attribute>
+            </xpath>
+            <xpath expr="//field[@name='activity_type_id']" position="after">
+                <field name="meaningful_connection" />
+            </xpath>
+            <xpath expr="//button[@name='action_schedule_activities']" position="after">
+                Or
+            </xpath>
+            <xpath expr="//button[@name='action_schedule_activities_done']" position="after">
+                Or
+            </xpath>
+            <xpath expr="//button[@name='action_schedule_activities_done_and_schedule']" position="after">
+                Or
+            </xpath>
+        </field>
+    </record>
+</odoo>

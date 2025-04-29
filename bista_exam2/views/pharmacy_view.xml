@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="pharmacy_view_list" model="ir.ui.view">
+        <field name="name">bista.pharma.view.list</field>
+        <field name="model">bista.pharma</field> 
+        <field name="arch" type="xml">
+            <list string=" Pharmacy" editable="bottom">
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+    
+    <record id="action_open_pharmacy" model="ir.actions.act_window">
+        <field name="name">Pharmacy</field> 
+        <field name="res_model">bista.pharma</field> 
+        <field name="view_mode">list</field> 
+    </record>
+
+     <menuitem id="menu_pharmacy_sub" name="Pharmacy" parent="sale.menu_sale_config" action="action_open_pharmacy" sequence="0" /> 
+</odoo> 
