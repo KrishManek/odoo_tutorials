@@ -12,5 +12,6 @@
         'views/product_product_views.xml',
         'views/mrp_production.xml',
         'wizard/assign_serial_view.xml',
+        'views/sale_order_view.xml',
     ],
 }

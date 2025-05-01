@@ -18,6 +18,7 @@ class MrpProduction(models.Model):
         }
                 
     def _split_productions(self, amounts=False, cancel_remaining_qty=False, set_consumed_qty=False):
-        res = super()._split_productions(amounts=False, cancel_remaining_qty=False, set_consumed_qty=False)
+        res = super()._split_productions(amounts, cancel_remaining_qty, set_consumed_qty)
         res[-1].write({'serial_ids':[(3, res[0].lot_producing_id.id)]})
+        res[0].write({'serial_ids':[(3, res[0].lot_producing_id.id)]})
         return res
