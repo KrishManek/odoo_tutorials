@@ -1,11 +1,14 @@
 <odoo>
     <record id="view_sale_inherit" model="ir.ui.view">
-        <field name="name">sale.order</field>
+        <field name="name">sale.order.inherit.view</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="action_process_all" type="object" string="Process All" class="btn-primary"/>
+                <button name="action_process_all" type="object" string="Process All" class="btn-primary" invisible="state != 'draft'"/>
+            </xpath>
+            <xpath expr="//field[@name='product_template_id']" position="after">
+                <field name="process_qty" force_save="1" />
             </xpath>
         </field>
     </record>
