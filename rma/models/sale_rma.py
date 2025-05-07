@@ -16,7 +16,15 @@ class SaleRMA(models.Model):
     delivery_count = fields.Integer(compute="_compute_delivery_count", string="Delivery Count", store=True)
     rma_created = fields.Boolean(string="Order created", default=False)
     invoice_count = fields.Integer(compute="_compute_invoice_count", string="invoice Count", store=True)    
-    invoice_ids = fields.One2many("account.move", 'rma_id', string="Sale Invoice IDs")    
+    invoice_ids = fields.One2many("account.move", 'rma_id', string="Sale Invoice IDs")
+    partner_id = fields.Many2one('res.partner', string="Customer Name")    
+    product_ids = fields.Many2many('product.product', string="Product ids", store=True, compute ="_compute_remove_repeated_products")
+
+    @api.depends('sale_order_id')
+    def _compute_remove_repeated_products(self):
+        for line in self:
+            for rec in line.line_ids:
+                self.product_ids =  [(4, rec.product_id.id)]
     
     @api.depends('picking_ids')
     def _compute_delivery_count(self):
@@ -126,5 +134,5 @@ class SaleRMA(models.Model):
             if record.rma_created and 'sale_order_id' in vals:
                 raise UserError("Once order is created you can't change the Sale Order.")
         res = super().write(vals)
-        return res   
+        return res
     
