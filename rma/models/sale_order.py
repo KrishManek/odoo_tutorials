@@ -23,3 +23,4 @@ class SaleOrder(models.Model):
             domain += [('partner_id', '=', cus_id)]
         return super().web_search_read(domain, specification, offset=offset, limit=limit, order=order,
                                     count_limit=count_limit)
+        
