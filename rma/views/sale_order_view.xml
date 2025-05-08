@@ -5,7 +5,7 @@
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='product_template_id']" position="after">
-                <field name="child_warehouse_id" domain ="[('warehouse_id','=',parent.warehouse_id)]" />
+                <field name="location_id" domain ="[('warehouse_id','=',parent.warehouse_id)]" />
             </xpath>
         </field>
     </record>
