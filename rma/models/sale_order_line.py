@@ -6,14 +6,14 @@ class SaleOrderLine(models.Model):
 
     location_id = fields.Many2one('stock.location', string='Warehouse Location')
     
-    def _get_procurement_group(self):
+    """ def _get_procurement_group(self):
         self.ensure_one()
         if self.location_id:
             return self.env['procurement.group'].search([
                                                     ('sale_id', '=', self.order_id.id),
                                                     ('location_id', '=', self.location_id.id),
                                                 ], limit=1)
-        return self.order_id.procurement_group_id
+        return self.order_id.procurement_group_id """
 
     def _prepare_procurement_group_vals(self):
         values = super(SaleOrderLine,self)._prepare_procurement_group_vals()
