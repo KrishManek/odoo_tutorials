@@ -15,14 +15,14 @@ class SaleOrderLine(models.Model):
                                                 ], limit=1)
         return self.order_id.procurement_group_id """
 
-    def _prepare_procurement_group_vals(self):
+    """ def _prepare_procurement_group_vals(self):
         values = super(SaleOrderLine,self)._prepare_procurement_group_vals()
         if self.location_id:
             self.ensure_one()
             values.update({
                 'location_id': self.location_id.id,
             })
-        return values
+        return values """
         
     def _prepare_procurement_values(self, group_id=False):
         values = super(SaleOrderLine, self)._prepare_procurement_values(group_id)

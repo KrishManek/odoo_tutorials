@@ -5,6 +5,11 @@ class StockPicking(models.Model):
 
     rma_id = fields.Many2one('sale.rma', string="RMA ID")
     
+    """     @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
+        return res """
+    
     """ @api.depends('picking_type_id', 'partner_id','sale_id.order_line.location_id')
     def _compute_location_id(self):
         super()._compute_location_id()
