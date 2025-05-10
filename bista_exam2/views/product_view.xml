@@ -18,6 +18,9 @@
                 <field name="name" position="replace">
                     <field name="name" string="Product" filter_domain="['|', '|', '|', '|', ('default_code', 'ilike', self), ('product_variant_ids.default_code', 'ilike', self),('name', 'ilike', self), ('barcode', 'ilike', self), ('pharmacy_id', 'ilike', self)]"/>
                 </field>
+                <search>
+                    <field name="pharmacy_id" />
+                </search>
             </field>
         </record>
 </odoo>

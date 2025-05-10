@@ -20,6 +20,9 @@
             <xpath expr="//button[@name='action_schedule_activities_done_and_schedule']" position="after">
                 Or
             </xpath>
+            <xpath expr="//field[@name='activity_user_id']" position="attributes">
+                <attribute name="domain">[('share', '=', False)]</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>

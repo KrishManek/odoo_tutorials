@@ -3,28 +3,31 @@
         <field name="name">New Purchase Order</field>
         <field name="model_id" ref="purchase.model_purchase_order" />
         <field name="email_from">{{object.env.user.email}}</field>
-        <field name="email_to">{{object.env.user.email}}</field>
+        <field name="email_to">{{object.partner_id.email}}</field>
         <field name="subject">New Purchase Order : {{object.name}}</field>
         <field name="auto_delete" eval="True" />
         <field name="body_html" type="html">
             <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
                 <p>Hello
                     <strong>
-                        <t t-out="object.partner_id.name"/>
+                        <t t-out="object.partner_id.name" />
                     </strong>
                     ,
                 </p>
                 <p>
-                    Please check the new Purchase Order {{object.name}}.
+                    Please check the new Purchase Order  
+                    <t t-out="object.partner_id.name" />.
                 </p>
                 <p>
-                    The Amount total is $ {{object.amount_total}}.
+                    The Amount total is $ 
+                    <t t-out="object.amount_total" />.
                 </p>
                 <p>
                     Please Fulfill this order as soon as possible.
                 </p>
-
+                
             </div>
         </field>
+        <field name="report_template_ids" eval="[(4, ref('purchase.action_report_purchase_order'))]" />
     </record>
 </odoo>
