@@ -13,6 +13,7 @@ class SaleOrder(models.Model):
             if product.product_id.type =='service':
                 service_prod += 1
         self.total_service_products = service_prod
+        
     def action_open_add_product_wizard(self):
         veiw_id = self.env.ref("bista_exam2.view_sale_wizard_form").id
         return {
@@ -47,10 +48,14 @@ class SaleOrder(models.Model):
 
     def _allowed(self):
         self.ensure_one()
-        sale_min_amount = float(self.env['ir.config_parameter'].sudo().get_param('bista_exam2.sale_min_amount'))
-        if sale_min_amount < self.amount_total and self.env.user.has_group('bista_exam2.group_sale_approver'):
-            return True
-        elif self.env.user.has_group('bista_exam2.group_sale_approver'):
+        is_approval = self.env['ir.config_parameter'].sudo().get_param('bista_exam2.sale_approval')
+        if is_approval == "True":
+            sale_min_amount = float(self.env['ir.config_parameter'].sudo().get_param('bista_exam2.sale_min_amount'))
+            if sale_min_amount < self.amount_total and self.env.user.has_group('bista_exam2.group_sale_approver'):
+                return True
+            elif self.env.user.has_group('bista_exam2.group_sale_approver'):
+                return True
+        else:
             return True
             
     def action_confirm(self):

@@ -28,5 +28,5 @@
                   <field name="warwehouse_id" position="move" />
             </xpath>
         </field> -->
-    </record>
+    
 </odoo>
