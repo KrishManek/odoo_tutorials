@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="manufacturing_report_wizard" model="ir.ui.view">
+        <field name="name">manufacturing.report.wizard.view</field>
+        <field name="model">manufacturing.wizard</field> 
+        <field name="arch" type="xml">
+            <form string="Manufacturing Report">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="start_date" required="1" />
+                            <field name="end_date" required="1" />
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Download" type="object" name="download_report" class="btn-primary" />
+                </footer>
+            </form>
+        </field>
+        
+    </record>
+    <record id="action_manufacturing_reporting" model="ir.actions.act_window">
+        <field name="name">Manufacturing Report</field> 
+        <field name="res_model">manufacturing.wizard</field> 
+        <field name="view_mode">form</field> 
+        <field name="target">new</field>
+        <field name="view_id" ref="manufacturing_report_wizard" />
+    </record>
+
+    <menuitem id="menu_manufacturing_reporting" name="Manufacturing Report" parent="mrp.menu_mrp_reporting" action="action_manufacturing_reporting" /> 
+</odoo> 

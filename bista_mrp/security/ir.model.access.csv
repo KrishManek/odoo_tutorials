@@ -1,2 +1,3 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 "access_assign_serial","assign.serial","model_assign_serial",,1,1,1,1
+"access_manufacturing_wizard","access.manufacturing.wizard","model_manufacturing_wizard",,1,1,1,1
