@@ -25,7 +25,7 @@ try:
         #print(f"Record 0 {record[0]}, Record 1 {record[1]} ")
         search_category = None
         if record[1]:
-            product_name = record[0].removeprefix(record[1] + " / ")
+            category_name = record[0].removeprefix(record[1] + " / ")
             product_category = record[1].split(' / ')
             if product_category[-1] !='All':
                 search_category = odoo.env['product.category'].search([('name', '=', product_category[-1])])  
@@ -39,19 +39,18 @@ try:
                 if not search_category:
                     search_category_id = odoo.env['product.category'].create({'name' : product_category})
                     search_category = [search_category_id]
-            #print(f"-------------------product Category {product_category[-1]}-------------------------------")
         else:
-            product_name = record[0]
-        #print(f"########################## product Name {product_name} ###################################")
-        search_product = odoo.env['product.template'].search([('name', '=', product_name)])
-        if not search_product:
+            category_name = record[0]
+        search_category_name = odoo.env['product.category'].search([('name', '=', category_name)])
+        if not search_category_name:
             i = 0
             if search_category:
-                rec = odoo.env['product.template'].create({'name' : product_name,
-                                                       'categ_id' : search_category[0]})
+                rec = odoo.env['product.category'].create({'name' : category_name,
+                                                       'parent_id' : search_category[0]})
             else:
-                rec = odoo.env['product.template'].create({'name' : product_name})
+                rec = odoo.env['product.category'].create({'name' : category_name})
             print(f"Record Created {i}, {rec}")
             i+=1
+            
 except Exception as e:
     print(f"Exception {e}")
