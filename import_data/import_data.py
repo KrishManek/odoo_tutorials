@@ -15,7 +15,7 @@ user = odoo.env.user
 print(user.name)            # name of the user connected
 print(user.company_id.name)
 try:
-    wb = openpyxl.load_workbook('/home/krish/workspace/18/import_data/Work Centers.xlsx')
+    wb = openpyxl.load_workbook('/home/krish/workspace/18/odoo_tutorials/import_data/Work Centers.xlsx')
     ws = wb.active
     print(ws)
     for record in ws.iter_rows(min_row=2, max_row=None, min_col=None,                
@@ -31,28 +31,30 @@ try:
                 tag_rec = odoo.env['mrp.workcenter.tag'].create({'name' : tag})
                 tag_ids.append(tag_rec)
         if record[3]:
-            alt_workcenter = None
-            search_alt = odoo.env['mrp.workcenter'].search([('name', '=', record[3])])
-            if search_alt:
-                alt_workcenter = search_alt[0] 
-            else:
-                rec = odoo.env['mrp.workcenter'].create({'name' : record[3]})
-                print(f"Alternative Record Created {rec}")
-                if rec:
-                    alt_workcenter = rec 
+            work_centers = record[3].split(',')
+            alt_workcenter = []
+            for workcenter in work_centers:
+                search_alt = odoo.env['mrp.workcenter'].search([('name', '=', workcenter)])
+                if search_alt:
+                    alt_workcenter.append(search_alt[0]) 
+                else:
+                    rec = odoo.env['mrp.workcenter'].create({'name' : workcenter})
+                    print(f"Alternative Record Created {rec}")
+                    if rec:
+                        alt_workcenter.append(rec)
             search = odoo.env['mrp.workcenter'].search([('name', '=', record[0])])
             if not search:
                 rec = odoo.env['mrp.workcenter'].create({'name' : record[0],
                                                         'tag_ids': [(6, 0 , tag_ids)],
                                                         'code': record[2],
-                                                        'alternative_workcenter_ids': [(6, 0, [alt_workcenter])]})
+                                                        'alternative_workcenter_ids': [(6, 0, alt_workcenter)]})
                 print(f"Record Created {rec}")
             else:
                 work_rec = odoo.env['mrp.workcenter'].browse(search[0])       
                 if work_rec:
                     work_rec.write({'tag_ids': [(6, 0 , tag_ids)],
                                 'code': record[2],
-                                'alternative_workcenter_ids': [(6, 0, [alt_workcenter])]})
+                                'alternative_workcenter_ids': [(6, 0, alt_workcenter)]})
                     print(f"Record Updated {work_rec}")
         else:
             search = odoo.env['mrp.workcenter'].search([('name', '=', record[0])])
