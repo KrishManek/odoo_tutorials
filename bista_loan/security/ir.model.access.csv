@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_loan_management,loan.management,model_loan_management,,1,1,1,1
+access_emi_lines,emi.lines,model_emi_line,,1,1,1,1
+access_interest_rate,interest.rate,model_interest_rate,,1,1,1,1
+

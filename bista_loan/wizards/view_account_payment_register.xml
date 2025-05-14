@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record id="view_account_payment_register_form_inherit_full_payment" model="ir.ui.view">
+            <field name="name">account.payment.register.form.inherit.full.payment</field>
+            <field name="model">account.payment.register</field>
+            <field name="inherit_id" ref="account.view_account_payment_register_form" />
+            <field name="arch" type="xml">
+
+                <field name="amount" position="after">
+                    <field name="full_payment_enforcement_warning" readonly="1" nolabel="1" />
+                </field>
+
+            </field>
+        </record>
+    </data>
+</odoo>

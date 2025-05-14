@@ -1,0 +1,18 @@
+<odoo>
+    <record id="email_template_loan_emi_reminder" model="mail.template">
+        <field name="name">Loan EMI Reminder</field>
+        <field name="model_id" ref="bista_loan.model_emi_line"/>
+        <field name="email_from">{{ object.env.user.email }}</field>
+        <field name="email_to">{{ object.loan_id.partner_id.email }}</field>
+        <field name="subject">EMI Reminder: {{ object.loan_id.partner_id.name }}</field>
+        <field name="body_html" type="html">
+            <strong> <p >Hello <t t-out="object.loan_id.partner_id.name"/>, </p></strong>
+
+            <p>Your EMI payment of RS. <t t-out="object.interest_amount"/>, is generated on <t t-out="object.paid_date"/>.
+            Please have a look at it and pay it ASAP, to avoid any penatlties.</p>
+            <p>If you have any Queries please fell free to contact us.</p>
+            <p>Thank you!</p>
+
+        </field>
+    </record>
+</odoo>
