@@ -1,0 +1,122 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<odoo>
+    <record id="view_loan_management_form" model="ir.ui.view">
+        <field name="name">loan.management.form</field>
+        <field name="model">loan.management</field>
+        <field name="arch" type="xml">
+            <form string="Loan Management">
+                <header>
+                    <button name="create_emi_lines" string="Create" type="object" />
+                
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_invoices" type="object" icon="" >
+                            <field name="total_invoices" string="Invoices" widget="statinfo" />
+                        </button>
+                    </div>
+                    <group name="Details">
+                        <group>
+                            <field name="partner_id" required="1" />
+                        </group>
+                        <group>
+                            <field name="user_id" />
+                        </group>
+                    </group>
+                    <group name="amount_details">
+                        <group name="loan_details">
+                            <field name="loan_amount" required="1" />
+                            <field name="period" required="1" />
+                            <field name="rate_of_interest" readonly="1" required="1" />
+                            <field name="start_date" required="1" />
+                            <field name="end_date" readonly="1" />
+                            <field name="emi_date" />
+                            <field name="emi_amount" readonly="1" />
+                            <field name="monthly_intrest" />
+                        </group>
+                        <group>
+                            <field name="total_interest_amount" />
+                            <field name="interest_amount" />
+                            <field name="pending_interest_amount" />
+                            <field name="total_principle_amount" />
+                            <field name="principle_amount" />
+                            <field name="pending_principle_amount" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Rate of Interest">
+                            <field name="rate_of_interests">
+                                <list editable="bottom" decoration-success='is_active == True'>
+                                    <field name="rate" />
+                                    <field name="starting_date" />
+                                    <field name="is_active" />  
+                                    <button name="active_rate"
+                                            string="Activate"
+                                            type="object"
+                                            confirm="Are You sure You want to activate this rate?"
+                                            invisible="is_active" />
+                                </list>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="rate" required="1" />
+                                            <field name="starting_date" />
+                                            <field name="is_active" />
+                                            <button name="active_rate" string="Activate" type="object" />
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Emi Lines">
+                            <field name="emi_line_ids">
+                                <list decoration-success="state == 'paid'" decoration-danger="state == 'invoiced'" >
+                                    <field name="paid_date" />
+                                    <field name="interest_amount" />
+                                    <field name="principle_amount" />
+                                    <field name="total_paid" />
+                                    <field name="state" statusbar_visible="pending,invoiced,paid" /> 
+
+                                </list>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="paid_date" />
+                                            <field name="interest_amount" />
+                                            <field name="principle_amount" />
+                                            <field name="total_paid" />
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_loan_management_list" model="ir.ui.view">
+        <field name="name">loan.managment.list</field>
+        <field name="model">loan.management</field>
+        <field name="arch" type="xml">
+            <list string="Loan Details">
+                <field name="partner_id" />
+                <field name="loan_amount" />
+                <field name="period" />
+                <field name="start_date" />
+                <field name="emi_amount" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_loan_managment" model="ir.actions.act_window">
+        <field name="name">Loans</field>
+        <field name="res_model">loan.management</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_bista_loan" name="Loans" />
+    <menuitem id="menu_bista_loan_management" name="Loans" parent="menu_bista_loan" action="action_loan_managment" />
+
+</odoo>
