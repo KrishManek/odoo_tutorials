@@ -7,7 +7,7 @@
     "depends": ['base', 'account'],
     'sequence' : 1,
     'application' : True,
-
+    'license' : 'LGPL-3',
 
     "data": [
         'security/security.xml',
