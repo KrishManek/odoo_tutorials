@@ -8,7 +8,7 @@ class LoanManagement(models.Model):
 
     loan_amount = fields.Float(string="Loan Amount", default=10000)
     partner_id = fields.Many2one('res.partner', string="Partner")
-    user_id = fields.Many2one('res.users', string="User")
+    user_id = fields.Many2one('res.users', string="User", domain="[('id','!=', uid)]")
     period = fields.Integer(string="No of Months.", default = 1)
     start_date = fields.Date(string="Start Date.", default = fields.Date.today())
     end_date = fields.Date(string="End Date.", compute = "_compute_end_date", store=True)
