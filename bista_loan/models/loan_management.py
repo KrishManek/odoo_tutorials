@@ -1,4 +1,3 @@
-import math
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
@@ -28,7 +27,15 @@ class LoanManagement(models.Model):
     pending_principle_amount = fields.Float(string="Pending Principle Amount.", compute = "_compute_amounts", store=True)
     invoice_ids = fields.One2many('account.move', 'loan_id', string="Invoices" )   
     total_invoices = fields.Integer(compute='_compute_total_invoices', store=True)
+    next_emi_date = fields.Date(string="Next EMI Date")
     
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('user_id'):
+                vals['user_id'] = self.env.uid
+        return super(LoanManagement, self).create(vals_list)
     
     def action_open_invoices(self):
         form_view_id = self.env.ref('account.view_move_form').id 
@@ -58,130 +65,111 @@ class LoanManagement(models.Model):
     @api.depends('start_date','period')
     def _compute_end_date(self):
         for rec in self:
-            rec.end_date = self.start_date + relativedelta(months=self.period)
+            rec.end_date = rec.start_date + relativedelta(months=rec.period)
         
     @api.depends('rate_of_interests.rate','rate_of_interests.is_active','loan_amount','period')    
     def _compute_emi(self):
-        rate = self.env['interest.rate'].search([('is_active', '=', True),
-                                                 ('loan_id', '=', self.id)], limit=1).mapped('rate')
-        if rate:
-            if self.period > 0 and self.loan_amount >= 1000 and rate[0] > 0:
-                for rec in self:
-                    monthly_interest_rate = rate[0] / 1200
-                    n = rec.period
-                    self.emi_amount = ((rec.loan_amount * monthly_interest_rate) /(1 - (1 / (1 + monthly_interest_rate) ** n)))
-                    month = 1
-                    amount_current = rec.loan_amount * (1 + monthly_interest_rate) ** month
-                    amount_previous = rec.loan_amount * (1 + monthly_interest_rate) ** (month - 1)
-                    interest_this_month = ((amount_current - amount_previous))
-                    self.monthly_intrest = interest_this_month
-                        
-                    """  monthly_interest_rate = rate[0] / 1200
-                    #monthly_interest_rate = rec.rate_of_interest / 1200
-                    n = rec.period
-                    self.emi_amount = math.ceil((rec.loan_amount * monthly_interest_rate) / (1 - (1 / (1 + monthly_interest_rate) ** n)))
-                    # Formula for compund interest
-                    # (rec.loan_amount * monthly_interest_rate * (1 + monthly_interest_rate)**rec.period) / ((1 + monthly_interest_rate)**rec.period - 1)
-                    self.monthly_intrest = rec.loan_amount * monthly_interest_rate * 1 """
+        for rec in self:
+            rate = rec.rate_of_interest
+            if rate and rec.period > 0 and rec.loan_amount >= 1000:
+                monthly_interest_rate = rate / 1200
+                n = rec.period
+                rec.emi_amount = ((rec.loan_amount * monthly_interest_rate) /
+                                (1 - (1 / (1 + monthly_interest_rate) ** n)))
+                # Just for display
+                month = 1
+                amount_current = rec.loan_amount * (1 + monthly_interest_rate) ** month
+                amount_previous = rec.loan_amount * (1 + monthly_interest_rate) ** (month - 1)
+                interest_this_month = amount_current - amount_previous
+                rec.monthly_intrest = interest_this_month
+
                     
-    @api.depends('emi_line_ids')    
+    @api.depends('emi_line_ids.state')    
     def _compute_amounts(self):
         for rec in self:
             rec.total_principle_amount = rec.loan_amount
-            data = self.env['emi.line'].search([('loan_id','=', rec.id)])
-            interest = sum(data.mapped('interest_amount'))
-            principle = sum(data.mapped('principle_amount'))
-            rec.total_interest_amount = interest
-            rec.interest_amount = interest
-            rec.principle_amount = principle
-            rec.pending_principle_amount = rec.loan_amount  - principle
+            data = rec.emi_line_ids
+            total_interest = sum(data.mapped('interest_amount'))
+            paid_lines = data.filtered(lambda r: r.state == 'paid')
+            paid_interest = sum(paid_lines.mapped('interest_amount'))
+            paid_principal = sum(paid_lines.mapped('principle_amount'))
+            rec.total_interest_amount = total_interest
+            rec.interest_amount = paid_interest
+            rec.principle_amount = paid_principal
+            rec.pending_principle_amount = rec.loan_amount - paid_principal
+            rec.pending_interest_amount = total_interest - paid_interest
     
     def create_emi_lines(self):
-        # create emi lines
-        # EMI = [P * r * (1 + r)^N] / [(1 + r)^N - 1]
-        previous_unpaid_amount = self.loan_amount
-        monthly_rate = (self.rate_of_interest / 1200)
-        self.emi_line_ids = [(5, 0, 0)]
-        vals = []
-        emi_date = self.emi_date
-        for line in range(self.period):
-            interest_charged = (monthly_rate * previous_unpaid_amount)
-            principal_paid = (self.emi_amount - interest_charged)
-            total_payment = (interest_charged + principal_paid)
-            vals.append((0, 0, ({
-                'principle_amount': principal_paid,
-                'interest_amount': interest_charged,
-                'total_paid': total_payment,
-                'paid_date': emi_date,
-                'loan_id': self.id,
-            })))
+        for rec in self:
+            pending_lines = rec.emi_line_ids.filtered(lambda l: l.state == 'pending')
+            pending_lines.unlink()
+            paid_principal = sum(rec.emi_line_ids.filtered(lambda l: l.state == 'paid').mapped('principle_amount'))
+            remaining_principal = rec.loan_amount - paid_principal
+            monthly_rate = rec.rate_of_interest / 1200
+            #emi_date = rec.emi_date
+            emi_date = rec.next_emi_date or rec.emi_date
+            remaining_periods = rec.period - len(rec.emi_line_ids.filtered(lambda l: l.state in ['paid', 'invoiced']))
+            vals = []
+            for line in range(remaining_periods):
+                interest_charged = monthly_rate * remaining_principal
+                emi_amount = rec.emi_amount
+                principal_paid = emi_amount - interest_charged
+                total_payment = interest_charged + principal_paid
+                vals.append((0, 0, {
+                    'principle_amount': principal_paid,
+                    'interest_amount': interest_charged,
+                    'total_paid': total_payment,
+                    'paid_date': emi_date,
+                    'loan_id': rec.id,
+                }))
+                remaining_principal -= principal_paid
+                emi_date += relativedelta(months=1)
+            rec.emi_line_ids = vals
 
-            previous_unpaid_amount = previous_unpaid_amount - principal_paid
-            emi_date = emi_date + relativedelta(months=1)
-        self.emi_line_ids = vals
-        """ rate = self.env['interest.rate'].search([('is_active', '=', True),
-                                                 ('loan_id', '=', self.id)], limit=1).mapped('rate')
-        if rate:
-            if self.period > 0 and self.loan_amount >= 1000 and rate[0] > 0:
-                    monthly_interest_rate = rate[0] / 1200
-                    n = self.period
-                    self.emi_line_ids = [(5, 0, 0)]
-                    for curr_month in range(n):
-                        amount_current = self.loan_amount * (1 + monthly_interest_rate) ** (curr_month + 1)
-                        amount_previous = self.loan_amount * (1 + monthly_interest_rate) ** (curr_month)
-                        date = self.emi_date + relativedelta(months=curr_month)
-                        interest_this_month = math.ceil(amount_current - amount_previous)
-                        principle = self.emi_amount - interest_this_month
-                        self.emi_line_ids = [(0,0, {'paid_date': date,
-                                           'interest_amount': interest_this_month,
-                                           'principle_amount': principle,
-                                           'loan_id': self.id,
-                                           'total_paid': principle + interest_this_month
-                                           })] """
-
-    def pay_emi(self):
-        data = self.search([])
+    def generate_emi_invoices(self):
         today = fields.Date.today()
-        for rec in data:
-            line = rec.emi_line_ids.filtered(lambda line: line.paid_date== today)
-            if rec.action_create_invoice():
-                line.state = 'invoiced'
-                rec._send_mail_to_loan_partner()
-            """ for invoice in invoices:
-                invoice.action_post() """
-
-    def action_create_invoice(self):
-        invoice = self._prepare_invoice()
-        create_invoice = self.env['account.move'].create(invoice)
-        emi_line=self.prepare_invoice_line_vals(create_invoice)
+        to_invoice_today = self.env['emi.line'].search([('paid_date', '=', today)])
+        for rec in to_invoice_today:
+            if self.action_create_invoice(rec):
+                rec.state = 'invoiced'
+                self._send_mail_to_loan_partner()
+                rec.loan_id.next_emi_date = rec.paid_date + relativedelta(months=1)
+                
+    def action_create_invoice(self, rec):
+        invoice = self._prepare_invoice(rec)
+        invoice_id = self.env['account.move'].create(invoice)
+        emi_line=self.prepare_invoice_line_vals(invoice_id, rec)
         line_ids=self.env['account.move.line'].create(emi_line)
-        create_invoice.action_post() 
+        invoice_id.action_post() 
         return True
         
-
-    def _prepare_invoice(self):
+    def _prepare_invoice(self, rec):
         today = fields.date.today()
         value = {
-            'partner_id': self.partner_id.id,
-            'partner_shipping_id': self.partner_id.id,
+            'partner_id': rec.loan_id.partner_id.id,
+            'partner_shipping_id': rec.loan_id.partner_id.id,
             'move_type':'out_invoice',
             'invoice_user_id': self.env.user.id,
             'company_id': self.env.user.company_id.id,
-            'invoice_date': self.emi_date,
+            'invoice_date': rec.paid_date,
             'user_id': self.env.user.id,
-            'loan_id': self.id,
+            'loan_id': rec.loan_id.id,
         }
         return value
 
-    def prepare_invoice_line_vals(self,create_invoice):
-        product_id = self.env['product.product'].search([('name','=','EMI')])
+    def prepare_invoice_line_vals(self,invoice_id, rec):
+        #product_id = self.env['product.product'].search([('name','=','EMI')])
+        product_template = self.env.ref('bista_loan.product_product_emi_template')
+        product = product_template.product_variant_id
+        if not product:
+            raise UserError("Product 'EMI' not found. Please configure it in Products.")
         line_vals_list = []
         line_vals = {
-            'product_id': product_id.id,
+            'product_id': product.id,
             'quantity': 1,
-            'price_unit': self.emi_amount,
+            'price_unit': rec.total_paid,
             'discount': 0.0,
-            'move_id': create_invoice.id,
+            'move_id': invoice_id.id,
             'tax_ids': [],
             }
         line_vals_list.append(line_vals)

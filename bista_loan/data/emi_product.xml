@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="product_product_emi_template" model="product.template">
+            <field name="name">EMI</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="default_code">EMI</field>
+            <field name="taxes_id" eval="[(6, 0, [])]"/>
+        </record>
+    </data>
+</odoo>

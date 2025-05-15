@@ -41,6 +41,7 @@
                             <field name="total_principle_amount" />
                             <field name="principle_amount" />
                             <field name="pending_principle_amount" />
+                            <field name="next_emi_date" />
                         </group>
                     </group>
                     <notebook>
@@ -49,12 +50,12 @@
                                 <list editable="bottom" decoration-success='is_active == True'>
                                     <field name="rate" />
                                     <field name="starting_date" />
-                                    <field name="is_active" />  
+                                    <field name="is_active" readonly="1" />  
                                     <button name="active_rate"
                                             string="Activate"
                                             type="object"
                                             confirm="Are You sure You want to activate this rate?"
-                                            invisible="is_active" />
+                                            invisible= "is_active or starting_date &lt; datetime.date.today().strftime('%Y-%m-%d')" />
                                 </list>
                                 <form>
                                     <group>
