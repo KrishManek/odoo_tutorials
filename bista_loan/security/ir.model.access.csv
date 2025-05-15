@@ -1,5 +1,10 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_loan_management,loan.management,model_loan_management,,1,1,1,1
-access_emi_lines,emi.lines,model_emi_line,,1,1,1,1
-access_interest_rate,interest.rate,model_interest_rate,,1,1,1,1
 
+access_loan_management_user,loan.management.user,model_loan_management,bista_loan.group_loan_user,1,1,1,0
+access_loan_management_admin,loan.management.admin,model_loan_management,bista_loan.group_loan_admin,1,1,1,1
+
+access_emi_lines_user,emi.lines.user,model_emi_line,bista_loan.group_loan_user,1,1,1,0
+access_emi_lines_admin,emi.lines.admin,model_emi_line,bista_loan.group_loan_admin,1,1,1,1
+
+access_interest_rate_user,interest.rate.user,model_interest_rate,bista_loan.group_loan_user,1,1,1,0
+access_interest_rate_admin,interest.rate.admin,model_interest_rate,bista_loan.group_loan_admin,1,1,1,1

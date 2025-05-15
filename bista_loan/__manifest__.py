@@ -13,6 +13,7 @@
         #'security/security.xml',
         'security/ir.model.access.csv',
         'data/ir_cron.xml',
+        'data/emi_product.xml',
         'data/email_template.xml',
         'views/loan_management_view.xml',
         'views/account_view.xml',
