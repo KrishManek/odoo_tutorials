@@ -10,7 +10,7 @@
 
 
     "data": [
-        #'security/security.xml',
+        'security/security.xml',
         'security/ir.model.access.csv',
         'data/ir_cron.xml',
         'data/emi_product.xml',
