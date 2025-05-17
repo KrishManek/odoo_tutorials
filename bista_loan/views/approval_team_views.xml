@@ -1,0 +1,47 @@
+<odoo>
+    <record id="view_approval_team_form" model="ir.ui.view">
+        <field name="name">approval.team.form</field>
+        <field name="model">approval.team</field>
+        <field name="arch" type="xml">
+            <form string="Approval Team">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <notebook>
+                        <page string="Approval Levels">
+                            <field name="approval_level_ids">
+                                <list editable="bottom">
+                                    <field name="level" readonly="1" />
+                                    <field name="name"/>
+                                    <field name="user_ids" widget="many2many_tags"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_approval_team_list" model="ir.ui.view">
+        <field name="name">approval.team.list</field>
+        <field name="model">approval.team</field>
+        <field name="arch" type="xml">
+            <list string="Approval Teams">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- <record id="action_approval_team" model="ir.actions.act_window">
+        <field name="name">Approval Teams</field>
+        <field name="res_model">approval.team</field>
+        <field name="view_mode">list,form</field>
+    </record> -->
+
+    <!-- <menuitem id="menu_config_root" name="Configuration" parent="menu_bista_loan" />
+    <menuitem id="menu_approval_config" name="Approvals" parent="menu_config_root" />
+    <menuitem id="menu_approval_team" name="Approval Teams" parent="menu_approval_config" action="action_approval_team" /> -->
+
+</odoo>

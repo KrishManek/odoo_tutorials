@@ -17,6 +17,9 @@
         'data/email_template.xml',
         'views/loan_management_view.xml',
         'views/account_view.xml',
+        'views/approval_team_views.xml',
+        'views/approval_team_level_view.xml',
+        'views/menu.xml',
         'wizards/view_account_payment_register.xml',
     ],
 }

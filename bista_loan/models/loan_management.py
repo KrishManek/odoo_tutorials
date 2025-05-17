@@ -29,12 +29,30 @@ class LoanManagement(models.Model):
     total_invoices = fields.Integer(compute='_compute_total_invoices', store=True)
     next_emi_date = fields.Date(string="Next EMI Date")
     
+    approval_team = fields.Many2one('approval.team', string="Aprroval Team")
+    state = fields.Selection([('draft', 'Draft'),
+                              ('to_approve', 'Approve'),
+                              ('approved', 'Approved'),
+                              ('rejected', 'Rejcted')], string="Status", default='draft')
     
+    loan_approval_level_ids = fields.One2many('loan.approval.level', 'loan_id', string="Loan Approval Levels")
+    next_approvers = fields.Many2many('res.users', string = "Next Approvers", compute= "_compute_next_approvers", store=True)
+    
+    @api.depends('loan_approval_level_ids.stage')
+    def _compute_next_approvers(self):
+        for rec in self:
+            approvers = rec.loan_approval_level_ids.filtered(lambda lvl: lvl.stage == 'pending').mapped('user_ids')
+            if approvers:
+                rec.next_approvers = approvers
+            else:
+                rec.next_approvers = [(5, 0, 0)]
+            
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             if not vals.get('user_id'):
                 vals['user_id'] = self.env.uid
+            vals['state'] = 'to_approve' 
         return super(LoanManagement, self).create(vals_list)
     
     def action_open_invoices(self):
@@ -181,3 +199,30 @@ class LoanManagement(models.Model):
             template_id.send_mail(self.id, force_send=True)
         else:
             raise UserError("Mail Template not found. Please check the template.")
+        
+        
+    def action_approve_application(self):
+        pass
+    
+    def action_reject_application(self):
+        self.state = 'rejected'
+        
+    @api.onchange('approval_team')
+    def _onchange_approval_team(self):
+        for rec in self:
+            rec.loan_approval_level_ids = [(5, 0, 0)]
+            if rec.approval_team:
+                assigned_users = set()
+                level_vals = []
+
+                for level in rec.approval_team.approval_level_ids:
+                    """ unique_user_ids = [u.id for u in level.user_ids if u.id not in assigned_users]
+                    if unique_user_ids: """
+                    level_vals.append((0, 0, {
+                        'level': level.level,
+                        'name': level.name,
+                        'user_ids': [(6, 0, level.user_ids.ids)],
+                    }))
+                        #assigned_users.update(unique_user_ids)
+
+                rec.loan_approval_level_ids = level_vals
