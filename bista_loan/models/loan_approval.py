@@ -4,9 +4,9 @@ class LoanApprovalLevel(models.Model):
     _name = 'loan.approval.level'
     _description = 'Loan Approval Level'
 
-    loan_id = fields.Many2one('loan.management', string='Loan', required=True, ondelete='cascade')
-    level = fields.Integer(string='Level', required=True)
-    name = fields.Char(string='Level Name', required=True)
+    loan_id = fields.Many2one('loan.management', string='Loan', ondelete='cascade')
+    level = fields.Integer(string='Level')
+    name = fields.Char(string='Level Name')
     user_ids = fields.Many2many('res.users', string='Approvers', domain="[('id', 'not in', already_assigned_user_ids)]")
     already_assigned_user_ids = fields.Many2many('res.users', compute='_compute_user_domain', store=False)
     stage = fields.Selection([
@@ -59,8 +59,10 @@ class LoanApprovalLevel(models.Model):
             rec.timestamp = fields.Datetime.now()
         
             loan = rec.loan_id
-            next_levels = loan.loan_approval_level_ids.filtered(lambda l: l.level > rec.level and l.stage == 'pending')
-            if not next_levels:
+            next_level = loan.loan_approval_level_ids.filtered(lambda l: l.level == rec.level + 1 and l.stage == 'pending')
+            if next_level:
+                next_level.stage = 'to_approve'
+            else:
                 loan.state = 'approved'
     
     def action_reject_application(self):

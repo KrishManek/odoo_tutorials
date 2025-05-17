@@ -200,9 +200,8 @@ class LoanManagement(models.Model):
         else:
             raise UserError("Mail Template not found. Please check the template.")
         
-        
     def action_approve_application(self):
-        pass
+        self.state = 'to_approve'
     
     def action_reject_application(self):
         self.state = 'rejected'

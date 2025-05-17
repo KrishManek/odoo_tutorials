@@ -9,19 +9,19 @@
                     <button name="create_emi_lines"
                             string="Generate Emi Lines"
                             type="object"
-                            invisible="state in ['to_approve', 'appoved', 'rejected']"
+                            invisible="state in ['approved', 'rejected']"
                             class="btn-primary" />
 
                     <button name="action_approve_application"
                             string="Approve Loan Application"
                             type="object"
-                            invisible="state in ['draft', 'appoved', 'rejected']"
+                            invisible="state in ['to_approve', 'approved', 'rejected']"
                             class="btn-primary" />
 
                     <button name="action_reject_application"
                             string="Reject Loan Application"
                             type="object"
-                            invisible="state in ['draft','appoved','rejected']"
+                            invisible="state in ['draft','approved','rejected']"
                             class="btn-primary" />
 
                     <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved" /> 
@@ -50,7 +50,7 @@
                             <field name="end_date" readonly="1" />
                             <field name="emi_date" />
                             <field name="emi_amount" readonly="1" />
-                            <field name="monthly_intrest" />
+                            <field name="monthly_intrest" readonly="1" />
                         </group>
                         <group>
                             <field name="total_interest_amount" />
@@ -59,7 +59,7 @@
                             <field name="total_principle_amount" />
                             <field name="principle_amount" />
                             <field name="pending_principle_amount" />
-                            <field name="next_emi_date" />
+                            <field name="next_emi_date" readonly="1" />
                             <field name="approval_team" />
                             <field name="next_approvers" widget="many2many_tags"/>
                         </group>
@@ -114,10 +114,10 @@
                         <page string="Approval Levels">
                             <field name="loan_approval_level_ids">
                                 <list editable="bottom">
-                                    <field name="level" />
-                                    <field name="name" />
-                                    <field name="user_ids" widget="many2many_tags" />
-                                    <field name="stage" />
+                                    <field name="level" readonly="1" force_save="1" />
+                                    <field name="name" readonly="1" force_save="1" />
+                                    <field name="user_ids" widget="many2many_tags" readonly="1" force_save="1" />
+                                    <field name="stage" force_save="1" />
                                     <field name="approved_by" readonly="1" />
                                     <field name="rejected_by" readonly="1" />
                                     <field name="timestamp" readonly="1" />
