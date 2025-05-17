@@ -1,0 +1,39 @@
+<odoo>
+    <record id="view_approval_level_list" model="ir.ui.view">
+        <field name="name">approval.level.list</field>
+        <field name="model">team.approval.level</field>
+        <field name="arch" type="xml">
+            <list string="Approval Levels">
+                <field name="level" />
+                <field name="name" />
+                <field name="team_id" />
+                <field name="user_ids" widget="many2many_tags" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_approval_level_form" model="ir.ui.view">
+        <field name="name">approval.level.form</field>
+        <field name="model">team.approval.level</field>
+        <field name="arch" type="xml">
+            <form string="Approval Level">
+                <sheet>
+                    <group>
+                        <field name="level" readonly="1" />
+                        <field name="name" />
+                        <field name="team_id" />
+                        <field name="user_ids" widget="many2many_tags" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- <record id="action_approval_team_level" model="ir.actions.act_window">
+        <field name="name">Approval Levels </field>
+        <field name="res_model">approval.team.level</field>
+        <field name="view_mode">list,form</field>
+    </record> -->
+
+    <!-- <menuitem id="menu_approval_team_levels" name="Approval Teams Levels" parent="menu_approval_config" action="action_approval_team_level" /> -->
+</odoo>
