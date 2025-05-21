@@ -14,29 +14,50 @@ class UpdateProductSerial(models.TransientModel):
         ('update_serial','To Serial')], string='Operation Type')
     excel_file = fields.Binary(string="Upload Excel File", required=True)
     replace_products_wizard_id = fields.One2many('update.product','wizard_id')
+    replace_product_serial_wizard_id = fields.One2many('update.serial','wizard_id')
     
     def read_file(self):
-        if self.excel_file:   
-            self.replace_products_wizard_id.unlink()
-            wb = openpyxl.load_workbook(filename=BytesIO(base64.b64decode(self.excel_file)), read_only=True)
-            ws = wb.active
-            print(ws)
-            lines= []
-            for record in ws.iter_rows(min_row=2, max_row=None, min_col=None,max_col=None, values_only=True):
-                print(record)
-                mo_no,curr_prod,new_prod = record
-                mo_id = self.env['mrp.production'].search([('name', '=', mo_no)]) 
-                curr_prod_id = self.env['product.product'].search([('default_code', '=', curr_prod)])
-                new_prod_id = self.env['product.product'].search([('default_code', '=', new_prod)])
-                lines.append((0,0,{
-                            'mrp_id':mo_id.id,
-                            'wizard_id': self.id,
-                            'current_product': curr_prod_id.id,
-                            'new_product': new_prod_id.id,
-                            'state': mo_id.state
-                            
-                        }))
-            self.replace_products_wizard_id = lines 
+        if self.excel_file:
+            if self.operation == 'update_product': 
+                self.replace_products_wizard_id.unlink()
+                wb = openpyxl.load_workbook(filename=BytesIO(base64.b64decode(self.excel_file)), read_only=True)
+                ws = wb.active
+                print(ws)
+                lines= []
+                for record in ws.iter_rows(min_row=2, max_row=None, min_col=None,max_col=None, values_only=True):
+                    print(record)
+                    mo_no,curr_prod,new_prod = record
+                    mo_id = self.env['mrp.production'].search([('name', '=', mo_no)]) 
+                    curr_prod_id = self.env['product.product'].search([('default_code', '=', curr_prod)])
+                    new_prod_id = self.env['product.product'].search([('default_code', '=', new_prod)])
+                    lines.append((0,0,{
+                                'mrp_id':mo_id.id,
+                                'wizard_id': self.id,
+                                'current_product': curr_prod_id.id,
+                                'new_product': new_prod_id.id,
+                                'state': mo_id.state
+                                
+                            }))
+                self.replace_products_wizard_id = lines 
+            else:
+                self.replace_products_wizard_id.unlink()
+                wb = openpyxl.load_workbook(filename=BytesIO(base64.b64decode(self.excel_file)), read_only=True)
+                ws = wb.active
+                print(ws)
+                lines= []
+                for record in ws.iter_rows(min_row=2, max_row=None, min_col=None,max_col=None, values_only=True):
+                    print(record)
+                    mo_no,curr_prod,old_serial,new_serial = record
+                    mo_id = self.env['mrp.production'].search([('name', '=', mo_no)]) 
+                    curr_prod_id = self.env['product.product'].search([('default_code', '=', curr_prod)])
+                    lines.append((0,0,{
+                                'mrp_id':mo_id.id,
+                                'wizard_id': self.id,
+                                'current_product': curr_prod_id.id,
+                                'old_serial': old_serial,
+                                'new_serial': new_serial,
+                            }))
+                self.replace_product_serial_wizard_id = lines 
         else:
             raise UserError("First Please Upload Correct Excel File")
         
