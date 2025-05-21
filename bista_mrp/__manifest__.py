@@ -11,6 +11,8 @@
         'security/ir.model.access.csv',
         'wizard/assign_serial_view.xml',
         'wizard/manufacturing_report.xml',
+        'wizard/update_produt_serial_view.xml',
+        'wizard/update_produt_serial_view.xml',
         'views/product_product_views.xml',
         'views/mrp_production.xml',
         'views/sale_order_view.xml',
