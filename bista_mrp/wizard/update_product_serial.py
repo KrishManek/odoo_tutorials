@@ -1,0 +1,84 @@
+import base64
+from io import BytesIO
+from odoo import models, fields,api
+from odoo.exceptions import UserError
+import openpyxl
+
+class UpdateProductSerial(models.TransientModel):
+    _name = 'update.product.serial'
+    _description = 'Sale Add Product Wizard'
+
+    mrp_id = fields.Many2one('mrp.production',string="Default_id")
+    operation = fields.Selection([
+        ('update_product', 'Product'),
+        ('update_serial','To Serial')], string='Operation Type')
+    excel_file = fields.Binary(string="Upload Excel File", required=True)
+    replace_products_wizard_id = fields.One2many('update.product','wizard_id')
+    
+    def read_file(self):
+        if self.excel_file:   
+            self.replace_products_wizard_id.unlink()
+            wb = openpyxl.load_workbook(filename=BytesIO(base64.b64decode(self.excel_file)), read_only=True)
+            ws = wb.active
+            print(ws)
+            lines= []
+            for record in ws.iter_rows(min_row=2, max_row=None, min_col=None,max_col=None, values_only=True):
+                print(record)
+                mo_no,curr_prod,new_prod = record
+                mo_id = self.env['mrp.production'].search([('name', '=', mo_no)]) 
+                curr_prod_id = self.env['product.product'].search([('default_code', '=', curr_prod)])
+                new_prod_id = self.env['product.product'].search([('default_code', '=', new_prod)])
+                lines.append((0,0,{
+                            'mrp_id':mo_id.id,
+                            'wizard_id': self.id,
+                            'current_product': curr_prod_id.id,
+                            'new_product': new_prod_id.id,
+                            'state': mo_id.state
+                            
+                        }))
+            self.replace_products_wizard_id = lines 
+        else:
+            raise UserError("First Please Upload Correct Excel File")
+        
+        veiw_id = self.env.ref("bista_mrp.view_product_serial_wizard_form").id
+        return {
+            'name' : "Update Product or Wizard Window",
+            'view_mode' : "form",
+            'res_model' : 'update.product.serial',
+            'res_id' : self.id,
+            'view_id' : veiw_id,
+            'type' : "ir.actions.act_window",
+            'target' : 'new',
+            'context': {'default_mrp_id': self.id}
+        }
+            
+    def action_open_wizard(self):
+        veiw_id = self.env.ref("bista_mrp.view_product_serial_wizard_form").id
+        return {
+            'name' : "Update Product or Wizard Window",
+            'view_mode' : "form",
+            'res_model' : 'update.product.serial',
+            'res_id' : self.id,
+            'view_id' : veiw_id,
+            'type' : "ir.actions.act_window",
+            'target' : 'new',
+            'context': {'default_mrp_id': self.id}
+        }
+        
+            
+    def update_product(self):
+        self.read_file()
+        for records in self.replace_products_wizard_id:
+            for mo_record in records.mrp_id:
+                if self.operation == 'update_product':
+                    if mo_record.state == 'draft':
+                        for product_record in mo_record.move_raw_ids:
+                            if product_record.product_id.default_code == records.current_product.default_code:
+                                new_product_id = self.env['product.product'].search([('default_code', '=', records.new_product.default_code)]).id
+                                product_record.write({'product_id': new_product_id})
+                                break
+                            else:
+                                pass
+        
+        
+    

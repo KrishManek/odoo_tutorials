@@ -22,3 +22,15 @@ class MrpProduction(models.Model):
         res[-1].write({'serial_ids':[(3, res[0].lot_producing_id.id)]})
         res[0].write({'serial_ids':[(3, res[0].lot_producing_id.id)]})
         return res
+    
+    def action_open_update_product_wizard(self):
+        veiw_id = self.env.ref("bista_mrp.view_product_serial_wizard_form").id
+        return {
+            'name' : "Update Product or Wizard Window",
+            'view_mode' : "form",
+            'res_model' : 'update.product.serial',
+            'view_id' : veiw_id,
+            'type' : "ir.actions.act_window",
+            'target' : 'new',
+            'context': {'default_mrp_id': self.id}
+        }

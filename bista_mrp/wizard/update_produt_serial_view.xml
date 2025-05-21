@@ -1,0 +1,42 @@
+<odoo>
+  <record id="view_product_serial_wizard_form" model="ir.ui.view">
+    <field name="name">update.product.serial.form</field>
+    <field name="model">update.product.serial</field>
+    <field name="arch" type="xml">
+      <form string="Update Product or Serial Wizard">
+        <sheet>
+          <group>
+            <field name="mrp_id" readonly="1" invisible="1" />
+          </group>
+          <group>
+            <group>
+              <field name="operation" widget="radio" />
+            </group>
+            <group>
+              <field name="excel_file" />
+            </group>
+          </group>
+          <notebook>
+            <page name="update_product" string="Update Product" invisible="operation != 'update_product'">
+              <field name="replace_products_wizard_id">
+                <list editable="bottom">
+                  <field name="mrp_id" />
+                  <field name="current_product" />
+                  <field name="new_product" />
+                  <field name="state" />
+                </list>
+              </field>
+            </page>
+            <page name="update_serial" string="Update Serial" invisible="operation != 'update_serial'">
+              
+            </page>
+          </notebook>
+        </sheet>
+        <footer>
+          <button string="Read File" type="object" name="read_file" class="btn-primary" />
+          <button string="update" type="object" name="update_product" class="btn-primary" />
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>

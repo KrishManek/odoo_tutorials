@@ -16,4 +16,14 @@
             </xpath>
         </field>
     </record>
+    <record id="view_mrp_production_tree_view_inherit" model="ir.ui.view">
+        <field name="name">mrp.production.tree.inherit.ref</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_open_update_product_wizard" string="Update Product/Serial" type="object"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
