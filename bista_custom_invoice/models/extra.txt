@@ -1,0 +1,12 @@
+@api.depends('amount', 'customer_invoices.allocation_amount')
+    def _compute_remaining_amount(self):
+        for invoice in self:
+            allocated_amt = sum(invoice.customer_invoices.mapped('allocation_amount'))
+            if invoice.amount >= allocated_amt:
+                invoice.remaining_balance = invoice.amount - allocated_amt
+            else:
+                invoice.remaining_balance = 0
+                #raise UserError("No Amount left for allocation.")
+
+
+    
