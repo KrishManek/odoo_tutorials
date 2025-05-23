@@ -28,13 +28,20 @@
               </field>
             </page>
             <page name="update_serial" string="Update Serial" invisible="operation != 'update_serial'">
-              
+              <field name="replace_product_serial_wizard_id">
+                <list editable="bottom">
+                  <field name="mrp_id" />
+                  <field name="current_product" />
+                  <field name="old_serial" />
+                  <field name="new_serial" />
+                </list>
+              </field>
             </page>
           </notebook>
         </sheet>
         <footer>
-          <button string="Read File" type="object" name="read_file" class="btn-primary" />
-          <button string="update" type="object" name="update_product" class="btn-primary" />
+          <button string="Read File" type="object" name="read_file" class="btn-primary" invisible="not operation" />
+          <button string="update" type="object" name="update_product" class="btn-primary" invisible="not operation" />
         </footer>
       </form>
     </field>
