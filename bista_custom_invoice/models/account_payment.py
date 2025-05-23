@@ -10,17 +10,13 @@ class AccountPayment(models.Model):
     
     def action_post(self):
         res = super().action_post()
-        invoices = self.customer_invoices.mapped('invoice_id')
+        line_id = self.move_id.line_ids.filtered(lambda line: line.account_type == 'asset_receivable').id
         for invoice in self.customer_invoices:
             print(self)
             self.move_id.line_ids.write({'is_custom_paid_invoice': True})
-            line_id = self.move_id.line_ids.filtered(lambda line: line.account_type == 'asset_receivable').id
             #line_id = self.env['account.move.line'].search([('move_type', '=', 'entry'), ('move_id', '=', self.move_id.id), ('account_type', '=', 'asset_receivable')]).id
             result = invoice.invoice_id.js_assign_outstanding_line(line_id)
             print(invoice)
-            
-            #break 
-            
     
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
@@ -92,32 +88,13 @@ class AccountPayment(models.Model):
             invoice.remaining_balance = invoice.amount - sum(invoice.customer_invoices.mapped('allocation_amount'))
               """
 
-class AccountMove(models.Model):
-    
-    _inherit = 'account.move'
-    
-    @api.model_create_multi
-    def create(self, vals_list):
-        res =  super().create(vals_list)
-        print(vals_list)
-        print(res.move_type)
-        return res 
-
-
               
 class AccountMoveLine(models.Model):
     
     _inherit = 'account.move.line'
     
     is_custom_paid_invoice = fields.Boolean(string="Is custom paid Invoice", default=False)
-    
-    @api.model_create_multi
-    def create(self, vals_list):
-        res =  super().create(vals_list)
-        print(vals_list)
-        print(res)
-        return res
-    
+
     #not using super call
     # 0: {'debit_values': None, 'credit_values': None, 'partial_values': {'amount': 10464.04, 'debit_amount_currency': 10464.04, 'credit_amount_currency': 10464.04, 'debit_move_id': 278, 'credit_move_id': 322}}
     # after super call
@@ -149,15 +126,4 @@ class AccountMoveLine(models.Model):
                             partials['credit_amount_currency'] = allocation
 
         return plan_results
-
-
-class AccountPartialReconcile(models.Model):
-    
-    _inherit = 'account.partial.reconcile'
-    
-    @api.model_create_multi
-    def create(self, vals_list):
-        res =  super().create(vals_list)
-        return res 
-
 
