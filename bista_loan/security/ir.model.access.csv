@@ -17,3 +17,6 @@ access_approval_team_level_admin,team.approval.level.admin,model_team_approval_l
 
 access_loan_approval_user,loan.approval.level.user,model_loan_approval_level,bista_loan.group_loan_user,1,1,1,1
 access_loan_approval_admin,loan.approval.level.admin,model_loan_approval_level,bista_loan.group_loan_user,1,1,1,1
+
+access_advance_payment_user,advance.payment.user,model_advance_payment,bista_loan.group_loan_user,1,1,1,1
+access_advance_payment_admin,advance.payment.admin,model_advance_payment,bista_loan.group_loan_admin,1,1,1,1

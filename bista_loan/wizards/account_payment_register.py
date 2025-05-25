@@ -45,6 +45,10 @@ class AccountPaymentRegister(models.TransientModel):
                         invoiced_date = move.invoice_date
                         emi_lines = move.loan_id.emi_line_ids.filtered(lambda emi: emi.paid_date == invoiced_date)
                         emi_lines.write({'state': 'paid'})
+                        advance_payment_lines = move.loan_id.advance_payments.filtered(lambda pay: pay.paid_date == invoiced_date)
+                        advance_payment_lines.write({'status': 'paid'})
+                        if advance_payment_lines:
+                            moves_with_loan.loan_id.create_emi_lines()
         return res                
 
     
