@@ -8,7 +8,7 @@ class LoanManagement(models.Model):
 
     loan_amount = fields.Float(string="Loan Amount", default=10000)
     partner_id = fields.Many2one('res.partner', string="Partner")
-    user_id = fields.Many2one('res.users', string="User", domain="[('id','!=', uid)]")
+    user_ids = fields.Many2many('res.users','loan_management_user_rel','loan_id','user_id',string="Users",domain="[('id','!=', uid)]")
     period = fields.Integer(string="No of Months.", default = 1)
     start_date = fields.Date(string="Start Date.", default = fields.Date.today())
     end_date = fields.Date(string="End Date.", compute = "_compute_end_date", store=True)
@@ -38,6 +38,10 @@ class LoanManagement(models.Model):
     loan_approval_level_ids = fields.One2many('loan.approval.level', 'loan_id', string="Loan Approval Levels")
     next_approvers = fields.Many2many('res.users', string = "Next Approvers", compute= "_compute_next_approvers", store=True)
     
+    advance_payments = fields.One2many('advance.payment', 'loan_id')
+    #is_advance_payment = fields.Boolean(string="Is advance_payment", default=False)
+    
+    
     @api.depends('loan_approval_level_ids.stage')
     def _compute_next_approvers(self):
         for rec in self:
@@ -50,9 +54,9 @@ class LoanManagement(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if not vals.get('user_id'):
-                vals['user_id'] = self.env.uid
-            vals['state'] = 'to_approve' 
+            if not vals.get('user_ids'):
+                vals['user_ids'] = [(6, 0, [self.env.uid])]
+            #vals['state'] = 'to_approve' 
         return super(LoanManagement, self).create(vals_list)
     
     def action_open_invoices(self):
@@ -85,48 +89,62 @@ class LoanManagement(models.Model):
         for rec in self:
             rec.end_date = rec.start_date + relativedelta(months=rec.period)
         
-    @api.depends('rate_of_interests.rate','rate_of_interests.is_active','loan_amount','period')    
+    @api.depends('rate_of_interests.rate', 'rate_of_interests.is_active', 'loan_amount', 'period', 'advance_payments.status', 'emi_line_ids.state')    
     def _compute_emi(self):
         for rec in self:
             rate = rec.rate_of_interest
             if rate and rec.period > 0 and rec.loan_amount >= 1000:
+                paid_principal_emi = sum(rec.emi_line_ids.filtered(lambda l: l.state == 'paid').mapped('principle_amount'))
+                paid_advance = sum(rec.advance_payments.filtered(lambda p: p.status == 'paid').mapped('amount'))
+                remaining_principal = rec.loan_amount - paid_principal_emi - paid_advance
+
                 monthly_interest_rate = rate / 1200
-                n = rec.period
-                rec.emi_amount = ((rec.loan_amount * monthly_interest_rate) /
-                                (1 - (1 / (1 + monthly_interest_rate) ** n)))
-                # Just for display
-                month = 1
-                amount_current = rec.loan_amount * (1 + monthly_interest_rate) ** month
-                amount_previous = rec.loan_amount * (1 + monthly_interest_rate) ** (month - 1)
-                interest_this_month = amount_current - amount_previous
-                rec.monthly_intrest = interest_this_month
+                n = rec.period - len(rec.emi_line_ids.filtered(lambda l: l.state in ['paid', 'invoiced']))
+
+                if n > 0 and remaining_principal > 0:
+                    rec.emi_amount = ((remaining_principal * monthly_interest_rate) /(1 - (1 / (1 + monthly_interest_rate) ** n)))
+                    month = 1
+                    amount_current = remaining_principal * (1 + monthly_interest_rate) ** month
+                    amount_previous = remaining_principal * (1 + monthly_interest_rate) ** (month - 1)
+                    interest_this_month = amount_current - amount_previous
+                    rec.monthly_intrest = interest_this_month
+                else:
+                    rec.emi_amount = 0.0
+                    rec.monthly_intrest = 0.0
 
                     
-    @api.depends('emi_line_ids.state')    
+    @api.depends('emi_line_ids.state', 'advance_payments.status')
     def _compute_amounts(self):
         for rec in self:
+            emi_lines = rec.emi_line_ids
+            paid_emi_lines = emi_lines.filtered(lambda r: r.state == 'paid')
+            total_interest = sum(emi_lines.mapped('interest_amount'))
+            paid_interest = sum(paid_emi_lines.mapped('interest_amount'))
+            paid_principal_emi = sum(paid_emi_lines.mapped('principle_amount'))
+            paid_advance_amount = sum(rec.advance_payments.filtered(lambda p: p.status == 'paid').mapped('amount'))
+            total_paid_principal = paid_principal_emi + paid_advance_amount
             rec.total_principle_amount = rec.loan_amount
-            data = rec.emi_line_ids
-            total_interest = sum(data.mapped('interest_amount'))
-            paid_lines = data.filtered(lambda r: r.state == 'paid')
-            paid_interest = sum(paid_lines.mapped('interest_amount'))
-            paid_principal = sum(paid_lines.mapped('principle_amount'))
             rec.total_interest_amount = total_interest
             rec.interest_amount = paid_interest
-            rec.principle_amount = paid_principal
-            rec.pending_principle_amount = rec.loan_amount - paid_principal
+            rec.principle_amount = total_paid_principal
+            rec.pending_principle_amount = rec.loan_amount - total_paid_principal
             rec.pending_interest_amount = total_interest - paid_interest
     
     def create_emi_lines(self):
         for rec in self:
             pending_lines = rec.emi_line_ids.filtered(lambda l: l.state == 'pending')
             pending_lines.unlink()
-            paid_principal = sum(rec.emi_line_ids.filtered(lambda l: l.state == 'paid').mapped('principle_amount'))
-            remaining_principal = rec.loan_amount - paid_principal
+
+            # Calculate already paid principal from EMI and advance payments
+            paid_principal_emi = sum(rec.emi_line_ids.filtered(lambda l: l.state == 'paid').mapped('principle_amount'))
+            paid_advance = sum(rec.advance_payments.filtered(lambda p: p.status == 'paid').mapped('amount'))
+
+            total_paid_principal = paid_principal_emi + paid_advance
+            remaining_principal = rec.loan_amount - total_paid_principal
             monthly_rate = rec.rate_of_interest / 1200
-            #emi_date = rec.emi_date
             emi_date = rec.next_emi_date or rec.emi_date
-            remaining_periods = rec.period - len(rec.emi_line_ids.filtered(lambda l: l.state in ['paid', 'invoiced']))
+            paid_or_invoiced = rec.emi_line_ids.filtered(lambda l: l.state in ['paid', 'invoiced'])
+            remaining_periods = rec.period - len(paid_or_invoiced)
             vals = []
             for line in range(remaining_periods):
                 interest_charged = monthly_rate * remaining_principal
@@ -143,7 +161,7 @@ class LoanManagement(models.Model):
                 remaining_principal -= principal_paid
                 emi_date += relativedelta(months=1)
             rec.emi_line_ids = vals
-
+        
     def generate_emi_invoices(self):
         today = fields.Date.today()
         to_invoice_today = self.env['emi.line'].search([('paid_date', '=', today)])
@@ -154,14 +172,14 @@ class LoanManagement(models.Model):
                 rec.loan_id.next_emi_date = rec.paid_date + relativedelta(months=1)
                 
     def action_create_invoice(self, rec):
-        invoice = self._prepare_invoice(rec)
+        invoice = self._prepare_invoice_vals(rec)
         invoice_id = self.env['account.move'].create(invoice)
         emi_line=self.prepare_invoice_line_vals(invoice_id, rec)
         line_ids=self.env['account.move.line'].create(emi_line)
         invoice_id.action_post() 
         return True
         
-    def _prepare_invoice(self, rec):
+    def _prepare_invoice_vals(self, rec):
         today = fields.date.today()
         value = {
             'partner_id': rec.loan_id.partner_id.id,
@@ -178,12 +196,12 @@ class LoanManagement(models.Model):
     def prepare_invoice_line_vals(self,invoice_id, rec):
         #product_id = self.env['product.product'].search([('name','=','EMI')])
         product_template = self.env.ref('bista_loan.product_product_emi_template')
-        product = product_template.product_variant_id
+        product = product_template.product_variant_id.id
         if not product:
             raise UserError("Product 'EMI' not found. Please configure it in Products.")
         line_vals_list = []
         line_vals = {
-            'product_id': product.id,
+            'product_id': product,
             'quantity': 1,
             'price_unit': rec.total_paid,
             'discount': 0.0,
@@ -210,6 +228,7 @@ class LoanManagement(models.Model):
     def _onchange_approval_team(self):
         for rec in self:
             rec.loan_approval_level_ids = [(5, 0, 0)]
+            all_user_ids = set()
             if rec.approval_team:
                 assigned_users = set()
                 level_vals = []
@@ -217,6 +236,8 @@ class LoanManagement(models.Model):
                 for level in rec.approval_team.approval_level_ids:
                     """ unique_user_ids = [u.id for u in level.user_ids if u.id not in assigned_users]
                     if unique_user_ids: """
+                    user_ids = level.user_ids.ids
+                    all_user_ids.update(user_ids)
                     level_vals.append((0, 0, {
                         'level': level.level,
                         'name': level.name,
@@ -225,3 +246,9 @@ class LoanManagement(models.Model):
                         #assigned_users.update(unique_user_ids)
 
                 rec.loan_approval_level_ids = level_vals
+                existing_user_ids = rec.user_ids.ids if rec.user_ids else []
+                combined_user_ids = set(existing_user_ids) | all_user_ids
+                rec.user_ids = [(6, 0, list(combined_user_ids))]
+            else:
+                existing_user_ids = rec.user_ids.ids if rec.user_ids else []
+                rec.user_ids = [(6, 0, existing_user_ids)]
