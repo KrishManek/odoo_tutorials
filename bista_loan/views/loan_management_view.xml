@@ -38,7 +38,7 @@
                             <field name="partner_id" required="1" />
                         </group>
                         <group>
-                            <field name="user_id" groups="bista_loan.group_loan_admin" />
+                            <field name="user_ids" groups="bista_loan.group_loan_admin" widget="many2many_tags" />
                         </group>
                     </group>
                     <group name="amount_details">

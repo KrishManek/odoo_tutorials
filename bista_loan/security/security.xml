@@ -20,7 +20,7 @@
     <record id="rule_loan_user" model="ir.rule">
         <field name="name">Loan: User Access</field>
         <field name="model_id" ref="model_loan_management" />
-        <field name="domain_force">['|', ('create_uid', '=', user.id), ('user_id', '=', user.id)]</field>
+        <field name="domain_force">['|', ('create_uid', '=', user.id), ('user_ids', '=', user.id)]</field>
         <field name="groups" eval="[(4, ref('bista_loan.group_loan_user'))]" />
         <field name="perm_read" eval="1" />
         <field name="perm_write" eval="1" />

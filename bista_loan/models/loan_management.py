@@ -8,7 +8,7 @@ class LoanManagement(models.Model):
 
     loan_amount = fields.Float(string="Loan Amount", default=10000)
     partner_id = fields.Many2one('res.partner', string="Partner")
-    user_id = fields.Many2one('res.users', string="User", domain="[('id','!=', uid)]")
+    user_ids = fields.Many2many('res.users','loan_management_user_rel','loan_id','user_id',string="Users",domain="[('id','!=', uid)]")
     period = fields.Integer(string="No of Months.", default = 1)
     start_date = fields.Date(string="Start Date.", default = fields.Date.today())
     end_date = fields.Date(string="End Date.", compute = "_compute_end_date", store=True)
@@ -54,9 +54,9 @@ class LoanManagement(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if not vals.get('user_id'):
-                vals['user_id'] = self.env.uid
-            vals['state'] = 'to_approve' 
+            if not vals.get('user_ids'):
+                vals['user_ids'] = [(6, 0, [self.env.uid])]
+            #vals['state'] = 'to_approve' 
         return super(LoanManagement, self).create(vals_list)
     
     def action_open_invoices(self):
@@ -228,6 +228,7 @@ class LoanManagement(models.Model):
     def _onchange_approval_team(self):
         for rec in self:
             rec.loan_approval_level_ids = [(5, 0, 0)]
+            all_user_ids = set()
             if rec.approval_team:
                 assigned_users = set()
                 level_vals = []
@@ -235,6 +236,8 @@ class LoanManagement(models.Model):
                 for level in rec.approval_team.approval_level_ids:
                     """ unique_user_ids = [u.id for u in level.user_ids if u.id not in assigned_users]
                     if unique_user_ids: """
+                    user_ids = level.user_ids.ids
+                    all_user_ids.update(user_ids)
                     level_vals.append((0, 0, {
                         'level': level.level,
                         'name': level.name,
@@ -243,3 +246,9 @@ class LoanManagement(models.Model):
                         #assigned_users.update(unique_user_ids)
 
                 rec.loan_approval_level_ids = level_vals
+                existing_user_ids = rec.user_ids.ids if rec.user_ids else []
+                combined_user_ids = set(existing_user_ids) | all_user_ids
+                rec.user_ids = [(6, 0, list(combined_user_ids))]
+            else:
+                existing_user_ids = rec.user_ids.ids if rec.user_ids else []
+                rec.user_ids = [(6, 0, existing_user_ids)]
