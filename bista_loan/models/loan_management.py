@@ -4,6 +4,11 @@ from odoo.exceptions import UserError
 
 class LoanManagement(models.Model):
     _name = 'loan.management'
+    _inherit = ['portal.mixin',
+                'mail.alias.mixin.optional',
+                'mail.thread',
+                'mail.activity.mixin',
+               ]
     _rec_name = 'partner_id'
 
     loan_amount = fields.Float(string="Loan Amount", default=10000)
@@ -40,7 +45,7 @@ class LoanManagement(models.Model):
     
     advance_payments = fields.One2many('advance.payment', 'loan_id')
     #is_advance_payment = fields.Boolean(string="Is advance_payment", default=False)
-    
+    color = fields.Integer('Color Index')
     
     @api.depends('loan_approval_level_ids.stage')
     def _compute_next_approvers(self):
