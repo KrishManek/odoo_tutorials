@@ -98,8 +98,23 @@ class UpdateProductSerial(models.TransientModel):
                                 new_product_id = self.env['product.product'].search([('default_code', '=', records.new_product.default_code)]).id
                                 product_record.write({'product_id': new_product_id})
                                 break
-                            else:
-                                pass
-        
+                else:
+                    pass
+                            
+                            
+                            
+    def update_serial(self):
+        self.read_file()
+        for records in self.replace_products_wizard_id:
+            for mo_record in records.mrp_id:
+                if self.operation == 'update_serial':
+                    move_id = mo_record.move_raw_ids.filtered(lambda rec : rec.product_id.default_code == records.current_product_code)
+                    if move_id:
+                        lot_id = move_id.lot_ids.filtered(lambda r : r.name == records.old_serial_number)
+                        remove_record = move_id.move_line_ids.filtered(lambda x : x.lot_id in lot_id)
+                        new_lot_id = self.env['stock.lot'].search([('name', '=', records.new_serial_number)]).id
+                        temp_new_lot_id = self.env['stock.quant'].search([('lot_id', '=', new_lot_id)],limit=1).id
+                        if temp_new_lot_id:
+                            remove_record.write({'quant_id': temp_new_lot_id})
         
     

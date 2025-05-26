@@ -4,7 +4,7 @@
     "description": """this app will help to manage Loans""",
     "author": "Krish Manek",
     "version": "18.0",
-    "depends": ['base', 'account'],
+    "depends": ['base', 'account','mail','base_setup'],
     'sequence' : 1,
     'application' : True,
     'license' : 'LGPL-3',

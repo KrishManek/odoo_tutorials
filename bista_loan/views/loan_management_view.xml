@@ -61,7 +61,7 @@
                             <field name="pending_principle_amount" />
                             <field name="next_emi_date" readonly="1" />
                             <field name="approval_team" />
-                            <field name="next_approvers" widget="many2many_tags"/>
+                            <field name="next_approvers" widget="many2many_tags" />
                             <!-- <field name="is_advance_payment" readonly="1" /> -->
                         </group>
                     </group>
@@ -122,16 +122,10 @@
                                     <field name="approved_by" readonly="1" />
                                     <field name="rejected_by" readonly="1" />
                                     <field name="timestamp" readonly="1" />
-                                    <field name="can_approve" invisible="1"/>
-                                    <button name="action_approve_application"
-                                            string="Approve"
-                                            type="object"
-                                            invisible="not can_approve or stage in ['draft', 'approved', 'rejected']" />
+                                    <field name="can_approve" invisible="1" />
+                                    <button name="action_approve_application" string="Approve" type="object" invisible="not can_approve or stage in ['draft', 'approved', 'rejected']" />
 
-                                    <button name="action_reject_application"
-                                            string="Reject"
-                                            type="object"
-                                            invisible="not can_approve or stage in ['draft','approved','rejected'] "/>
+                                    <button name="action_reject_application" string="Reject" type="object" invisible="not can_approve or stage in ['draft','approved','rejected'] " />
                                 </list>
                             </field>
                         </page>
@@ -151,6 +145,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -168,6 +163,61 @@
             </list>
         </field>
     </record>
+
+    <record id="view_loan_management_kanban" model="ir.ui.view">
+        <field name="name">loan.management.kanban</field>
+        <field name="model">loan.management</field>
+        <field name="priority" eval="100" />
+        <field name="arch" type="xml">
+            <kanban highlight_color="color"
+                    default_group_by="state"
+                    class="o_kanban_small_column"
+                    on_create="quick_create"
+                    quick_create_view="bista_loan.quick_create_loan_form"
+                    archivable="false"
+                    sample="1">
+                <progressbar field="state" colors='{"approved": "success", "to_approve": "warning", "rejected": "danger"}' />
+                <templates>
+                    <t t-name="menu">
+                        <t t-if="widget.editable">
+                            <a role="menuitem" type="open" class="dropdown-item">Edit</a>
+                        </t>
+                        <t t-if="widget.deletable">
+                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                        </t>
+                        <field name="color" widget="kanban_color_picker" />
+                    </t>
+                    <t t-name="card">
+                        <field name="partner_id" class="text-truncate" />
+                        <field name="loan_amount" widget="monetary"/>
+                        <field name="period" />
+                        <field name="start_date" />
+                        <field name="end_date" />
+                        <field name="emi_date" />
+                        <field name="user_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="quick_create_loan_form" model="ir.ui.view">
+        <field name="name">loan.management.form.quick_create</field>
+        <field name="model">loan.management</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="partner_id" widget="res_partner_many2one" class="o_field_highlight" />
+                    <field name="loan_amount" class="oe_inline me-5 o_field_highlight" widget="monetary" />
+                    <field name="period" />
+                    <field name="start_date" />
+                    <field name="end_date" />
+                    <field name="emi_date" />
+                    <field name="user_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                </group>
+            </form>
+        </field>
+    </record>
+        
 
     <!-- <record id="action_loan_managment" model="ir.actions.act_window">
         <field name="name">Loans</field>
