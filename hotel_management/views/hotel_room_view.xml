@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- list View -->
+    <record id="view_hotel_room_list" model="ir.ui.view">
+        <field name="name">hotel.room.list</field>
+        <field name="model">hotel.room</field>
+        <field name="arch" type="xml">
+            <list string="Hotel Rooms">
+                <field name="name" />
+                <field name="category_id" />
+                <field name="price_per_night" />
+                <field name="status" />
+                <field name="is_available" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_hotel_room_form" model="ir.ui.view">
+        <field name="name">hotel.room.form</field>
+        <field name="model">hotel.room</field>
+        <field name="arch" type="xml">
+            <form string="Hotel Room">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="category_id" />
+                            <field name="price_per_night" />
+                            <field name="status" readonly="1" />
+                            <field name="is_available" />
+                            <field name="current_guest_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Booking History">
+                            <field name="booking_history_ids">
+                                <list>
+                                    <field name="name" />
+                                    <field name="guest_id" />
+                                    <field name="booking_date" />
+                                    <field name="state" />
+                                    <field name="check_in_time" />
+                                    <field name="check_out_time" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hotel_room" model="ir.actions.act_window">
+        <field name="name">Hotel Rooms</field>
+        <field name="res_model">hotel.room</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hotel_room" name="Rooms" parent="menu_hotel_root" />
+    <menuitem id="menu_hotel_room_action" name="All Rooms" parent="menu_hotel_room" action="action_hotel_room" />
+</odoo>

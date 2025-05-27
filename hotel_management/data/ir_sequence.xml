@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo noupdate="1">
+    <data>
+        <record id="hotel_guest_sequence" model="ir.sequence">
+            <field name="name">hotel.guest</field>
+            <field name="code">hotel.guest</field>
+            <field name="prefix">Guest-</field>
+            <field name="padding">4</field>
+        </record>
+
+         <record id="hotel_room_sequence" model="ir.sequence">
+            <field name="name">hotel.room</field>
+            <field name="code">hotel.room</field>
+            <field name="prefix">Room-</field>
+            <field name="padding">4</field>
+        </record>
+
+        <record id="hotel_reservation_sequence" model="ir.sequence">
+            <field name="name">hotel.reservation</field>
+            <field name="code">hotel.reservation</field>
+            <field name="prefix">Booking-</field>
+            <field name="padding">4</field>
+        </record>
+    </data>
+</odoo>

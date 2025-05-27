@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="room_category_single" model="hotel.room.category">
+            <field name="name">Single Room</field>
+            <field name="price">500.0</field>
+        </record>
+
+        <record id="room_category_double" model="hotel.room.category">
+            <field name="name">Double Room</field>
+            <field name="price">800.0</field>
+        </record>
+
+        <record id="room_category_suite" model="hotel.room.category">
+            <field name="name">Suite Room</field>
+            <field name="price">1500.0</field>
+        </record>
+    </data>
+</odoo>

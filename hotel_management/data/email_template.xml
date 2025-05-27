@@ -1,0 +1,51 @@
+<odoo>
+    <record id="email_template_register_user" model="mail.template">
+        <field name="name">Hotel User Registration Welcome</field>
+        <field name="model_id" ref="hotel_management.model_hotel_guest" />
+        <field name="email_from">{{ object.env.user.email }}</field>
+        <field name="email_to">{{ object.name.email }}</field>
+        <field name="subject">Welcome : {{ object.name.name }}</field>
+        <field name="body_html" type="html">
+            <strong> 
+                <p >Hello 
+                    <t t-out="object.name.name" />, 
+                </p>
+            </strong>
+
+            <p>You have succuessfully become our member. Thank you for registering with us.</p>
+            <p>If you have any Queries please fell free to contact us.</p>
+            <p>Thank you!</p>
+
+        </field>
+    </record>
+
+    <record id="email_template_booking_registration" model="mail.template">
+        <field name="name">Room Booking Registration</field>
+        <field name="model_id" ref="hotel_management.model_hotel_reservation" />
+        <field name="email_from">{{ object.env.user.email }}</field>
+        <field name="email_to">{{ object.guest_id.name.email }}</field>
+        <field name="subject">Your Booking for rooms</field>
+        <field name="body_html" type="html">
+            <strong> 
+                <p >Hello 
+                    <t t-out="object.guest_id.name.name" />, 
+                </p>
+            </strong>
+
+            <p>You have succuessfully Booked rooms with us. Thank you for booking with us.</p>
+            <p>
+                Your room no's are 
+                <t t-foreach="room" t-as="object.room_ids">
+                    <t t-out="room" /> , 
+                </t>
+            </p>
+            <p>
+            Your total amount is <t t-out="object.amount_total" />, Amount Paid is <t t-out="object.amount_paid" /> and Remaining amount is <t t-out="object.amount_remaining" />,
+            </p>
+            
+            <p>If you have any Queries please fell free to contact us.</p>
+            <p>Thank you!</p>
+
+        </field>
+    </record>
+</odoo>
