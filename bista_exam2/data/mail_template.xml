@@ -30,4 +30,24 @@
         </field>
         <field name="report_template_ids" eval="[(4, ref('purchase.action_report_purchase_order'))]" />
     </record>
+
+    <record id="po_approval_email_template_view" model="mail.template">
+        <field name="name">po_approval_email_template_view</field>
+        <field name="model_id" ref="model_purchase_order" />
+        <field name="subject">Purchase Order Approval : {{object.name}}</field>
+        <field name="email_from">{{ object.env.user.email }}</field>
+        <field name="auto_delete" eval="False" />
+        <field name="body_html" type="html">
+            <div>
+                <strong>hello
+                    <t t-out="object.partner_id.name" />.
+                </strong>
+                <p>PO order 
+                    <t t-out="object.name" /> is in Approval state. Please approve the order.
+            Approver is: 
+                    <t t-out="ctx.get('user_name')" />
+                </p>
+            </div>
+        </field>
+    </record>
 </odoo>

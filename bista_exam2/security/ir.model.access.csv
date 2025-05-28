@@ -2,4 +2,4 @@
 "access_bista_pharmacy_user","bista.pharmacy.user","model_bista_pharma",bista_exam2.group_pharmacy_user,1,0,0,0
 "access_bista_pharmacy_admin","bista.pharmacy.admin","model_bista_pharma",bista_exam2.group_pharmacy_admin,1,1,1,0
 "access_sale_wizard","sale.wizard","model_sale_wizard",,1,1,1,1
-
+"access_purchase_order_approver","purchase.order.approver","model_purchase_order",bista_exam2.group_purchase_approver,1,1,1,1

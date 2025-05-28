@@ -16,6 +16,7 @@
         'views/invoice_view_inherit.xml',
         'views/sales_order_views.xml',
         'views/mail_activity_view.xml',
+        'views/purchase_order_view.xml',
         'data/pharma_data.xml',
         'report/stock_report_deliveryslip.xml',
         'wizard/sale_wizard_view.xml',
