@@ -1,0 +1,63 @@
+<odoo>
+    <!-- Tree View -->
+    <record id="view_hotel_guest_list" model="ir.ui.view">
+        <field name="name">hotel.guest.list</field>
+        <field name="model">hotel.guest</field>
+        <field name="arch" type="xml">
+            <list string="Hotel Guests">
+                <field name="guest_id" />
+                <field name="name" />
+                <field name="phone" />
+                <field name="email" />
+                <field name="nationality" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hotel_guest_form" model="ir.ui.view">
+        <field name="name">hotel.guest.form</field>
+        <field name="model">hotel.guest</field>
+        <field name="arch" type="xml">
+            <form string="Hotel Guest">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="guest_id" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="phone" force_save ="1" />
+                            <field name="email" force_save ="1" />
+                            <field name="id_proof" />
+                            <field name="nationality" />
+                        </group>    
+                    </group>
+                    <notebook>
+                        <page string="Reservation History">
+                            <field name="stay_history_ids">
+                                <list>
+                                    <field name="name" />
+                                    <field name="booking_date" />
+                                    <field name="state" />
+                                    <field name="check_in_time" />
+                                    <field name="check_out_time" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hotel_guest" model="ir.actions.act_window">
+        <field name="name">Hotel Guests</field>
+        <field name="res_model">hotel.guest</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hotel_guest" name="Guests" parent="menu_hotel_root" />
+    <menuitem id="menu_hotel_guest_action" name="All Guests" parent="menu_hotel_guest" action="action_hotel_guest" />
+</odoo>
