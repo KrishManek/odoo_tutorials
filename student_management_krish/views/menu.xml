@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="project_estimation_main_menu_actions" model="ir.actions.act_window">
+        <field name="name">Project Estimation</field>
+        <field name="res_model">project.estimation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="project_estimation_parent_menu" name="Project Estimation" />
+
+    <menuitem id="project_estimation_sub_menu" name="Projects" parent="project_estimation_parent_menu" action="project_estimation_main_menu_actions" />
+
+    <menuitem id="sales_excel_report" name="Sales Excel Report" parent="sale.menu_sale_report" action="action_sale_excel_report"/>
+
+</odoo>

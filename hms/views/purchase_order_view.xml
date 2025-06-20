@@ -18,7 +18,7 @@
             </xpath>
         </field>
     </record>
-    <record id="view_purchase_order_form_inh_ref" model="ir.ui.view">
+   <!--  <record id="view_purchase_order_form_inh_ref" model="ir.ui.view">
         <field name="name">purchase.order.form.inh.ref</field>
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase_product_matrix.purchase_order_form_matrix" />
@@ -27,6 +27,6 @@
                 <attribute name="domain">[('categ_id', '=', parent.category_id)]</attribute> 
             </xpath>
         </field>
-    </record>
+    </record> -->
 
 </odoo>

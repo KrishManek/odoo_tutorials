@@ -4,7 +4,7 @@
     "description": """this app will help to manage Special pricelists""",
     "author": "Krish Manek",
     "version": "18.0",
-    "depends": ['base', 'sale', 'product'],
+    'depends': ['base', 'product', 'sale_management'],
     'sequence' : 1,
     'application' : True,
     'license' : 'LGPL-3',

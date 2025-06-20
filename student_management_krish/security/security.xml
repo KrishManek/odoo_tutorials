@@ -1,0 +1,35 @@
+<odoo>
+    <record id="group_project_estimation_user" model="res.groups">
+        <field name="name">Estimation User</field>
+        <field name="users" eval="[(4, ref('base.user_root'))]" />
+    </record>
+
+    <record id="group_project_estimation_admin" model="res.groups">
+        <field name="name">Estimation Admin</field>
+        <field name="users" eval="[(4, ref('base.user_admin'))]" />
+        <field name="implied_ids" eval="[(4, ref('student_management_krish.group_project_estimation_user'))]" />
+    </record>
+
+    <record id="rule_project_estimation_user" model="ir.rule">
+        <field name="name">Project Estimation: User Access</field>
+        <field name="model_id" ref="model_project_estimation" />
+        <field name="domain_force">['|', ('create_uid', '=', user.id), ('assignee_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('student_management_krish.group_project_estimation_user'))]" />
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_unlink" eval="0" />
+    </record>
+
+    <record id="rule_project_estimation_admin" model="ir.rule">
+        <field name="name">Project Estimation: Admin Access</field>
+        <field name="model_id" ref="model_project_estimation" />
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('student_management_krish.group_project_estimation_admin'))]" />
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_unlink" eval="1" />
+    </record>
+
+</odoo>

@@ -11,12 +11,13 @@ class AccountPayment(models.Model):
     def action_post(self):
         res = super().action_post()
         line_id = self.move_id.line_ids.filtered(lambda line: line.account_type == 'asset_receivable').id
-        for invoice in self.customer_invoices:
-            #print(self)
-            self.move_id.line_ids.write({'is_custom_paid_invoice': True})
-            #line_id = self.env['account.move.line'].search([('move_type', '=', 'entry'), ('move_id', '=', self.move_id.id), ('account_type', '=', 'asset_receivable')]).id
-            result = invoice.invoice_id.js_assign_outstanding_line(line_id)
-            #print(invoice)
+        if line_id:
+            for invoice in self.customer_invoices:
+                #print(self)
+                self.move_id.line_ids.write({'is_custom_paid_invoice': True})
+                #line_id = self.env['account.move.line'].search([('move_type', '=', 'entry'), ('move_id', '=', self.move_id.id), ('account_type', '=', 'asset_receivable')]).id
+                result = invoice.invoice_id.js_assign_outstanding_line(line_id)
+                #print(invoice)
         return res
     
     @api.onchange('partner_id')
@@ -77,7 +78,7 @@ class AccountPayment(models.Model):
             if invoice.amount_residual > amount and amount > 0:
                 invoice.allocation_amount = amount
                 amount-= amount
-            elif invoice.amount_residual < amount and amount > 0:
+            elif invoice.amount_residual <= amount and amount > 0:
                 invoice.allocation_amount = invoice.amount_residual
                 amount -= invoice.amount_residual 
             else:

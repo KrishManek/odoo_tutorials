@@ -3,7 +3,7 @@
     'name': 'Bista Custom Invoice',
     'desc': 'Custom Invoice',
     'author': 'Krish Manek',
-    'depends': ['base','account'],
+    'depends': ['base','account','sale_management'],
     'sequence': 1,
     'application': 'true',
     'version': '1.0',
