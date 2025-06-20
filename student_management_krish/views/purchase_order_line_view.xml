@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_purchase_order_form_inherit_ref_stock_lot" model="ir.ui.view">
+        <field name="name">purchase.order.form.inh.ref.stock.lot</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_ref']" position="after">
+                <field name="payment_term_id" position="move" />
+            </xpath>
+
+            <xpath expr="//list/field[@name='qty_received_method']" position="before">
+                <field name="lot_name" readonly="not is_editable" />
+                <!-- <field name="lot_name" readonly="product_id.tracking not in 'lot'" />  -->
+            </xpath>
+        </field>
+    </record>
+</odoo>

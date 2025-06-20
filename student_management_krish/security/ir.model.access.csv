@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_project_estimation_admin,project.estimation.admin,model_project_estimation,student_management_krish.group_project_estimation_admin,1,1,1,1
+access_project_estimation_user,project.estimation.user,model_project_estimation,student_management_krish.group_project_estimation_user,1,1,1,0
+
+access_project_estimation_line_admin,project.estimation.line.admin,model_project_estimation_line,student_management_krish.group_project_estimation_admin,1,1,1,1
+access_project_estimation_line_user,project.estimation.line.user,model_project_estimation_line,student_management_krish.group_project_estimation_user,1,1,1,0
+
+access_sale_report_wizard,sale.report.wizard,model_sale_report_wizard,,1,1,1,0

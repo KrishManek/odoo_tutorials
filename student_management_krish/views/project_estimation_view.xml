@@ -1,0 +1,114 @@
+<odoo>
+    <record id="view_project_estimation_form" model="ir.ui.view">
+        <field name="name">Project Estimation Form</field>
+        <field name="model">project.estimation</field>
+        <field name="arch" type="xml">
+            <form string="Project Estimation Details">
+                <header>
+                    <button name="action_confirm"
+                            string="Confirm"
+                            type="object"
+                            invisible="state != 'draft'"
+                            class="btn-primary" />
+                    <button name="action_cancel"
+                            string="Cancel"
+                            type="object"
+                            invisible="state != 'confirm'"
+                            class="btn-primary" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancelled" /> 
+                </header>
+                <sheet>
+                    <!-- <div class="oe_button_box" name="button_box">
+                        <button name="action_check_ins" type="object" icon="fa-check">
+                            <field name="check_in_count" string="Check Ins" widget="statinfo"/>
+                        </button>
+                    </div> -->
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group name="template_data" string="Template">
+                        <group>
+                            <field name="template_id" readonly="state in 'confirm'" />
+                        </group> 
+                    </group>
+
+                    <group>
+                        <group string="Project Details">
+                            <field name="customer_id" force_save="1" readonly="state in 'confirm'" />
+                            <field name="validity_date" readonly="state in 'confirm'" />
+                        </group>
+                        <group string="Project Configuration Details">
+                            <field name="assignee_id" readonly="state in 'confirm'" />
+                            <field name="use_as_template" readonly="state in 'confirm'" />
+                            <field name="company_currency_id" invisible="1" />
+                            <field name="dup_product" invisible="1" />
+                        </group>
+                    </group>
+                    <group name="project_description" string="Project Description">
+                        <group>
+                            <field name="project_description" readonly="state in 'confirm'" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string='Estimation Lines'>
+                            <field name="project_estimation_lines" readonly="state in 'confirm'">
+                                <list editable="bottom">
+                                    <field name="product_id" force_save="1" />
+                                    <field name="quantity" tracking="1" />
+                                    <field name="price" force_save="1" tracking="1" />
+                                    <field name="sub_total" force_save="1" />
+                                    <field name="note" force_save="1" />
+                                </list>
+                            </field> 
+                            <group class="oe_subtotal_footer">
+                                <field name="total_amount" readonly="1" widget="monetory" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="view_project_estimation_list" model="ir.ui.view">
+        <field name="name">Project Estimation List</field>
+        <field name="model">project.estimation</field>
+        <field name="arch" type="xml">
+            <list string="Project Estimation Details">
+                <field name="name" />
+                <field name="customer_id" />
+                <field name="validity_date" />
+                <field name="state" />
+                <field name="assignee_id" />
+                <field name="use_as_template" />
+                <field name="template_id" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_project_estimation_search_filter" model="ir.ui.view">
+        <field name="name">project.estimation.search.filter</field>
+        <field name="model">project.estimation</field>
+        <field name="priority" eval="1" />
+        <field name="arch" type="xml">
+            <search string="Search Projects">
+                <field name="customer_id" string="Name" filter_domain="['|', '|',('customer_id', 'ilike', self), ('name', 'ilike', self), ('assignee_id', 'ilike', self)]" />
+                
+                <separator />
+                <filter name="draft_state" string="Draft" domain="[('state', '=', 'draft')]" />
+                <filter name="confirm_state" string="Confirmed" domain="[('state', '=', 'confirm')]" />
+                <filter name="cancelled_state" string="Cancelled" domain="[('state', '=', 'cancelled')]" />
+
+                <group expand="0" string="Group By">
+                    <filter string="Date" name="Validity Date" domain="[]" context="{'group_by': 'validity_date'}" />
+                    <filter name="State" string="State" domain="[]" context="{'group_by': 'state'}" />
+                    <filter string="Assignee" name="Assignee" domain="[]" context="{'group_by': 'assignee_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
