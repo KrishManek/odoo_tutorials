@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <record id="report_dispenser_dashboard" model="ir.actions.report">
+    <field name="name">Dispenser Dashboard</field>
+    <field name="model">petrol.pump.dispenser.dashboard.wizard</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">petrol_pump_management.report_dispenser_dashboard_document</field>
+    <field name="report_file">petrol_pump_management.report_dispenser_dashboard_document</field>
+    <field name="print_report_name">('Dispenser_Dashboard - %s' % (object.create_date.strftime('%Y-%m-%d')))</field>
+    <field name="binding_model_id" ref="model_petrol_pump_dispenser_dashboard_wizard" />
+    <field name="binding_type">report</field>
+  </record>
+
+  <template id="report_dispenser_dashboard_document" name="Dispenser Dashboard Report">
+    <t t-call="web.html_container">
+      <t t-call="web.external_layout">
+
+        <center>
+          <h2>Dispenser Dashboard Report</h2>
+        </center>
+
+        <t t-foreach="docs" t-as="doc">
+          <div style="margin-bottom: 20px;">
+            <strong>Station:</strong>
+            <span t-esc="', '.join(station.name for station in doc.station_ids)" />
+            <br />
+
+            <strong>Dispenser:</strong>
+            <span t-esc="', '.join(dispenser.code for dispenser in doc.dispenser_ids)" />
+            <br />
+
+            <strong>Current Stock:</strong>
+            <span t-esc="doc.current_stock" />
+            <br />
+
+            <strong>Total Sold:</strong>
+            <span t-esc="doc.total_sold" />
+            <br />
+            <strong>Total Amount:</strong>
+            <span t-esc="doc.total_amount" />
+            <br />
+
+            <t t-call="petrol_pump_management.report_dispenser_dashboard_sales_lines">
+              <t t-set="doc" t-value="doc" />
+            </t>
+          </div>
+        </t>
+
+      </t>
+    </t>
+  </template>
+
+  <template id="report_dispenser_dashboard_sales_lines" name="Dispenser Dashboard Sales Lines">
+    <table class="table table-sm" width="100%" style="border-collapse: collapse; margin-top: 10px;">
+      <thead>
+        <tr style="border-bottom: 1px solid #000;">
+          <th>Date</th>
+          <th>Station</th>
+          <th>Dispenser</th>
+          <th>Tank</th>
+          <th>Current Stock</th>
+          <th>Total Sold</th>
+        </tr>
+      </thead>
+      <tbody>
+        <t t-foreach="doc.result_ids" t-as="sale">
+          <tr>
+            <td>
+              <span t-esc="sale.date.strftime('%Y-%m-%d')" />
+            </td>
+            <td>
+              <span t-esc="sale.station_id" />
+            </td>
+            <td>
+              <span t-esc="sale.dispenser_id" />
+            </td>
+            <td>
+              <span t-esc="sale.tank_id" />
+            </td>
+            <td>
+              <span t-esc="sale.current_stock" />
+            </td>
+            <td>
+              <span t-esc="sale.total_sold" />
+            </td>
+          </tr>
+        </t>
+      </tbody>
+    </table>
+  </template>
+
+</odoo>

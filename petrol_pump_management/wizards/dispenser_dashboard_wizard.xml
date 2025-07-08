@@ -1,0 +1,50 @@
+<odoo>
+    <record id="view_dispenser_dashboard_wizard_form" model="ir.ui.view">
+        <field name="name">petrol.pump.dispenser.dashboard.wizard.form</field>
+        <field name="model">petrol.pump.dispenser.dashboard.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Dispenser Dashboard">
+                <group>
+                    <field name="station_ids" widget="many2many_tags" />
+                    <field name="dispenser_ids" widget="many2many_tags" options="{'no_create': True}" />
+                    <field name="fuel_type" />
+                    <field name="date_from" />
+                    <field name="date_to" />
+                </group>
+                <footer>
+                    <button string="Generate Report" type="object" name="action_generate_report" class="btn-primary" />
+                    <button string="Download PDF"
+                            type="object"
+                            name="action_download_pdf"
+                            class="btn-secondary" />
+                    <button string="Close" class="btn-secondary" special="cancel" />
+                </footer>
+                <field name="result_ids">
+                    <tree editable="false">
+                        <field name="date" />
+                        <field name="station_id" />
+                        <field name="dispenser_id" />
+                        <field name="tank_id" />
+                        <field name="current_stock" />
+                        <field name="total_sold" />
+                    </tree>
+                </field>
+            </form>
+        </field>
+    </record>
+
+    <!-- Wizard action -->
+    <!-- <record id="action_dispenser_dashboard_wizard" model="ir.actions.act_window">
+        <field name="name">Dispenser Dashboard</field>
+        <field name="res_model">petrol.pump.dispenser.dashboard.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record> -->
+
+    <!-- Wizard menu -->
+    <!-- <menuitem id="menu_dispenser_dashboard_wizard"
+              name="Dispenser Dashboard"
+              parent="menu_petrol_pump_root"
+              action="action_dispenser_dashboard_wizard"
+              sequence="100" /> -->
+</odoo>

@@ -1,0 +1,80 @@
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_petrol_pump_root" name="Petrol Pump Management" sequence="10" />
+
+    <!-- Stations -->
+    <menuitem id="menu_petrol_pump_stations"
+              name="Stations"
+              parent="menu_petrol_pump_root"
+              sequence="1"
+              groups="petrol_pump_management.group_pump_admin,petrol_pump_management.group_station_manager" />
+    <record id="action_petrol_pump_station" model="ir.actions.act_window">
+        <field name="name">Stations</field>
+        <field name="res_model">petrol.pump.station</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_petrol_pump_station_action"
+              name="Manage Stations"
+              parent="menu_petrol_pump_stations"
+              action="action_petrol_pump_station"
+              groups="petrol_pump_management.group_pump_admin,petrol_pump_management.group_station_manager" />
+
+    <!-- Tanks -->
+    <menuitem id="menu_petrol_pump_tanks"
+              name="Fuel Tanks"
+              parent="menu_petrol_pump_root"
+              sequence="2"
+              groups="petrol_pump_management.group_pump_admin,petrol_pump_management.group_station_manager" />
+    <record id="action_petrol_pump_fuel_tank" model="ir.actions.act_window">
+        <field name="name">Fuel Tanks</field>
+        <field name="res_model">petrol.pump.fuel.tank</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_petrol_pump_fuel_tank_action"
+              name="Manage Fuel Tanks"
+              parent="menu_petrol_pump_tanks"
+              action="action_petrol_pump_fuel_tank"
+              groups="petrol_pump_management.group_pump_admin,petrol_pump_management.group_station_manager" />
+
+    <!-- Dispensers -->
+    <menuitem id="menu_petrol_pump_dispensers"
+              name="Dispensers"
+              parent="menu_petrol_pump_root"
+              sequence="3"
+              groups="petrol_pump_management.group_pump_admin,petrol_pump_management.group_station_manager" />
+    <record id="action_petrol_pump_dispenser" model="ir.actions.act_window">
+        <field name="name">Dispensers</field>
+        <field name="res_model">petrol.pump.dispenser</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_petrol_pump_dispenser_action"
+              name="Manage Dispensers"
+              parent="menu_petrol_pump_dispensers"
+              action="action_petrol_pump_dispenser"
+              groups="petrol_pump_management.group_pump_admin,petrol_pump_management.group_station_manager" />
+
+    <!-- Sales -->
+    <menuitem id="menu_petrol_pump_sales" name="Sales" parent="menu_petrol_pump_root" sequence="4" />
+    <record id="action_petrol_pump_sale_line" model="ir.actions.act_window">
+        <field name="name">Sales Lines</field>
+        <field name="res_model">petrol.pump.sale.line</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_petrol_pump_sale_line_action" name="Manage Sales" parent="menu_petrol_pump_sales" action="action_petrol_pump_sale_line" />
+
+    <!-- Wizard action -->
+    <record id="action_dispenser_dashboard_wizard" model="ir.actions.act_window">
+        <field name="name">Dispenser Dashboard</field>
+        <field name="res_model">petrol.pump.dispenser.dashboard.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Wizard menu -->
+    <menuitem id="menu_dispenser_dashboard_wizard"
+              name="Dispenser Dashboard"
+              parent="menu_petrol_pump_root"
+              action="action_dispenser_dashboard_wizard"
+              sequence="100" 
+              groups="petrol_pump_management.group_pump_admin,petrol_pump_management.group_station_manager"/>
+</odoo>

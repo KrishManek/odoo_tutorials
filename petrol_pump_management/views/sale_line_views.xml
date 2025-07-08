@@ -1,0 +1,35 @@
+<odoo>
+    <!-- Sale Line Tree View -->
+    <record id="view_petrol_pump_sale_line_tree" model="ir.ui.view">
+        <field name="name">petrol.pump.sale.line.tree</field>
+        <field name="model">petrol.pump.sale.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="dispenser_id"/>
+                <field name="date"/>
+                <field name="quantity"/>
+                <field name="unit_price"/>
+                <field name="total_amount"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Sale Line Form View -->
+    <record id="view_petrol_pump_sale_line_form" model="ir.ui.view">
+        <field name="name">petrol.pump.sale.line.form</field>
+        <field name="model">petrol.pump.sale.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="dispenser_id"/>
+                        <field name="date"/>
+                        <field name="quantity"/>
+                        <field name="unit_price"/>
+                        <field name="total_amount" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

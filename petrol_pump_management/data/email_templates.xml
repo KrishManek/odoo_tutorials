@@ -1,0 +1,28 @@
+<odoo>
+    <data noupdate="1">
+        <record id="low_stock_email_template" model="mail.template">
+            <field name="name">Low Stock Alert</field>
+            <field name="model_id" ref="model_petrol_pump_fuel_tank" />
+            <field name="subject">Low Fuel Stock Alert</field>
+            <field name="email_from">{{ object.env.user.email }}</field>
+            <field name="email_to">{{ object.station_id.manager_id.email }}</field>
+            <field name="body_html" type="html">
+                <field name="auto_delete" eval="True" />
+                <p>Hello  
+                    <t t-out="object.station_id.manager_id.name " />,
+                </p>
+                <p>The fuel tank 
+                    <strong>
+                        <t t-out="object.display_name" />
+                    </strong> is below 10% capacity.
+                </p>
+                <p>Please arrange for replenishment to ensure continuous supply.</p>
+                <p>Thank you.</p>
+                <p>Best regards,</p>
+                <p>
+                    <t t-out="object.env.user.name" />
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

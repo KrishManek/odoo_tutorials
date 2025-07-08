@@ -1,0 +1,65 @@
+<odoo>
+    <record id="module_category_petrol_pump" model="ir.module.category">
+        <field name="name">Petrol Pump Management</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="group_pump_admin" model="res.groups">
+        <field name="name">Pump Admin</field>
+        <field name="category_id" ref="petrol_pump_management.module_category_petrol_pump" />
+    </record>
+
+    <record id="group_station_manager" model="res.groups">
+        <field name="name">Station Manager</field>
+        <field name="category_id" ref="petrol_pump_management.module_category_petrol_pump" />
+    </record>
+
+    <record id="group_pump_operator" model="res.groups">
+        <field name="name">Pump Operator</field>
+        <field name="category_id" ref="petrol_pump_management.module_category_petrol_pump" />
+    </record>
+
+    <!-- Record Rules -->
+    <record id="rule_station_manager_station" model="ir.rule">
+        <field name="name">Station Manager: Own Stations</field>
+        <field name="model_id" ref="model_petrol_pump_station" />
+        <field name="groups" eval="[(4, ref('petrol_pump_management.group_station_manager'))]" />
+        <field name="domain_force">[('manager_id', '=', user.partner_id.id)]</field>
+    </record>
+
+    <record id="rule_station_manager_tank" model="ir.rule">
+        <field name="name">Station Manager: Own Tanks</field>
+        <field name="model_id" ref="model_petrol_pump_fuel_tank" />
+        <field name="groups" eval="[(4, ref('petrol_pump_management.group_station_manager'))]" />
+        <field name="domain_force">[('station_id.manager_id', '=', user.partner_id.id)]</field>
+    </record>
+
+    <record id="rule_station_manager_dispenser" model="ir.rule">
+        <field name="name">Station Manager: Own Dispensers</field>
+        <field name="model_id" ref="model_petrol_pump_dispenser" />
+        <field name="groups" eval="[(4, ref('petrol_pump_management.group_station_manager'))]" />
+        <field name="domain_force">[('station_id.manager_id', '=', user.partner_id.id)]</field>
+    </record>
+
+    <record id="rule_station_manager_sale_line" model="ir.rule">
+        <field name="name">Station Manager: Own Sales Lines</field>
+        <field name="model_id" ref="model_petrol_pump_sale_line" />
+        <field name="groups" eval="[(4, ref('petrol_pump_management.group_station_manager'))]" />
+        <field name="domain_force">[('dispenser_id.station_id.manager_id', '=', user.partner_id.id)]</field>
+    </record>
+
+    <record id="rule_pump_operator_sale_line" model="ir.rule">
+        <field name="name">Pump Operator: Own Sales Lines</field>
+        <field name="model_id" ref="model_petrol_pump_sale_line" />
+        <field name="global" eval="True" />
+        <field name="groups" eval="[(4, ref('petrol_pump_management.group_pump_operator'))]" />
+        <field name="domain_force">[('dispenser_id.operator_id', '=', user.id)]</field>
+    </record>
+    <record id="rule_pump_operator_dispenser" model="ir.rule">
+        <field name="name">Pump Operator: Own Dispensers</field>
+        <field name="model_id" ref="model_petrol_pump_dispenser" />
+        <field name="global" eval="True" />
+        <field name="groups" eval="[(4, ref('petrol_pump_management.group_pump_operator'))]" />
+        <field name="domain_force">[('operator_id', '=', user.id)]</field>
+    </record>
+</odoo>

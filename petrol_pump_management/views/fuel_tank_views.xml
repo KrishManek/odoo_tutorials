@@ -1,0 +1,36 @@
+<odoo>
+    <!-- Fuel Tank Tree View -->
+    <record id="view_petrol_pump_fuel_tank_tree" model="ir.ui.view">
+        <field name="name">petrol.pump.fuel.tank.tree</field>
+        <field name="model">petrol.pump.fuel.tank</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="station_id" />
+                <field name="fuel_type" />
+                <field name="capacity" />
+                <field name="current_stock" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Fuel Tank Form View -->
+    <record id="view_petrol_pump_fuel_tank_form" model="ir.ui.view">
+        <field name="name">petrol.pump.fuel.tank.form</field>
+        <field name="model">petrol.pump.fuel.tank</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Replenish Tank" type="object" name="action_replenish_tank" class="btn-primary" />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="station_id" />
+                        <field name="fuel_type" />
+                        <field name="capacity" />
+                        <field name="current_stock" readonly="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

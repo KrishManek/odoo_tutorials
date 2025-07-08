@@ -1,0 +1,54 @@
+<odoo>
+    <data>
+        <!-- Petrol Pump Station Tree View -->
+        <record id="view_petrol_pump_station_tree" model="ir.ui.view">
+            <field name="name">petrol.pump.station.tree</field>
+            <field name="model">petrol.pump.station</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="location"/>
+                    <field name="manager_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Petrol Pump Station Form View -->
+        <record id="view_petrol_pump_station_form" model="ir.ui.view">
+            <field name="name">petrol.pump.station.form</field>
+            <field name="model">petrol.pump.station</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="location"/>
+                            <field name="manager_id"/>
+                        </group>
+                        <notebook>
+                            <page string="Fuel Tanks">
+                                <field name="fuel_tank_ids">
+                                    <tree editable="bottom">
+                                        <field name="fuel_type"/>
+                                        <field name="capacity"/>
+                                        <field name="current_stock"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Dispensers">
+                                <field name="dispenser_ids">
+                                    <tree editable="bottom">
+                                        <field name="station_id" invisible="1" readonly="1"/>
+                                        <field name="code"/>
+                                        <field name="tank_id"/>
+                                        <field name="operator_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

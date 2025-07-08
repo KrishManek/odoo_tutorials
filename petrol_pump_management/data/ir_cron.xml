@@ -1,0 +1,13 @@
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_low_stock_alert" model="ir.cron">
+            <field name="name">Daily Low Stock Alert</field>
+            <field name="model_id" ref="model_petrol_pump_fuel_tank" />
+            <field name="state">code</field>
+            <field name="code">model.cron_check_low_stock()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

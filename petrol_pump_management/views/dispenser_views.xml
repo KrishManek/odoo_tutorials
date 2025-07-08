@@ -1,0 +1,45 @@
+<odoo>
+    <!-- Dispenser Tree View -->
+    <record id="view_petrol_pump_dispenser_tree" model="ir.ui.view">
+        <field name="name">petrol.pump.dispenser.tree</field>
+        <field name="model">petrol.pump.dispenser</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="station_id" />
+                <field name="tank_id" />
+                <field name="code" />
+                <field name="operator_id" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Dispenser Form View -->
+    <record id="view_petrol_pump_dispenser_form" model="ir.ui.view">
+        <field name="name">petrol.pump.dispenser.form</field>
+        <field name="model">petrol.pump.dispenser</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="station_id" />
+                        <field name="tank_id" />
+                        <field name="code" />
+                        <field name="operator_id" />
+                    </group>
+                    <notebook>
+                        <page name="Sales" string="Sales">
+                            <field name="sales_line_ids" context="{'default_dispenser_id': active_id}">
+                                <tree editable="bottom">
+                                    <field name="date" />
+                                    <field name="quantity" />
+                                    <field name="unit_price" />
+                                    <field name="total_amount" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

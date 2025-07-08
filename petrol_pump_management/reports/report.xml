@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="report_dispenser_dashboard" model="ir.actions.report">
+        <field name="name">Dispenser Dashboard</field>
+        <field name="model">petrol.pump.dispenser.dashboard.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">petrol_pump_management.report_dispenser_dashboard_document</field>
+        <field name="report_file">petrol_pump_management.report_dispenser_dashboard_document</field>
+        <field name="print_report_name">('Dispenser_Dashboard - %s' % (object.create_date.strftime('%Y-%m-%d')))</field>
+        <field name="binding_model_id" ref="model_petrol_pump_dispenser_dashboard_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
