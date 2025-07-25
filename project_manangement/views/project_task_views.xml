@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_task_form_inherit_project_extension" model="ir.ui.view">
+        <field name="name">project.task.form.inherit.project.extension</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2" />
+        <field name="arch" type="xml">
+            <!-- Add fields inside the existing 'Description' page -->
+            <xpath expr="//page[@name='description_page']/field[@name='description']" position="before">
+                <group>
+                    <field name="pr_link" required="is_staging" />
+                    <field name="module_name" required="is_staging" />
+                    <field name="developer_notes" required="is_staging" />
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='stage_id']" position="after">
+                <field name="is_staging" readonly="1" invisible="1" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_task_type_tree_inherit_add_is_staging" model="ir.ui.view">
+        <field name="name">project.task.type.tree.inherit.staging</field>
+        <field name="model">project.task.type</field>
+        <field name="inherit_id" ref="project.task_type_tree_inherited" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='fold']" position="before">
+                <field name="is_staging" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_task_type_form_inherit_add_is_staging" model="ir.ui.view">
+        <field name="name">project.task.type.form.inherit.staging</field>
+        <field name="model">project.task.type</field>
+        <field name="inherit_id" ref="project.task_type_edit" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='fold']" position="before">
+                <field name="is_staging" />
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>
